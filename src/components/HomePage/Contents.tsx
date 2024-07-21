@@ -1,5 +1,5 @@
-import { Grid, GridItem } from "@chakra-ui/react";
-import { ContentsInfo } from "@/components/HomePage/ContentsInfo";
+import { Grid, GridItem } from "@chakra-ui/react"
+import { ContentsInfo } from "@/components/HomePage/ContentsInfo"
 
 export const Contents = () => {
   return (
@@ -10,15 +10,15 @@ export const Contents = () => {
       templateColumns={{ base: "repeat(1, 1fr)" }}
       gap={4}
     >
-      <GridItem rowSpan={1} backgroundColor={"transparent"}>
+      <GridItem id="section1" rowSpan={1} backgroundColor={"transparent"}>
         new HomePage
       </GridItem>
-      <GridItem rowSpan={1} backgroundColor={"transparent"}>
+      <GridItem id="section2" rowSpan={1} backgroundColor={"transparent"}>
         new HomePage
       </GridItem>
-      <GridItem rowSpan={1} backgroundColor={"transparent"}>
-        <ContentsInfo/>
+      <GridItem id="section3" rowSpan={1} backgroundColor={"transparent"}>
+        <ContentsInfo />
       </GridItem>
     </Grid>
-  );
-};
+  )
+}
