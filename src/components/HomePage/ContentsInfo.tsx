@@ -1,15 +1,11 @@
-import { ChakraProvider, Grid, GridItem, Box, Text } from "@chakra-ui/react";
-import styled from "@emotion/styled";
+import { Grid, GridItem, Box, Text } from "@chakra-ui/react"
+import styled from "@emotion/styled"
 
 export const ContentsInfo = () => {
   return (
     <Wrapper>
       <Title>살펴보기</Title>
-      <Grid
-        templateRows="repeat(1, 1fr)"
-        templateColumns="repeat(3, 1fr)"
-        gap={6}
-      >
+      <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(3, 1fr)" gap={6}>
         {cardContents.map((content, index) => (
           <GridItem key={index} as={Card}>
             <Text fontSize="lg" fontWeight="bold">
@@ -22,18 +18,18 @@ export const ContentsInfo = () => {
         ))}
       </Grid>
     </Wrapper>
-  );
-};
+  )
+}
 
 const Wrapper = styled.div`
   padding: 50px;
-`;
+`
 
 const Title = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
-`;
+`
 
 const Card = styled.div`
   background: white;
@@ -41,7 +37,7 @@ const Card = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
-`;
+`
 
 const cardContents = [
   {
@@ -62,4 +58,4 @@ const cardContents = [
     description1: "생성된 메일은 간편하게 복붙하거나",
     description2: "바로 전송하며 신속하게 해결해요!",
   },
-];
+]
