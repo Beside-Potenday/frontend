@@ -1,4 +1,5 @@
-import { Grid, GridItem } from "@chakra-ui/react"
+import { Grid, GridItem } from "@chakra-ui/react";
+import { ContentsInfo } from "@/components/HomePage/ContentsInfo";
 
 export const Contents = () => {
   return (
@@ -16,8 +17,8 @@ export const Contents = () => {
         new HomePage
       </GridItem>
       <GridItem rowSpan={1} backgroundColor={"transparent"}>
-        new HomePage
+        <ContentsInfo/>
       </GridItem>
     </Grid>
-  )
-}
+  );
+};
