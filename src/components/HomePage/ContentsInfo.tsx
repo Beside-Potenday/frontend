@@ -3,27 +3,25 @@ import styled from "@emotion/styled";
 
 export const ContentsInfo = () => {
   return (
-    <ChakraProvider>
-      <Wrapper>
-        <Title>살펴보기</Title>
-        <Grid
-          templateRows="repeat(1, 1fr)"
-          templateColumns="repeat(3, 1fr)"
-          gap={6}
-        >
-          {cardContents.map((content, index) => (
-            <GridItem key={index} as={Card}>
-              <Text fontSize="lg" fontWeight="bold">
-                {content.title}
-              </Text>
-              <Text>{content.description1}</Text>
-              <Text>{content.description2}</Text>
-              <Box>{content.image}</Box>
-            </GridItem>
-          ))}
-        </Grid>
-      </Wrapper>
-    </ChakraProvider>
+    <Wrapper>
+      <Title>살펴보기</Title>
+      <Grid
+        templateRows="repeat(1, 1fr)"
+        templateColumns="repeat(3, 1fr)"
+        gap={6}
+      >
+        {cardContents.map((content, index) => (
+          <GridItem key={index} as={Card}>
+            <Text fontSize="lg" fontWeight="bold">
+              {content.title}
+            </Text>
+            <Text>{content.description1}</Text>
+            <Text>{content.description2}</Text>
+            <Box>{content.image}</Box>
+          </GridItem>
+        ))}
+      </Grid>
+    </Wrapper>
   );
 };
 
