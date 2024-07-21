@@ -9,13 +9,13 @@ export const Contents = () => {
       templateColumns={{ base: "repeat(1, 1fr)" }}
       gap={4}
     >
-      <GridItem rowSpan={1} backgroundColor={"yellow"}>
+      <GridItem rowSpan={1} backgroundColor={"transparent"}>
         new HomePage
       </GridItem>
-      <GridItem rowSpan={1} backgroundColor={"yellow"}>
+      <GridItem rowSpan={1} backgroundColor={"transparent"}>
         new HomePage
       </GridItem>
-      <GridItem rowSpan={1} backgroundColor={"yellow"}>
+      <GridItem rowSpan={1} backgroundColor={"transparent"}>
         new HomePage
       </GridItem>
     </Grid>

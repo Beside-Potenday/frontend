@@ -14,10 +14,11 @@ export const theme = extendTheme({
     global: {
       "html, body": {},
       body: {
-        fontFamily: "Inter, sans-serif",
+        fontFamily: "Inter, Noto Sans KR,sans-serif",
         maxWidth: "1920px",
-        // height: "100%",
-        // display: "flex",
+      },
+      "strong, b": {
+        fontWeight: "700",
       },
     },
   },

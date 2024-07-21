@@ -1,19 +1,20 @@
 import styled from "@emotion/styled"
 import { Link } from "react-router-dom"
 import { Button } from "@chakra-ui/react"
+import { breakpoints } from "@/styles/variants"
 
 export const Header = () => {
   return (
     <Wrapper>
       <Container>
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
           <Link to={"/"}>
             <Logo src="/images/logo.svg" />
           </Link>
-          <div style={{ margin: "30px 20px" }}> 시스템 체험</div>
-          <div style={{ margin: "30px 20px" }}> 기능 살펴보기</div>
+          <MidWrapper> 시스템 체험</MidWrapper>
+          <MidWrapper> 기능 살펴보기</MidWrapper>
         </div>
-        <Link to={"/mail"}>
+        <Link to={"/mail"} style={{ display: "flex", alignItems: "center" }}>
           <AiButton>AI 메일 생성하기</AiButton>
         </Link>
       </Container>
@@ -24,8 +25,7 @@ export const Header = () => {
 export const HEADER_HEIGHT = "80px"
 
 const Wrapper = styled.header`
-  background: #3182ce;
-  color: white;
+  background-color: transparent;
   height: ${HEADER_HEIGHT};
   padding: 16px 40px;
 `
@@ -38,7 +38,6 @@ const Logo = styled.img`
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   font-size: 14px;
   justify-content: space-between;
 `
@@ -49,4 +48,10 @@ const AiButton = styled(Button)`
   padding: 10px 20px;
   border-radius: 20px;
   border: 1px solid var(--black, #6ab9f2);
+`
+const MidWrapper = styled.div`
+  margin: 0px 20px;
+  @media (max-width: ${breakpoints.md}) {
+    display: none;
+  }
 `
