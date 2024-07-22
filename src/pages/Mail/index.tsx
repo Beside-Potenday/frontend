@@ -1,3 +1,3 @@
 export const MailPage = () => {
-  return <div>new MailPage</div>
+  return <div style={{ backgroundColor: "white" }}>new MailPage</div>
 }

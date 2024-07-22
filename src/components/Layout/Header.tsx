@@ -3,6 +3,10 @@ import { Link } from "react-router-dom"
 import { Button } from "@chakra-ui/react"
 import { breakpoints } from "@/styles/variants"
 
+const scrollToSection = (sectionId: string) => {
+  document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" })
+}
+
 export const Header = () => {
   return (
     <Wrapper>
@@ -11,8 +15,8 @@ export const Header = () => {
           <Link to={"/"}>
             <Logo src="/images/logo.svg" />
           </Link>
-          <MidWrapper> 시스템 체험</MidWrapper>
-          <MidWrapper> 기능 살펴보기</MidWrapper>
+          <MidWrapper onClick={() => scrollToSection("section2")}> 시스템 체험</MidWrapper>
+          <MidWrapper onClick={() => scrollToSection("section3")}> 기능 살펴보기</MidWrapper>
         </div>
         <Link to={"/mail"} style={{ display: "flex", alignItems: "center" }}>
           <AiButton>AI 메일 생성하기</AiButton>
@@ -25,9 +29,15 @@ export const Header = () => {
 export const HEADER_HEIGHT = "80px"
 
 const Wrapper = styled.header`
-  background-color: transparent;
+  z-index: 100;
   height: ${HEADER_HEIGHT};
   padding: 16px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: transparent;
 `
 
 const Logo = styled.img`
@@ -50,6 +60,7 @@ const AiButton = styled(Button)`
   border: 1px solid var(--black, #6ab9f2);
 `
 const MidWrapper = styled.div`
+  cursor: pointer;
   margin: 0px 20px;
   @media (max-width: ${breakpoints.md}) {
     display: none;
