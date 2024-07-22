@@ -60,6 +60,7 @@ const AiButton = styled(Button)`
   border: 1px solid var(--black, #6ab9f2);
 `
 const MidWrapper = styled.div`
+  cursor: pointer;
   margin: 0px 20px;
   @media (max-width: ${breakpoints.md}) {
     display: none;
