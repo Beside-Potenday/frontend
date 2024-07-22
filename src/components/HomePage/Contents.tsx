@@ -1,5 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/react"
 import { ContentsInfo } from "@/components/HomePage/ContentsInfo"
+import { TestersBox } from "./TestersBox"
 
 export const Contents = () => {
   return (
@@ -14,7 +15,7 @@ export const Contents = () => {
         new HomePage
       </GridItem>
       <GridItem id="section2" rowSpan={1} backgroundColor={"transparent"}>
-        new HomePage
+        <TestersBox></TestersBox>
       </GridItem>
       <GridItem id="section3" rowSpan={1} backgroundColor={"transparent"}>
         <ContentsInfo />
