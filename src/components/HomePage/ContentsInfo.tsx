@@ -35,12 +35,14 @@ const LogoWrapper = styled.div`
 `;
 
 const Card = styled.div`
-  background: white;
   padding: 20px;
+  margin-top: 30px;
   height: 320px;
   weight: 380px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(106, 185, 242, 0.3);
+  padding: 20px;
   text-align: center;
 `;
 
