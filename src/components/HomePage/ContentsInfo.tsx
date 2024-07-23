@@ -4,25 +4,34 @@ import styled from '@emotion/styled';
 export const ContentsInfo = () => {
   return (
     <Wrapper>
-      <Img src="/images/contentsInfoLogo.svg"></Img>
-      <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(3, 1fr)" gap={6}>
-        {cardContents.map((content, index) => (
-          <GridItem key={index} as={Card}>
-            <Text fontSize="lg" fontWeight="bold">
-              {content.title}
-            </Text>
-            <Text>{content.description1}</Text>
-            <Text>{content.description2}</Text>
-            <Box>{content.image}</Box>
-          </GridItem>
-        ))}
-      </Grid>
+      <LogoWrapper>
+        <Img src="/images/contentsInfoLogo.svg"></Img>
+        <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(3, 1fr)" gap={6}>
+          {cardContents.map((content, index) => (
+            <GridItem key={index} as={Card}>
+              <Text fontSize="lg" fontWeight="bold">
+                {content.title}
+              </Text>
+              <Text>{content.description1}</Text>
+              <Text>{content.description2}</Text>
+              <Box>{content.image}</Box>
+            </GridItem>
+          ))}
+        </Grid>
+      </LogoWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  padding: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LogoWrapper = styled.div`
+  width: 100%;
+  max-width: 1200px;
 `;
 
 const Card = styled.div`
