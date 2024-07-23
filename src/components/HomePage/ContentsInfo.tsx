@@ -5,15 +5,17 @@ export const ContentsInfo = () => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Img src="/images/contentsInfoLogo.svg"></Img>
+        <Img src="/images/contentsInfoLogo.svg" alt="Logo" />
         <Grid templateRows="repeat(1, 1fr)" templateColumns="repeat(3, 1fr)" gap={6}>
           {cardContents.map((content, index) => (
             <GridItem key={index} as={Card}>
-              <Text fontSize="lg" fontWeight="bold">
-                {content.title}
-              </Text>
-              <Text>{content.description1}</Text>
-              <Text>{content.description2}</Text>
+              <TextWrapper>
+                <TitleText fontSize="lg" fontWeight="bold">
+                  {content.title}
+                </TitleText>
+                <DescriptionText>{content.description1}</DescriptionText>
+                <DescriptionText>{content.description2}</DescriptionText>
+              </TextWrapper>
               <Box>{content.image}</Box>
             </GridItem>
           ))}
@@ -35,7 +37,7 @@ const LogoWrapper = styled.div`
 `;
 
 const Card = styled.div`
-  padding: 20px;
+  padding: 36px, 28px, 36px, 28px;
   margin-top: 30px;
   height: 320px;
   weight: 380px;
@@ -43,7 +45,32 @@ const Card = styled.div`
   border-radius: 10px;
   box-shadow: 0 0 8px rgba(106, 185, 242, 0.3);
   padding: 20px;
-  text-align: center;
+  text-align: left;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+const TitleText = styled(Text)`
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 29.61px;
+  line-height: 41.46px;
+  color: #3c3c3f;
+  letter-spacing: -0.02em;
+  margin-bottom: 15px;
+`;
+
+const DescriptionText = styled(Text)`
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 11.84px;
+  line-height: 16.58px;
+  color: #8e8e93;
+  letter-spacing: -0.025em;
 `;
 
 const cardContents = [
