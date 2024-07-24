@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import { Header, HEADER_HEIGHT } from './Header';
+import { Footer } from './Footer';
 
 export const Layout = () => {
   return (
@@ -9,6 +10,7 @@ export const Layout = () => {
       <InnerWrapper>
         <Outlet />
       </InnerWrapper>
+      <Footer />
     </Wrapper>
   );
 };
