@@ -1,15 +1,14 @@
-import React from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import styled from '@emotion/styled';
 
-const Contact: React.FC = () => {
+export const Contact = () => {
   return (
-    <Box p={4}>
-      <Heading as="h1" mb={4}>
-        문의
-      </Heading>
-      <Text>문의 페이지 내용이 여기에 들어갑니다.</Text>
-    </Box>
+    <Wrapper>
+      <p>문의 페이지 내용이 여기에 들어갑니다.</p>
+    </Wrapper>
   );
 };
 
-export default Contact;
+const Wrapper = styled.div`
+  width: 100%;
+  position: relative;
+`;

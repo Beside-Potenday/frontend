@@ -4,9 +4,9 @@ import { MailPage } from '@/pages/Mail';
 import { Layout } from '@/components/Layout';
 import { NoFooterLayout } from '@/components/Layout/noFooterIndex';
 import { RouterPath } from './path';
-import Terms from '@/pages/Extra/Terms';
-import Privacy from '@/pages/Extra/Privacy';
-import Contact from '@/pages/Extra/Contact';
+import {Terms} from '@/pages/Extra/Terms';
+import {Privacy} from '@/pages/Extra/Privacy';
+import {Contact} from '@/pages/Extra/Contact';
 
 const router = createBrowserRouter([
   {
