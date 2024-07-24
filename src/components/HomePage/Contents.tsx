@@ -5,11 +5,11 @@ import { TestersBox } from './TestersBox';
 export const Contents = () => {
   return (
     <Grid
-      h="3000px"
+      h="2500px"
       w="100%"
-      templateRows={{ base: 'repeat(3, 1fr)' }}
+      templateRows={{ base: '1fr 1fr 600px' }}
       templateColumns={{ base: 'repeat(1, 1fr)' }}
-      gap={4}
+      gap={100}
     >
       <GridItem id="section1" rowSpan={1} backgroundColor={'transparent'}>
         new HomePage
