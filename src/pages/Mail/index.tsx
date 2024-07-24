@@ -1,28 +1,24 @@
-import { Img } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Grid, GridItem } from '@chakra-ui/react';
+import { Header } from '@/components/Mail/Header';
 import { useState } from 'react';
-import { mockData } from '@/types/mock';
-import { AskList } from './AskList';
-import { Header } from './Header';
-import { Buttons } from './Buttons';
+import { AskList } from '@/components/Mail/AskList';
+
+import { useMail } from '@/Provider/MailContext';
 
 export const MailPage = () => {
   const [isActive, setIsActive] = useState(false);
-  const [randomInput, setRandomInput] = useState({
-    mailPurpose: '질문',
-    senderDepartment: '컴퓨터공학과',
-    senderId: '2020123456',
-    courseName: '자료구조',
-  });
+  const mailContext = useMail();
+
+  if (!mailContext) {
+    throw new Error('MailContext not found');
+  }
+  const { mailInput } = mailContext;
+
+  console.log(mailInput);
 
   const onIsActive = () => {
     setIsActive(!isActive);
-  };
-
-  const handleList = () => {
-    const randomIndex = Math.floor(Math.random() * mockData.length);
-    setRandomInput(mockData[randomIndex]);
   };
 
   return (
@@ -55,7 +51,7 @@ export const MailPage = () => {
                 templateColumns={{ base: 'repeat(3, 1fr)' }}
               >
                 <GridItem colSpan={2}>
-                  <AskList randomInput={randomInput}></AskList>
+                  <AskList randomInput={mailInput}></AskList>
                 </GridItem>
                 <GridItem
                   colSpan={1}
@@ -65,9 +61,7 @@ export const MailPage = () => {
                   flexDirection={'column'}
                   marginRight="56px"
                   marginBottom="25px"
-                >
-                  <Buttons handleList={handleList} randomInput={randomInput}></Buttons>
-                </GridItem>
+                ></GridItem>
               </Grid>
             </GridItem>
           </Grid>
@@ -82,7 +76,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 200px;
 `;
 
 const LogoWrapper = styled.div`
