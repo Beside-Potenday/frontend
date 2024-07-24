@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { breakpoints } from '@/styles/variants';
+import { useMail } from '@/Provider/MailContext';
 
 const scrollToSection = (sectionId: string) => {
   const element = document.getElementById(sectionId);
@@ -12,6 +13,24 @@ const scrollToSection = (sectionId: string) => {
 };
 
 export const Header = () => {
+  const mailContext = useMail();
+
+  if (!mailContext) {
+    throw new Error('MailContext not found');
+  }
+  const { handleMail } = mailContext;
+
+  const handleMailInput = () => {
+    handleMail({
+      mailBox: {
+        mailPurpose: '',
+        senderDepartment: '',
+        senderId: '',
+        courseName: '',
+      },
+    });
+  };
+
   return (
     <Wrapper>
       <Container>
@@ -25,7 +44,7 @@ export const Header = () => {
           </div>
         </div>
         <Link to={'/mail'} style={{ display: 'flex', alignItems: 'center' }}>
-          <AiButton>AI 메일 생성하기</AiButton>
+          <AiButton onClick={handleMailInput}>AI 메일 생성하기</AiButton>
         </Link>
       </Container>
     </Wrapper>
