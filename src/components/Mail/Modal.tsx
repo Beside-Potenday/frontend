@@ -16,6 +16,8 @@ const Wrapper = styled.div`
   border: 3px solid #6ab9f2;
   background: #fff;
   box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align
 `;
 
 const ModalInput = styled.input`
