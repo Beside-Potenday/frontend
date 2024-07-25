@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { AskList } from '@/components/Mail/AskList';
 
 import { useMail } from '@/Provider/MailContext';
+import { Modal } from '@/components/Mail/Modal';
 
 export const MailPage = () => {
   const [isActive, setIsActive] = useState(false);
@@ -61,7 +62,9 @@ export const MailPage = () => {
                   flexDirection={'column'}
                   marginRight="56px"
                   marginBottom="25px"
-                ></GridItem>
+                >
+                  <Modal></Modal>
+                </GridItem>
               </Grid>
             </GridItem>
           </Grid>
