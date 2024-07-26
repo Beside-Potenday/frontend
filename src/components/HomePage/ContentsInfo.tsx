@@ -34,8 +34,8 @@ const StyledGridItem = styled(GridItem)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 320px;
   padding: 0;
 `;
 
@@ -47,12 +47,12 @@ const StyledImg = styled(Img)`
 
 const cardContents = [
   {
-    imageSrc: '/images/composition1.gif',
+    imageSrc: '/images/composition1.svg',
   },
   {
-    imageSrc: '/images/composition1.gif',
+    imageSrc: '/images/composition2.svg',
   },
   {
-    imageSrc: '/images/composition1.gif',
+    imageSrc: '/images/composition3.svg',
   },
 ];

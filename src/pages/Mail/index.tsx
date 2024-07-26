@@ -110,9 +110,8 @@ const InnerGridItem = styled(GridItem)`
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
-    margin-right: 56px;
-    margin-bottom: 25px;
-    margin-top: 25px;
-    margin-left: -70px;
+    margin-right: 130px;
+    margin-top: 28px;
+    margin-left: -100px;
   }
 `;
