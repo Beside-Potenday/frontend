@@ -79,8 +79,8 @@ const Container = styled.div`
 `;
 
 const AiButton = styled(Button)`
-  height: 20px;
-  width: 96px;
+  height: 40px;
+  width: 136px;
   padding: 10px 20px;
   border-radius: 20px;
   border: 1px solid var(--black, #6ab9f2);
