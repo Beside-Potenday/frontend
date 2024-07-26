@@ -26,6 +26,7 @@ export const AskList = ({ randomInput }: RandomInputProps) => {
     <AskListWrapper>
       <AskListItemWrapper>
         <AskListItem>메일 작성 목적을 입력해 주세요</AskListItem>
+        <InputListItem>{randomInput.mailPurpose}</InputListItem>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
           {purposes.map((purpose) => (
             <PurposeButton key={purpose.id} selected={randomInput.mailPurpose === purpose.id}>
