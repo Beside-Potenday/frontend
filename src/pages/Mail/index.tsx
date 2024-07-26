@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
-import { Grid, GridItem, Box, Flex } from '@chakra-ui/react';
+import { Grid, GridItem, Box, Flex, Button } from '@chakra-ui/react';
 import { Header } from '@/components/Mail/Header';
 import { useState } from 'react';
 import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
+import { MailModal } from './MailModal';
 
 export const MailPage = () => {
   const [isActive, setIsActive] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const mailContext = useMail();
 
   if (!mailContext) {
@@ -18,6 +20,14 @@ export const MailPage = () => {
 
   const onIsActive = () => {
     setIsActive(!isActive);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -44,6 +54,10 @@ export const MailPage = () => {
           </StyledGrid>
         </ContentWrapper>
       </LogoWrapper>
+      <Button onClick={openModal} colorScheme="blue" mt={4}>
+        열기
+      </Button>
+      <MailModal isOpen={isModalOpen} onClose={closeModal} /> {/* 모달 추가 */}
     </Wrapper>
   );
 };
