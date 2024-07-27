@@ -1,7 +1,7 @@
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { Grid, GridItem, Box, Flex, Button } from '@chakra-ui/react';
+import { Grid, GridItem, Box, Flex } from '@chakra-ui/react';
 import { Header } from '@/components/Mail/Header';
-import { useState } from 'react';
 import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
@@ -9,17 +9,12 @@ import { usePostUniv } from '@/api/hooks/usePostUniv';
 
 export const MailPage = () => {
   const [isActive, setIsActive] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const [isModalOpen, setIsModalOpen] = useState(true); // 모달을 처음에 열리게 설정
   const mailContext = useMail();
 
   const { mutate } = usePostUniv();
 
   const handleConfirm = () => {
-    if (!mailContext) {
-      alert('input 내용을 전부 입력해주세요');
-      return;
-    }
-
     mutate(
       { ...mailContext.mailInput },
       {
@@ -41,13 +36,14 @@ export const MailPage = () => {
     setIsActive(!isActive);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // useEffect를 사용하여 컴포넌트가 마운트될 때 모달을 열기
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []);
 
   return (
     <Wrapper>
@@ -73,14 +69,33 @@ export const MailPage = () => {
           </StyledGrid>
         </ContentWrapper>
       </LogoWrapper>
-      <Button onClick={openModal} colorScheme="blue" mt={4}>
-        열기
-      </Button>
-      <MailModal isOpen={isModalOpen} onClose={closeModal} /> {/* 모달 추가 */}
-      <Button onClick={handleConfirm}>메일 생성</Button>
+      <AnimatedMailModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        handleConfirm={handleConfirm}
+        randomInput={mailInput}
+      />
     </Wrapper>
   );
 };
+
+const fadeIn = `
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+const AnimatedMailModal = styled(MailModal)`
+  ${fadeIn}
+  animation: fadeIn 0.5s ease-out forwards;
+`;
 
 const Wrapper = styled(Flex)`
   height: auto;
