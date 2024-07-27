@@ -3,22 +3,8 @@ import { mailSend, mailResponseData } from '@/types';
 import apiClient from '../apiClient';
 export const postUnivPath = () => `/mails/univ`;
 
-export const postUniv = async ({
-  sender,
-  content,
-  department,
-  studentId,
-  subject,
-  receiver,
-}: mailSend): Promise<mailResponseData> => {
-  const response = await apiClient.post(postUnivPath(), {
-    sender,
-    content,
-    department,
-    studentId,
-    subject,
-    receiver,
-  });
+export const postUniv = async (mailData: mailSend): Promise<mailResponseData> => {
+  const response = await apiClient.post(postUnivPath(), mailData);
   return response.data;
 };
 
