@@ -1,9 +1,19 @@
 import styled from '@emotion/styled';
-import { Button } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import { RouterPath } from '@/routes/path';
 import { useMail } from '@/Provider/MailContext';
 import { mailSend } from '@/types';
+import { usePostUniv } from '@/api/hooks/usePostUniv';
+import { useState } from 'react';
+
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from '@chakra-ui/react';
 
 interface ButtonsProps {
   handleList: () => void;
@@ -18,25 +28,52 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
   if (!mailContext) {
     throw new Error('MailContext not found');
   }
-  const { handleMail } = mailContext;
+
+  const { mutate } = usePostUniv();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const onClose = () => {
+    setIsOpen(false);
+  };
 
   const setMailInput = () => {
-    handleMail({
-      sender: randomInput.sender,
-      content: randomInput.content,
-      department: randomInput.department,
-      studentId: randomInput.studentId,
-      subject: randomInput.subject,
-      receiver: randomInput.receiver,
-    });
+    setIsOpen(true);
+
+    mutate(
+      { ...mailContext.mailInput },
+      {
+        onSuccess: (data) => {
+          setTitle(data.title || '메일 전송 성공'); // 기본 값 설정
+          setContent(data.content || '메일이 성공적으로 전송되었습니다.'); // 기본 값 설정
+        },
+        onError: (error) => {
+          console.error('API call failed:', error);
+          setTitle('메일 전송 실패');
+          setContent('메일 전송 중 오류가 발생했습니다.');
+        },
+      },
+    );
   };
 
   return (
     <>
       <GoButton onClick={handleList}>예시 변경</GoButton>
-      <Link to={RouterPath.mail} state={randomInput}>
-        <GoButton onClick={setMailInput}>메일 생성하기</GoButton>
-      </Link>
+      <GoButton onClick={setMailInput}>메일 생성하기</GoButton>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>{<p>{content}</p>}</ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
