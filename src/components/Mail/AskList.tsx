@@ -44,7 +44,7 @@ const AskListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 36px;
-  padding-top: 86px;
+  padding-top: 46px;
   gap: 40px;
 `;
 
