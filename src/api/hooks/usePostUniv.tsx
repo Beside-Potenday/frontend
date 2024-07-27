@@ -12,6 +12,10 @@ export const postUniv = async (mailData: mailSend): Promise<mailResponseData> =>
 export const usePostUniv = () => {
   const mutation = useMutation<mailResponseData, Error, mailSend>({
     mutationFn: postUniv,
+    retry: 3,
+    onError: (error) => {
+      console.error('API call failed:', error);
+    },
   });
 
   return mutation;
