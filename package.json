@@ -38,7 +38,6 @@
     "workbox-strategies": "^6.6.0",
     "workbox-streams": "^6.6.0"
   },
-  "proxy": "http://3.34.138.24:8080",
   "scripts": {
     "start": "craco start",
     "build": "craco build",
