@@ -4,12 +4,31 @@ import { Header } from '@/components/Mail/Header';
 import { useState } from 'react';
 import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
-import { MailModal } from './MailModal';
+import { MailModal } from '@/components/Mail/MailModal';
+import { usePostUniv } from '@/api/hooks/usePostUniv';
 
 export const MailPage = () => {
   const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const mailContext = useMail();
+
+  const { mutate } = usePostUniv();
+
+  const handleConfirm = () => {
+    if (!mailContext) {
+      alert('input 내용을 전부 입력해주세요');
+      return;
+    }
+
+    mutate(
+      { ...mailContext.mailInput },
+      {
+        onSuccess: (data) => {
+          console.log('Success:', data);
+        },
+      },
+    );
+  };
 
   if (!mailContext) {
     throw new Error('MailContext not found');
@@ -58,6 +77,7 @@ export const MailPage = () => {
         열기
       </Button>
       <MailModal isOpen={isModalOpen} onClose={closeModal} /> {/* 모달 추가 */}
+      <Button onClick={handleConfirm}>메일 생성</Button>
     </Wrapper>
   );
 };

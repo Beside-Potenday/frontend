@@ -22,12 +22,12 @@ export const Header = () => {
 
   const handleMailInput = () => {
     handleMail({
-      mailBox: {
-        mailPurpose: '',
-        senderDepartment: '',
-        senderId: '',
-        courseName: '',
-      },
+      sender: '',
+      content: '',
+      department: '',
+      studentId: '',
+      subject: '',
+      receiver: '',
     });
   };
 

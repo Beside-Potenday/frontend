@@ -1,16 +1,8 @@
 import styled from '@emotion/styled';
+import { mailSend } from '@/types';
 
 interface PurposeButtonProps {
   selected: boolean;
-}
-
-interface RandomInputProps {
-  randomInput: {
-    mailPurpose: string;
-    senderDepartment: string;
-    senderId: string;
-    courseName: string;
-  };
 }
 
 const purposes = [
@@ -21,37 +13,45 @@ const purposes = [
   { id: '상담 요청', label: '📝상담 요청' },
 ];
 
-export const AskList = ({ randomInput }: RandomInputProps) => {
+export const AskList = ({ randomInput }: { randomInput: mailSend }) => {
   return (
     <AskListWrapper>
       <AskListItemWrapper>
         <AskListItem>메일 작성 목적을 입력해 주세요</AskListItem>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
           {purposes.map((purpose) => (
-            <PurposeButton key={purpose.id} selected={randomInput.mailPurpose === purpose.id}>
+            <PurposeButton key={purpose.id} selected={randomInput.content === purpose.id}>
               {purpose.label}
             </PurposeButton>
           ))}
         </div>
       </AskListItemWrapper>
       <AskListItemWrapper>
+        <AskListItem>보내는 사람의 이름을 입력해 주세요</AskListItem>
+        <InputListItem>{randomInput.sender}</InputListItem>
+      </AskListItemWrapper>
+      <AskListItemWrapper>
         <AskListItem>보내는 사람의 학과를 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.senderDepartment}</InputListItem>
+        <InputListItem>{randomInput.department}</InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>보내는 사람의 학번을 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.senderId}</InputListItem>
+        <InputListItem>{randomInput.studentId}</InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>강의명을 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.courseName}</InputListItem>
+        <InputListItem>{randomInput.subject}</InputListItem>
+      </AskListItemWrapper>
+      <AskListItemWrapper>
+        <AskListItem>받는 사람의 이름을 입력해주세요</AskListItem>
+        <InputListItem>{randomInput.receiver}</InputListItem>
       </AskListItemWrapper>
     </AskListWrapper>
   );
 };
 
 const AskListWrapper = styled.div`
-  width: 568px;
+  width: 608px;
   height: 100%;
   flex-shrink: 0;
   border-radius: 10px;
@@ -62,7 +62,7 @@ const AskListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 36px;
-  padding-top: 86px;
+  padding-top: 75px;
   gap: 40px;
 `;
 
