@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { mailResponseData, mailSend } from '@/types';
+import { BASE_URL } from '..';
 
-export const postUnivPath = () => `/api/mails/univ`;
+export const postUnivPath = () => `${BASE_URL}/api/mails/univ`;
 
 export const postUniv = async ({
   sender,
