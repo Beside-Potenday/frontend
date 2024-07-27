@@ -3,15 +3,11 @@ import { Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { RouterPath } from '@/routes/path';
 import { useMail } from '@/Provider/MailContext';
+import { mailSend } from '@/types';
 
 interface ButtonsProps {
   handleList: () => void;
-  randomInput: {
-    mailPurpose: string;
-    senderDepartment: string;
-    senderId: string;
-    courseName: string;
-  };
+  randomInput: mailSend;
 }
 
 export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
@@ -26,12 +22,12 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
 
   const setMailInput = () => {
     handleMail({
-      mailBox: {
-        mailPurpose: randomInput.mailPurpose,
-        senderDepartment: randomInput.senderDepartment,
-        senderId: randomInput.senderId,
-        courseName: randomInput.courseName,
-      },
+      sender: randomInput.sender,
+      content: randomInput.content,
+      department: randomInput.department,
+      studentId: randomInput.studentId,
+      subject: randomInput.subject,
+      receiver: randomInput.receiver,
     });
   };
 

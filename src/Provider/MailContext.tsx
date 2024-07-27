@@ -1,41 +1,33 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
-interface MailBoxProps {
-  mailBox: {
-    mailPurpose: string;
-    senderDepartment: string;
-    senderId: string;
-    courseName: string;
-  };
-}
+import { mailSend } from '@/types';
 
 interface MailContextProps {
-  mailInput: {
-    mailPurpose: string;
-    senderDepartment: string;
-    senderId: string;
-    courseName: string;
-  };
-  handleMail: (props: MailBoxProps) => void;
+  mailInput: mailSend;
+  handleMail: (mailBox: mailSend) => void;
 }
 
 export const MailContext = createContext<MailContextProps | null>(null);
 
 export const MailProvider = ({ children }: { children: ReactNode }) => {
-  const [mailInput, setMailInput] = useState({
-    mailPurpose: '',
-    senderDepartment: '',
-    senderId: '',
-    courseName: '',
+  const [mailInput, setMailInput] = useState<mailSend>({
+    sender: '',
+    content: '',
+    department: '',
+    studentId: '',
+    subject: '',
+    receiver: '',
   });
 
-  const handleMail = ({ mailBox }: MailBoxProps) => {
+  const handleMail = (mailBox: mailSend) => {
     setMailInput({
-      mailPurpose: mailBox.mailPurpose,
-      senderDepartment: mailBox.senderDepartment,
-      senderId: mailBox.senderId,
-      courseName: mailBox.courseName,
+      sender: mailBox.sender,
+      content: mailBox.content,
+      department: mailBox.department,
+      studentId: mailBox.studentId,
+      subject: mailBox.subject,
+      receiver: mailBox.receiver,
     });
   };
 

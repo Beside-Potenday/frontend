@@ -10,10 +10,12 @@ import { Buttons } from './Buttons';
 export const TestersBox = () => {
   const [isActive, setIsActive] = useState(false);
   const [randomInput, setRandomInput] = useState({
-    mailPurpose: '질문',
-    senderDepartment: '컴퓨터공학과',
-    senderId: '2020123456',
-    courseName: '자료구조',
+    sender: '홍길동',
+    content: '질문',
+    department: '컴퓨터공학과',
+    studentId: '2020123456',
+    subject: '자료구조',
+    receiver: '안지선',
   });
 
   const onIsActive = () => {
@@ -33,7 +35,7 @@ export const TestersBox = () => {
           <Grid
             w="100%"
             h="100%"
-            templateRows="106px 80px 582px"
+            templateRows="106px 80px 752px"
             templateColumns={{ base: 'repeat(1, 1fr)' }}
           >
             <GridItem rowSpan={1}></GridItem>
@@ -90,7 +92,7 @@ const LogoWrapper = styled.div`
 `;
 const ContentWrapper = styled.div`
   width: 100%;
-  height: 768px;
+  height: 938px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0px 0px 8px 0px rgba(106, 185, 242, 0.3);
