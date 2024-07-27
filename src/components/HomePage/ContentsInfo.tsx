@@ -1,4 +1,4 @@
-import { Grid, GridItem, Box, Img } from '@chakra-ui/react';
+import { Grid, GridItem, Img } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const ContentsInfo = () => {
