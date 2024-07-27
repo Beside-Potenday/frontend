@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Spinner,
 } from '@chakra-ui/react';
 
 interface ButtonsProps {
@@ -29,7 +30,7 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
     throw new Error('MailContext not found');
   }
 
-  const { mutate } = usePostUniv();
+  const { mutate, status } = usePostUniv();
 
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -64,9 +65,9 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{title}</ModalHeader>
+          <ModalHeader>{status === 'pending' ? '메일 전송 중...' : title}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{<p>{content}</p>}</ModalBody>
+          <ModalBody>{status === 'pending' ? <Spinner /> : <p>{content}</p>}</ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={onClose}>
               Close

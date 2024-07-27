@@ -5,7 +5,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalBody,
   ModalFooter,
   Button,
@@ -64,7 +63,7 @@ export const MailModal = ({ isOpen, onClose, handleConfirm, randomInput }: MailM
       ...prev,
       [name]: value,
     }));
-    setIsEmptyInput(false); // 입력 값이 변경되면 경고 메시지를 숨김
+    setIsEmptyInput(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -103,9 +102,9 @@ export const MailModal = ({ isOpen, onClose, handleConfirm, randomInput }: MailM
         setIsEmptyInput(false);
       }
     } else {
-      const allFieldsEmpty = Object.values(mailInput).every((value) => value.trim() === '');
+      const allFieldsEmpty = Object.values(mailInput).some((value) => value.trim() === '');
       if (allFieldsEmpty) {
-        alert('입력값이 모두 공백일 수는 없습니다.');
+        alert('입력값이 공백일 수는 없습니다.');
         setMailInput(mailInputInitialState);
         setCurrentIndex(0);
         setIsEmptyInput(false);
@@ -135,7 +134,6 @@ export const MailModal = ({ isOpen, onClose, handleConfirm, randomInput }: MailM
     >
       <ModalOverlay />
       <CustomModalContent>
-        <ModalCloseButton />
         {currentIndex > 0 && (
           <ArrowUpButtonWrapper>
             <ArrowUpButton onClick={handlePrevClick} />
