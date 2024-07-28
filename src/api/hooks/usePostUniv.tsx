@@ -6,15 +6,7 @@ import axios from 'axios';
 export const postUnivPath = () => `${BASE_URL}/api/mails/univ`;
 
 export const postUniv = async (mailData: mailSend): Promise<mailResponseData> => {
-  const real = {
-    sender: 'sender@example.com',
-    receiver: 'receiver@example.com',
-    department: 'Computer Science',
-    studentId: '2020123456',
-    subject: 'Data Structures',
-    content: 'This is the content of the email.',
-  };
-  const response = await axios.post<mailResponseData>(postUnivPath(), real);
+  const response = await axios.post<mailResponseData>(postUnivPath(), mailData);
   return response.data;
 };
 
