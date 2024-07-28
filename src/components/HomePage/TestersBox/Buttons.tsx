@@ -24,8 +24,6 @@ interface ButtonsProps {
 export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
   const mailContext = useMail();
 
-  console.log(randomInput);
-
   if (!mailContext) {
     throw new Error('MailContext not found');
   }
@@ -43,14 +41,13 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
     setIsOpen(true);
 
     mutate(
-      { ...randomInput },  // 여기서 randomInput을 사용
+      { ...randomInput }, // randomInput 값을 서버로 전송
       {
         onSuccess: (data) => {
           setTitle(data.title || '메일 생성 성공');
           setContent(data.content || '메일이 성공적으로 생성되었습니다.');
         },
         onError: (error) => {
-          console.error('API call failed:', error);
           setTitle('메일 생성 실패');
           setContent('메일 생성 중 오류가 발생했습니다.');
         },
@@ -76,18 +73,28 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
       </ButtonContainer>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            {status === 'pending' ? '메일 생성 중...조금만 기다려 주세요!' : title}
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>{status === 'pending' ? <Spinner /> : <p>{content}</p>}</ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+        {status === 'pending' || status === 'error' ? (
+          <SmallModalContent>
+            <ModalHeader>
+              {status === 'pending' ? '메일 생성 중... 조금만 기다려 주세요!' : title}
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{status === 'pending' ? <Spinner /> : <p>{content}</p>}</ModalBody>
+          </SmallModalContent>
+        ) : (
+          <LargeModalContent>
+            <StyledModalHeader>{title}</StyledModalHeader>
+            <ModalCloseButton />
+            <StyledModalBody>
+              <p>{content}</p>
+            </StyledModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </LargeModalContent>
+        )}
       </Modal>
     </>
   );
@@ -211,4 +218,38 @@ const HoverImage2 = styled.img`
   z-index: 3;
   margin-top: -220px;
   margin-right: 90px;
+`;
+
+const SmallModalContent = styled(ModalContent)`
+  width: 400px;
+  height: 200px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0px 0px 15px 1px rgba(115, 128, 239, 0.3);
+`;
+
+const LargeModalContent = styled(ModalContent)`
+  width: 686px;
+  height: 750px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0px 0px 15px 1px rgba(115, 128, 239, 0.3);
+`;
+
+const StyledModalHeader = styled(ModalHeader)`
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24.2px;
+  letter-spacing: -2.5%;
+  color: #000000;
+`;
+
+const StyledModalBody = styled(ModalBody)`
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  letter-spacing: -2.5%;
+  color: #000000;
 `;
