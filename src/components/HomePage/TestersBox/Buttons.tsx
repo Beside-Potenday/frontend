@@ -33,16 +33,19 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
   const setMailInput = () => {
     setIsOpen(true);
 
-    mutate(randomInput, {
-      onSuccess: (data) => {
-        setTitle(data.title || '메일 생성 성공');
-        setContent(data.content || '메일이 성공적으로 생성되었습니다.');
+    mutate(
+      { ...randomInput },
+      {
+        onSuccess: (data) => {
+          setTitle(data.title || '메일 생성 성공');
+          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
+        },
+        onError: (error) => {
+          setTitle('메일 생성 실패');
+          setContent('메일 생성 중 오류가 발생했습니다.');
+        },
       },
-      onError: (error) => {
-        setTitle('메일 생성 실패');
-        setContent('메일 생성 중 오류가 발생했습니다.');
-      },
-    });
+    );
   };
 
   return (
