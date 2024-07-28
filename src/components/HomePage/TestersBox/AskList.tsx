@@ -1,8 +1,9 @@
+import React from 'react';
 import styled from '@emotion/styled';
 import { mailSend } from '@/types';
 
-interface PurposeButtonProps {
-  selected: boolean;
+interface AskListProps {
+  randomInput: mailSend;
 }
 
 const purposes = [
@@ -13,7 +14,7 @@ const purposes = [
   { id: '상담 요청', label: '📝상담 요청' },
 ];
 
-export const AskList = ({ randomInput }: { randomInput: mailSend }) => {
+export const AskList = ({ randomInput }: AskListProps) => {
   return (
     <AskListWrapper>
       <AskListItemWrapper>
@@ -90,12 +91,12 @@ const InputListItem = styled.div`
   letter-spacing: -0.4px;
 `;
 
-const PurposeButton = styled.div<PurposeButtonProps>`
+const PurposeButton = styled.div<{ selected: boolean }>`
   display: flex;
   height: 30px;
   width: auto;
   padding: 10px 10px;
-  justify-ontent: center;
+  justify-content: center;
   align-items: center;
   border-radius: 20px;
   border: 1px solid #6ab9f2;
