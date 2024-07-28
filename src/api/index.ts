@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
-export const BASE_URL = 'https://alphamail.site';
+export const BASE_URL = 'https://3.34.50.115:443';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
