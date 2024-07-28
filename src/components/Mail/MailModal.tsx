@@ -10,18 +10,19 @@ import {
   Button,
   Input,
   Text,
+  Spinner,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { mailSend } from '@/types';
+import { usePostUniv } from '@/api/hooks/usePostUniv';
 
 interface MailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  handleConfirm: () => void;
-  randomInput: mailSend; // randomInput 추가
+  randomInput: mailSend;
 }
 
-const mailInputInitialState: mailSend = {
+const mailLetterInitialState: mailSend = {
   content: '',
   sender: '',
   department: '',
@@ -37,6 +38,7 @@ const modalHeaderContent = [
   '보내는 사람의 학번을 입력해 주세요',
   '강의명을 입력해 주세요',
   '받는 사람의 이름을 입력해 주세요',
+  '메일을 생성 중 입니다',
 ];
 
 const inputNames: (keyof mailSend)[] = [
@@ -48,18 +50,46 @@ const inputNames: (keyof mailSend)[] = [
   'receiver',
 ];
 
-export const MailModal = ({ isOpen, onClose, handleConfirm, randomInput }: MailModalProps) => {
-  const { handleMail } = useMail();
-  const [mailInput, setMailInput] = useState<mailSend>({
-    ...mailInputInitialState,
+export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
+  const { handleMail, mailInput } = useMail();
+  const [mailLetter, setMailLetter] = useState<mailSend>({
+    ...mailLetterInitialState,
     ...randomInput,
   });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEmptyInput, setIsEmptyInput] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate } = usePostUniv();
+
+  const handleConfirm = () => {
+    setIsLoading(true); // 로딩 시작
+    mutate(
+      { ...mailInput },
+      {
+        onSuccess: (data) => {
+          setTitle(data.title || '메일 생성 성공');
+          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
+          setIsSubmitted(true);
+          setIsLoading(false); // 로딩 종료
+        },
+        onError: (error) => {
+          console.error('API call failed:', error);
+          setTitle('메일 생성 실패');
+          setContent('메일 생성 중 오류가 발생했습니다.');
+          setIsSubmitted(true);
+          setIsLoading(false); // 로딩 종료
+        },
+      },
+    );
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setMailInput((prev) => ({
+    setMailLetter((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -69,7 +99,7 @@ export const MailModal = ({ isOpen, onClose, handleConfirm, randomInput }: MailM
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (currentIndex < inputNames.length - 1) {
-        if (mailInput[inputNames[currentIndex]].trim() === '') {
+        if (mailLetter[inputNames[currentIndex]].trim() === '') {
           setIsEmptyInput(true);
         } else {
           setCurrentIndex(currentIndex + 1);
@@ -95,29 +125,28 @@ export const MailModal = ({ isOpen, onClose, handleConfirm, randomInput }: MailM
 
   const handleSubmit = () => {
     if (currentIndex < inputNames.length - 1) {
-      if (mailInput[inputNames[currentIndex]].trim() === '') {
+      if (mailLetter[inputNames[currentIndex]].trim() === '') {
         setIsEmptyInput(true);
       } else {
         setCurrentIndex(currentIndex + 1);
         setIsEmptyInput(false);
       }
     } else {
-      const allFieldsEmpty = Object.values(mailInput).some((value) => value.trim() === '');
+      const allFieldsEmpty = Object.values(mailLetter).some((value) => value.trim() === '');
       if (allFieldsEmpty) {
         alert('입력값이 공백일 수는 없습니다.');
-        setMailInput(mailInputInitialState);
+        setMailLetter(mailLetterInitialState);
         setCurrentIndex(0);
         setIsEmptyInput(false);
       } else {
-        handleMail(mailInput);
+        handleMail(mailLetter);
         handleConfirm();
-        onClose();
       }
     }
   };
 
   const handleOptionClick = (value: string) => {
-    setMailInput((prev) => ({
+    setMailLetter((prev) => ({
       ...prev,
       content: value,
     }));
@@ -127,51 +156,75 @@ export const MailModal = ({ isOpen, onClose, handleConfirm, randomInput }: MailM
   return (
     <CustomModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        setIsSubmitted(false);
+        setIsLoading(false);
+        onClose();
+      }}
       isCentered
       trapFocus={false}
       blockScrollOnMount={false}
     >
       <ModalOverlay />
       <CustomModalContent>
-        {currentIndex > 0 && (
+        {currentIndex > 0 && !isSubmitted && (
           <ArrowUpButtonWrapper>
             <ArrowUpButton onClick={handlePrevClick} />
           </ArrowUpButtonWrapper>
         )}
-        <CustomModalHeader>{modalHeaderContent[currentIndex]}</CustomModalHeader>
+        <CustomModalHeader>
+          {isSubmitted
+            ? title
+            : isLoading
+            ? '메일 생성 중 입니다...'
+            : modalHeaderContent[currentIndex]}
+        </CustomModalHeader>
         <CustomModalBody>
-          {currentIndex === 0 && (
-            <ButtonContainer>
-              <OptionButton onClick={() => handleOptionClick('질문')}>🙋🏻‍♂️ 질문</OptionButton>
-              <OptionButton onClick={() => handleOptionClick('과제 제출')}>
-                📚 과제 제출
-              </OptionButton>
-              <OptionButton onClick={() => handleOptionClick('성적 정정')}>
-                💯 성적 정정
-              </OptionButton>
-              <OptionButton onClick={() => handleOptionClick('병결 요청')}>
-                💧 병결 요청
-              </OptionButton>
-              <OptionButton onClick={() => handleOptionClick('상담 요청')}>
-                📝 상담 요청
-              </OptionButton>
-            </ButtonContainer>
-          )}
-          <StyledInput
-            type="text"
-            name={inputNames[currentIndex]}
-            value={mailInput[inputNames[currentIndex]]}
-            onChange={handleChange}
-            onKeyDown={handleKeyPress}
-            placeholder="입력해주세요"
-          />
-          {isEmptyInput && (
-            <WarningText>답변을 입력해주세요. 생략하고 싶다면 아래 버튼을 눌러주세요.</WarningText>
+          {isSubmitted ? (
+            <Text>{content}</Text>
+          ) : (
+            <>
+              {isLoading ? (
+                <Spinner size="xl" />
+              ) : (
+                <>
+                  {currentIndex === 0 && (
+                    <ButtonContainer>
+                      <OptionButton onClick={() => handleOptionClick('질문')}>🙋🏻‍♂️ 질문</OptionButton>
+                      <OptionButton onClick={() => handleOptionClick('과제 제출')}>
+                        📚 과제 제출
+                      </OptionButton>
+                      <OptionButton onClick={() => handleOptionClick('성적 정정')}>
+                        💯 성적 정정
+                      </OptionButton>
+                      <OptionButton onClick={() => handleOptionClick('병결 요청')}>
+                        💧 병결 요청
+                      </OptionButton>
+                      <OptionButton onClick={() => handleOptionClick('상담 요청')}>
+                        📝 상담 요청
+                      </OptionButton>
+                    </ButtonContainer>
+                  )}
+                  <StyledInput
+                    type="text"
+                    name={inputNames[currentIndex]}
+                    value={mailLetter[inputNames[currentIndex]]}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyPress}
+                    placeholder="입력해주세요"
+                  />
+                  {isEmptyInput && (
+                    <WarningText>
+                      답변을 입력해주세요. 생략하고 싶다면 아래 버튼을 눌러주세요.
+                    </WarningText>
+                  )}
+                </>
+              )}
+            </>
           )}
         </CustomModalBody>
         <CustomModalFooter>
-          {currentIndex < inputNames.length - 1 ? (
+          {currentIndex !== 5 ? (
             <ArrowButton onClick={handleNextClick} />
           ) : (
             <StyledButton onClick={handleSubmit}>
@@ -393,5 +446,3 @@ const PenIcon = styled.span`
   background: url('/images/penIcon.svg');
   background-size: cover;
 `;
-
-export default MailModal;
