@@ -50,6 +50,20 @@ const inputNames: (keyof mailSend)[] = [
   'receiver',
 ];
 
+const placeholderTexts = [
+  '글자 수 제한: 5자 이상~300자 이하',
+  '홍길동',
+  '컴퓨터공학과',
+  '',
+  '컴퓨터프로그래밍',
+  '김알파',
+];
+
+const warningTexts = {
+  content: ['메일 작성 목적을 선택하거나 입력해주세요', '5자 이상~300자 이하로 입력해주세요'],
+  studentId: '숫자만 입력 가능해요',
+};
+
 export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
   const { handleMail, mailInput } = useMail();
   const [mailLetter, setMailLetter] = useState<mailSend>({
@@ -62,6 +76,8 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
   const [content, setContent] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [warningMessage, setWarningMessage] = useState<string | null>(null);
+  const [isFocused, setIsFocused] = useState(false); // 포커스 상태 관리
 
   const { mutate } = usePostUniv();
 
@@ -96,6 +112,25 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
     setIsEmptyInput(false);
   };
 
+  const validateInput = () => {
+    const value = mailInput[inputNames[currentIndex]].trim();
+    if (currentIndex === 0) {
+      if (value === '') {
+        setWarningMessage(warningTexts.content[0]);
+        return false;
+      } else if (value !== '질문' && (value.length < 5 || value.length > 300)) {
+        setWarningMessage(warningTexts.content[1]);
+        return false;
+      }
+    } else if (currentIndex === 3) {
+      if (!/^\d+$/.test(value)) {
+        setWarningMessage(warningTexts.studentId);
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (currentIndex < inputNames.length - 1) {
@@ -110,9 +145,13 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
   };
 
   const handleNextClick = () => {
-    setIsEmptyInput(false);
     if (currentIndex < inputNames.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      if (validateInput()) {
+        setCurrentIndex(currentIndex + 1);
+        setIsEmptyInput(false);
+      } else {
+        setIsEmptyInput(true);
+      }
     }
   };
 
@@ -211,13 +250,11 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
                     value={mailLetter[inputNames[currentIndex]]}
                     onChange={handleChange}
                     onKeyDown={handleKeyPress}
-                    placeholder="입력해주세요"
+                    placeholder={isFocused ? '' : placeholderTexts[currentIndex]}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
                   />
-                  {isEmptyInput && (
-                    <WarningText>
-                      답변을 입력해주세요. 생략하고 싶다면 아래 버튼을 눌러주세요.
-                    </WarningText>
-                  )}
+                  {isEmptyInput && warningMessage && <WarningText>{warningMessage}</WarningText>}
                 </>
               )}
             </>
