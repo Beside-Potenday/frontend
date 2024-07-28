@@ -32,7 +32,7 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
 
   const setMailInput = () => {
     setIsOpen(true);
-
+    console.log(randomInput);
     mutate(
       { ...randomInput },
       {
