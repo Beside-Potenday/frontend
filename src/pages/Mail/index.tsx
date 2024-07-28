@@ -16,8 +16,6 @@ export const MailPage = () => {
   }
   const { mailInput } = mailContext;
 
-  console.log(mailInput);
-
   const onIsActive = () => {
     setIsActive(!isActive);
   };
