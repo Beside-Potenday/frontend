@@ -10,19 +10,17 @@ import {
   Button,
   Input,
   Text,
-  Spinner,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { mailSend } from '@/types';
-import { usePostUniv } from '@/api/hooks/usePostUniv';
 
 interface MailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  randomInput: mailSend;
+  handleConfirm: () => void;
 }
 
-const mailLetterInitialState: mailSend = {
+const mailInputInitialState: mailSend = {
   content: '',
   sender: '',
   department: '',
@@ -38,7 +36,6 @@ const modalHeaderContent = [
   '보내는 사람의 학번을 입력해 주세요',
   '강의명을 입력해 주세요',
   '받는 사람의 이름을 입력해 주세요',
-  '메일을 생성 중 입니다',
 ];
 
 const inputNames: (keyof mailSend)[] = [
@@ -50,181 +47,169 @@ const inputNames: (keyof mailSend)[] = [
   'receiver',
 ];
 
-export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
-  const { handleMail, mailInput } = useMail();
-  const [mailLetter, setMailLetter] = useState<mailSend>({
-    ...mailLetterInitialState,
-    ...randomInput,
+const placeholderTexts = [
+  '글자 수 제한: 5자 이상~300자 이하',
+  '홍길동',
+  '컴퓨터공학과',
+  '',
+  '컴퓨터프로그래밍',
+  '김알파',
+];
+
+const warningTexts = {
+  content: ['메일 작성 목적을 선택하거나 입력해주세요', '5자 이상~300자 이하로 입력해주세요'],
+  studentId: '숫자만 입력 가능해요',
+};
+
+export const MailModal = ({ isOpen, onClose, handleConfirm }: MailModalProps) => {
+  const { handleMail } = useMail();
+  const [mailInput, setMailInput] = useState<mailSend>({
+    ...mailInputInitialState,
   });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEmptyInput, setIsEmptyInput] = useState(false);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { mutate } = usePostUniv();
-
-  const handleConfirm = () => {
-    setIsLoading(true); // 로딩 시작
-    mutate(
-      { ...mailInput },
-      {
-        onSuccess: (data) => {
-          setTitle(data.title || '메일 생성 성공');
-          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
-          setIsSubmitted(true);
-          setIsLoading(false); // 로딩 종료
-        },
-        onError: (error) => {
-          console.error('API call failed:', error);
-          setTitle('메일 생성 실패');
-          setContent('메일 생성 중 오류가 발생했습니다.');
-          setIsSubmitted(true);
-          setIsLoading(false); // 로딩 종료
-        },
-      },
-    );
-  };
+  const [warningMessage, setWarningMessage] = useState<string | null>(null);
+  const [isFocused, setIsFocused] = useState(false); // 포커스 상태 관리
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setMailLetter((prev) => ({
+    setMailInput((prev) => ({
       ...prev,
       [name]: value,
     }));
     setIsEmptyInput(false);
+    setWarningMessage(null);
+  };
+
+  const validateInput = () => {
+    const value = mailInput[inputNames[currentIndex]].trim();
+    if (currentIndex === 0) {
+      if (value === '') {
+        setWarningMessage(warningTexts.content[0]);
+        return false;
+      } else if (value !== '질문' && (value.length < 5 || value.length > 300)) {
+        setWarningMessage(warningTexts.content[1]);
+        return false;
+      }
+    } else if (currentIndex === 3) {
+      if (!/^\d+$/.test(value)) {
+        setWarningMessage(warningTexts.studentId);
+        return false;
+      }
+    }
+    return true;
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      if (currentIndex < inputNames.length - 1) {
-        if (mailLetter[inputNames[currentIndex]].trim() === '') {
-          setIsEmptyInput(true);
-        } else {
-          setCurrentIndex(currentIndex + 1);
-          setIsEmptyInput(false);
-        }
+    if (e.key === 'Enter' && currentIndex < inputNames.length - 1) {
+      if (validateInput()) {
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        setIsEmptyInput(true);
       }
     }
   };
 
   const handleNextClick = () => {
-    setIsEmptyInput(false);
     if (currentIndex < inputNames.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      if (validateInput()) {
+        setCurrentIndex(currentIndex + 1);
+        setIsEmptyInput(false);
+      } else {
+        setIsEmptyInput(true);
+      }
     }
   };
 
   const handlePrevClick = () => {
-    setIsEmptyInput(false);
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      setIsEmptyInput(false);
+      setWarningMessage(null);
     }
   };
 
   const handleSubmit = () => {
     if (currentIndex < inputNames.length - 1) {
-      if (mailLetter[inputNames[currentIndex]].trim() === '') {
-        setIsEmptyInput(true);
-      } else {
+      if (validateInput()) {
         setCurrentIndex(currentIndex + 1);
         setIsEmptyInput(false);
+      } else {
+        setIsEmptyInput(true);
       }
     } else {
-      const allFieldsEmpty = Object.values(mailLetter).some((value) => value.trim() === '');
-      if (allFieldsEmpty) {
-        alert('입력값이 공백일 수는 없습니다.');
-        setMailLetter(mailLetterInitialState);
+      const anyFieldFilled = Object.values(mailInput).some((value) => value.trim() !== '');
+      if (!anyFieldFilled) {
+        alert('입력값이 모두 공백일 수는 없습니다.');
+        setMailInput(mailInputInitialState);
         setCurrentIndex(0);
         setIsEmptyInput(false);
+        setWarningMessage(null);
       } else {
-        handleMail(mailLetter);
+        handleMail(mailInput);
         handleConfirm();
+        onClose();
       }
     }
   };
 
   const handleOptionClick = (value: string) => {
-    setMailLetter((prev) => ({
+    setMailInput((prev) => ({
       ...prev,
       content: value,
     }));
     setIsEmptyInput(false);
+    setWarningMessage(null);
   };
 
   return (
     <CustomModal
       isOpen={isOpen}
-      onClose={() => {
-        setIsSubmitted(false);
-        setIsLoading(false);
-        onClose();
-      }}
+      onClose={onClose}
       isCentered
       trapFocus={false}
       blockScrollOnMount={false}
     >
       <ModalOverlay />
       <CustomModalContent>
-        {currentIndex > 0 && !isSubmitted && (
+        {currentIndex > 0 && (
           <ArrowUpButtonWrapper>
             <ArrowUpButton onClick={handlePrevClick} />
           </ArrowUpButtonWrapper>
         )}
-        <CustomModalHeader>
-          {isSubmitted
-            ? title
-            : isLoading
-            ? '메일 생성 중 입니다...'
-            : modalHeaderContent[currentIndex]}
-        </CustomModalHeader>
+        <CustomModalHeader>{modalHeaderContent[currentIndex]}</CustomModalHeader>
         <CustomModalBody>
-          {isSubmitted ? (
-            <Text>{content}</Text>
-          ) : (
-            <>
-              {isLoading ? (
-                <Spinner size="xl" />
-              ) : (
-                <>
-                  {currentIndex === 0 && (
-                    <ButtonContainer>
-                      <OptionButton onClick={() => handleOptionClick('질문')}>🙋🏻‍♂️ 질문</OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('과제 제출')}>
-                        📚 과제 제출
-                      </OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('성적 정정')}>
-                        💯 성적 정정
-                      </OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('병결 요청')}>
-                        💧 병결 요청
-                      </OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('상담 요청')}>
-                        📝 상담 요청
-                      </OptionButton>
-                    </ButtonContainer>
-                  )}
-                  <StyledInput
-                    type="text"
-                    name={inputNames[currentIndex]}
-                    value={mailLetter[inputNames[currentIndex]]}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyPress}
-                    placeholder="입력해주세요"
-                  />
-                  {isEmptyInput && (
-                    <WarningText>
-                      답변을 입력해주세요. 생략하고 싶다면 아래 버튼을 눌러주세요.
-                    </WarningText>
-                  )}
-                </>
-              )}
-            </>
+          {currentIndex === 0 && (
+            <ButtonContainer>
+              <OptionButton onClick={() => handleOptionClick('질문')}>🙋🏻‍♂️ 질문</OptionButton>
+              <OptionButton onClick={() => handleOptionClick('과제 제출')}>
+                📚 과제 제출
+              </OptionButton>
+              <OptionButton onClick={() => handleOptionClick('성적 정정')}>
+                💯 성적 정정
+              </OptionButton>
+              <OptionButton onClick={() => handleOptionClick('병결 요청')}>
+                💧 병결 요청
+              </OptionButton>
+              <OptionButton onClick={() => handleOptionClick('상담 요청')}>
+                📝 상담 요청
+              </OptionButton>
+            </ButtonContainer>
           )}
+          <StyledInput
+            type="text"
+            name={inputNames[currentIndex]}
+            value={mailInput[inputNames[currentIndex]]}
+            onChange={handleChange}
+            onKeyDown={handleKeyPress}
+            placeholder={isFocused ? '' : placeholderTexts[currentIndex]} // 포커스 상태에 따라 placeholder 설정
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          />
+          {isEmptyInput && warningMessage && <WarningText>{warningMessage}</WarningText>}
         </CustomModalBody>
         <CustomModalFooter>
-          {currentIndex !== 5 ? (
+          {currentIndex < inputNames.length - 1 ? (
             <ArrowButton onClick={handleNextClick} />
           ) : (
             <StyledButton onClick={handleSubmit}>
@@ -311,7 +296,7 @@ const CustomModalFooter = styled(ModalFooter)`
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: -15px;
+  margin-top: -20px;
   margin-bottom: 10px;
   display: flex;
   gap: 20px;
@@ -347,6 +332,7 @@ const OptionButton = styled(Button)`
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
+  }
 `;
 
 const StyledInput = styled(Input)`
@@ -358,12 +344,15 @@ const StyledInput = styled(Input)`
   background-color: #f2f2f7;
   padding: 0 16px;
   text-align: center;
+  caret-color: black; // 커서 색상 설정
+  caret-width: 2px; // 커서 굵기 설정
 `;
 
 const WarningText = styled(Text)`
   color: red;
   font-size: 15px;
   margin-top: 10px;
+  margin-bottom: -15px;
 `;
 
 const ArrowButton = styled(Button)`
@@ -446,3 +435,5 @@ const PenIcon = styled.span`
   background: url('/images/penIcon.svg');
   background-size: cover;
 `;
+
+export default MailModal;

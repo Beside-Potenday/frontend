@@ -5,11 +5,25 @@ import { Header } from '@/components/Mail/Header';
 import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
+import { usePostUniv } from '@/api/hooks/usePostUniv';
 
 export const MailPage = () => {
   const [isActive, setIsActive] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(true); // 모달을 처음에 열리게 설정
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const mailContext = useMail();
+
+  const { mutate } = usePostUniv();
+
+  const handleConfirm = () => {
+    mutate(
+      { ...mailContext.mailInput },
+      {
+        onSuccess: (data) => {
+          console.log('Success:', data);
+        },
+      },
+    );
+  };
 
   if (!mailContext) {
     throw new Error('MailContext not found');
@@ -28,7 +42,11 @@ export const MailPage = () => {
 
   // useEffect를 사용하여 컴포넌트가 마운트될 때 모달을 열기
   useEffect(() => {
-    setIsModalOpen(true);
+    const timer = setTimeout(() => {
+      setIsModalOpen(true);
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -55,7 +73,11 @@ export const MailPage = () => {
           </StyledGrid>
         </ContentWrapper>
       </LogoWrapper>
-      <AnimatedMailModal isOpen={isModalOpen} onClose={closeModal} randomInput={mailInput} />
+      <AnimatedMailModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        handleConfirm={handleConfirm}
+      />
     </Wrapper>
   );
 };
@@ -75,7 +97,7 @@ const fadeIn = `
 
 const AnimatedMailModal = styled(MailModal)`
   ${fadeIn}
-  animation: fadeIn 0.5s ease-out forwards;
+  animation: fadeIn 3s ease-out forwards;
 `;
 
 const Wrapper = styled(Flex)`
