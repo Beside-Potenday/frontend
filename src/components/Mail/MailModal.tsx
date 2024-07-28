@@ -83,21 +83,24 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
 
   const handleConfirm = () => {
     setIsLoading(true);
-    mutate(mailInput, {
-      onSuccess: (data) => {
-        setTitle(data.title || '메일 생성 성공');
-        setContent(data.content || '메일이 성공적으로 생성되었습니다.');
-        setIsSubmitted(true);
-        setIsLoading(false); // 로딩 종료
+    mutate(
+      { ...mailInput },
+      {
+        onSuccess: (data) => {
+          setTitle(data.title || '메일 생성 성공');
+          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
+          setIsSubmitted(true);
+          setIsLoading(false); // 로딩 종료
+        },
+        onError: (error) => {
+          console.error('API call failed:', error);
+          setTitle('메일 생성 실패');
+          setContent('메일 생성 중 오류가 발생했습니다.');
+          setIsSubmitted(true);
+          setIsLoading(false); // 로딩 종료
+        },
       },
-      onError: (error) => {
-        console.error('API call failed:', error);
-        setTitle('메일 생성 실패');
-        setContent('메일 생성 중 오류가 발생했습니다.');
-        setIsSubmitted(true);
-        setIsLoading(false); // 로딩 종료
-      },
-    });
+    );
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
