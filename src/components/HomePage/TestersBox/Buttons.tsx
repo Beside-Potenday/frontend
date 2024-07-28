@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useMail } from '@/Provider/MailContext';
 import { mailSend } from '@/types';
 import { usePostUniv } from '@/api/hooks/usePostUniv';
 import { useState } from 'react';
@@ -22,12 +21,6 @@ interface ButtonsProps {
 }
 
 export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
-  const mailContext = useMail();
-
-  if (!mailContext) {
-    throw new Error('MailContext not found');
-  }
-
   const { mutate, status } = usePostUniv();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +34,7 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
     setIsOpen(true);
 
     mutate(
-      { ...randomInput }, // randomInput 값을 서버로 전송
+      randomInput,
       {
         onSuccess: (data) => {
           setTitle(data.title || '메일 생성 성공');
@@ -75,11 +68,11 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
         <ModalOverlay />
         {status === 'pending' || status === 'error' ? (
           <SmallModalContent>
-            <ModalHeader>
-              {status === 'pending' ? '메일 생성 중... 조금만 기다려 주세요!' : title}
-            </ModalHeader>
+            <ModalHeader>{status === 'pending' ? '메일 생성 중...조금만 기다려 주세요!' : title}</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>{status === 'pending' ? <Spinner /> : <p>{content}</p>}</ModalBody>
+            <ModalBody>
+              {status === 'pending' ? <Spinner /> : <p>{content}</p>}
+            </ModalBody>
           </SmallModalContent>
         ) : (
           <LargeModalContent>
