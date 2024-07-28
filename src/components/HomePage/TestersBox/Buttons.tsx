@@ -43,7 +43,7 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
     setIsOpen(true);
 
     mutate(
-      { ...mailContext.mailInput },
+      { ...randomInput },  // 여기서 randomInput을 사용
       {
         onSuccess: (data) => {
           setTitle(data.title || '메일 생성 성공');
