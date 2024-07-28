@@ -46,13 +46,13 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
       { ...mailContext.mailInput },
       {
         onSuccess: (data) => {
-          setTitle(data.title || '메일 전송 성공'); // 기본 값 설정
-          setContent(data.content || '메일이 성공적으로 전송되었습니다.'); // 기본 값 설정
+          setTitle(data.title || '메일 생성 성공');
+          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
         },
         onError: (error) => {
           console.error('API call failed:', error);
-          setTitle('메일 전송 실패');
-          setContent('메일 전송 중 오류가 발생했습니다.');
+          setTitle('메일 생성 실패');
+          setContent('메일 생성 중 오류가 발생했습니다.');
         },
       },
     );
@@ -65,7 +65,9 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{status === 'pending' ? '메일 전송 중...' : title}</ModalHeader>
+          <ModalHeader>
+            {status === 'pending' ? '메일 생성 중...조금만 기다려 주세요!' : title}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>{status === 'pending' ? <Spinner /> : <p>{content}</p>}</ModalBody>
           <ModalFooter>

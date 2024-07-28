@@ -5,25 +5,11 @@ import { Header } from '@/components/Mail/Header';
 import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
-import { usePostUniv } from '@/api/hooks/usePostUniv';
 
 export const MailPage = () => {
   const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(true); // 모달을 처음에 열리게 설정
   const mailContext = useMail();
-
-  const { mutate } = usePostUniv();
-
-  const handleConfirm = () => {
-    mutate(
-      { ...mailContext.mailInput },
-      {
-        onSuccess: (data) => {
-          console.log('Success:', data);
-        },
-      },
-    );
-  };
 
   if (!mailContext) {
     throw new Error('MailContext not found');
@@ -69,12 +55,7 @@ export const MailPage = () => {
           </StyledGrid>
         </ContentWrapper>
       </LogoWrapper>
-      <AnimatedMailModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        handleConfirm={handleConfirm}
-        randomInput={mailInput}
-      />
+      <AnimatedMailModal isOpen={isModalOpen} onClose={closeModal} randomInput={mailInput} />
     </Wrapper>
   );
 };
