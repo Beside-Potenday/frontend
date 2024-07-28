@@ -53,7 +53,7 @@ export const MailPage = () => {
           </StyledGrid>
         </ContentWrapper>
       </LogoWrapper>
-      <AnimatedMailModal isOpen={isModalOpen} onClose={closeModal} randomInput={mailInput} />
+      <AnimatedMailModal isOpen={isModalOpen} onClose={closeModal} />
     </Wrapper>
   );
 };

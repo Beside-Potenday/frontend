@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMail } from '@/Provider/MailContext';
 import {
   Modal,
@@ -20,7 +20,6 @@ import { useForm, Controller } from 'react-hook-form';
 interface MailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  randomInput: mailSend;
 }
 
 const mailLetterInitialState: mailSend = {
@@ -65,7 +64,7 @@ const warningTexts = {
   studentId: '숫자만 입력 가능해요',
 };
 
-export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
+export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   const { handleMail } = useMail();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -73,23 +72,26 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [isHide, setIsHide] = useState(false);
 
   const { mutate } = usePostUniv();
   const {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    trigger,
+    formState: { errors, isValid },
   } = useForm<mailSend>({
+    mode: 'onChange',
     defaultValues: {
       ...mailLetterInitialState,
-      ...randomInput,
     },
   });
 
   const onSubmit = (data: mailSend) => {
     setIsLoading(true);
     handleMail(data);
+    setIsHide(true);
     mutate(
       { ...data },
       {
@@ -108,17 +110,23 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
         },
       },
     );
+    setIsHide(!isHide);
   };
 
-  const handleNextClick = () => {
-    if (currentIndex < inputNames.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+  const handleNextClick = async () => {
+    const isValid = await trigger(inputNames[currentIndex]);
+    if (isValid) {
+      if (currentIndex < inputNames.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+        setIsFocused(false);
+      }
     }
   };
 
   const handlePrevClick = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      setIsFocused(false);
     }
   };
 
@@ -126,6 +134,19 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
     setValue('content', value);
     handleNextClick();
   };
+
+  const handleKeyDown = async (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      await handleNextClick();
+    }
+  };
+
+  useEffect(() => {
+    setIsFocused(false);
+    // Clear the value of the current input when the currentIndex changes
+    setValue(inputNames[currentIndex], '', { shouldValidate: true });
+  }, [currentIndex, setValue]);
 
   return (
     <CustomModal
@@ -179,58 +200,69 @@ export const MailModal = ({ isOpen, onClose, randomInput }: MailModalProps) => {
                       </OptionButton>
                     </ButtonContainer>
                   )}
-                  {currentIndex !== 0 && (
-                    <Controller
-                      name={inputNames[currentIndex]}
-                      control={control}
-                      rules={{
-                        required: '필수 입력 항목입니다.',
-                        validate: (value) => {
-                          if (currentIndex === 0 && (value.length < 5 || value.length > 300)) {
-                            return warningTexts.content[1];
-                          }
-                          if (currentIndex === 3 && !/^\d+$/.test(value)) {
-                            return warningTexts.studentId;
-                          }
-                          return true;
-                        },
-                      }}
-                      render={({ field }) => (
-                        <>
-                          <StyledInput
-                            {...field}
-                            placeholder={isFocused ? '' : placeholderTexts[currentIndex]}
-                            onFocus={() => setIsFocused(true)}
-                            onBlur={() => setIsFocused(false)}
-                          />
-                          {errors[inputNames[currentIndex]] && (
-                            <WarningText>{errors[inputNames[currentIndex]]?.message}</WarningText>
-                          )}
-                        </>
-                      )}
-                    />
-                  )}
+
+                  <Controller
+                    name={inputNames[currentIndex]}
+                    control={control}
+                    rules={{
+                      required: '필수 입력 항목입니다.',
+                      validate: (value) => {
+                        if (currentIndex === 0 && (value.length < 5 || value.length > 300)) {
+                          return warningTexts.content[1];
+                        }
+                        if (currentIndex === 3 && !/^\d+$/.test(value)) {
+                          return warningTexts.studentId;
+                        }
+                        return true;
+                      },
+                    }}
+                    render={({ field }) => (
+                      <>
+                        <StyledInput
+                          {...field}
+                          placeholder={isFocused ? '' : placeholderTexts[currentIndex]}
+                          onFocus={() => setIsFocused(true)}
+                          onBlur={() => setIsFocused(false)}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            setValue(inputNames[currentIndex], e.target.value, {
+                              shouldValidate: true,
+                            });
+                          }}
+                          onKeyDown={handleKeyDown}
+                        />
+                        {errors[inputNames[currentIndex]] && (
+                          <WarningText>{errors[inputNames[currentIndex]]?.message}</WarningText>
+                        )}
+                      </>
+                    )}
+                  />
                 </>
               )}
             </>
           )}
         </CustomModalBody>
-        <CustomModalFooter>
-          {currentIndex !== inputNames.length - 1 ? (
-            <ArrowButton onClick={handleNextClick} />
-          ) : (
-            <StyledButton onClick={handleSubmit(onSubmit)}>
-              <PenIcon />
-              생성하기
-            </StyledButton>
-          )}
-        </CustomModalFooter>
+        {!isHide && (
+          <CustomModalFooter>
+            {currentIndex < inputNames.length - 1 ? (
+              <ArrowButton onClick={handleNextClick} />
+            ) : (
+              <StyledButton onClick={handleSubmit(onSubmit)} disabled={!isValid}>
+                <PenIcon />
+                생성하기
+              </StyledButton>
+            )}
+          </CustomModalFooter>
+        )}
       </CustomModalContent>
     </CustomModal>
   );
 };
 
 const CustomModal = styled(Modal)`
+  display: inline-flex;
+  white-space: nowrap;
+  margin: 10px;
   & .chakra-modal__content-container {
     display: flex;
     align-items: center;
@@ -245,10 +277,9 @@ const CustomModalContent = styled(ModalContent)`
   align-items: center;
   justify-content: center;
   padding: 20px;
-  width: 1080px !important;
+  width: auto;
+  height: auto;
   max-width: 1080px !important;
-  height: 240px !important;
-  max-height: 240px !important;
   border: 3px solid transparent;
   border-radius: 20px;
   background-clip: padding-box;

@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { mailSend } from '@/types';
 import { usePostUniv } from '@/api/hooks/usePostUniv';
 import { useState } from 'react';
-
 import {
   Modal,
   ModalOverlay,
@@ -32,7 +31,6 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
 
   const setMailInput = () => {
     setIsOpen(true);
-    console.log(randomInput);
     mutate(
       { ...randomInput },
       {
@@ -64,31 +62,35 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
         </MailButton>
         <HoverImage2 src="/images/makeMail.svg" alt="Hover Image" />
       </ButtonContainer>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        {status === 'pending' || status === 'error' ? (
-          <SmallModalContent>
-            <ModalHeader>
-              {status === 'pending' ? '메일 생성 중...조금만 기다려 주세요!' : title}
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{status === 'pending' ? <Spinner /> : <p>{content}</p>}</ModalBody>
-          </SmallModalContent>
-        ) : (
-          <LargeModalContent>
-            <StyledModalHeader>{title}</StyledModalHeader>
-            <ModalCloseButton />
-            <StyledModalBody>
-              <p>{content}</p>
-            </StyledModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
-          </LargeModalContent>
-        )}
-      </Modal>
+      <ModalWrapper>
+        <StyledModal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          {status === 'pending' || status === 'error' ? (
+            <SmallModalContent>
+              <ModalHeader>
+                {status === 'pending' ? '메일 생성 중...조금만 기다려 주세요!' : title}
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                {status === 'pending' ? <Spinner size="xl" /> : <p>{content}</p>}
+              </ModalBody>
+            </SmallModalContent>
+          ) : (
+            <LargeModalContent>
+              <StyledModalHeader>{title}</StyledModalHeader>
+              <ModalCloseButton />
+              <StyledModalBody>
+                <p>{content}</p>
+              </StyledModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" onClick={onClose}>
+                  닫기
+                </Button>
+              </ModalFooter>
+            </LargeModalContent>
+          )}
+        </StyledModal>
+      </ModalWrapper>
     </>
   );
 };
@@ -214,35 +216,54 @@ const HoverImage2 = styled.img`
 `;
 
 const SmallModalContent = styled(ModalContent)`
-  width: 400px;
-  height: 200px;
+  width: auto;
+  height: auto;
   border-radius: 10px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 1px rgba(115, 128, 239, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const LargeModalContent = styled(ModalContent)`
-  width: 686px;
-  height: 750px;
+  width: auto;
+  height: auto;
   border-radius: 20px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 1px rgba(115, 128, 239, 0.3);
 `;
 
 const StyledModalHeader = styled(ModalHeader)`
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 24.2px;
-  letter-spacing: -2.5%;
-  color: #000000;
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledModalBody = styled(ModalBody)`
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16.94px;
-  letter-spacing: -2.5%;
-  color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+const ModalWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledModal = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .chakra-modal__content-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
