@@ -37,9 +37,7 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
       {
         onSuccess: (data) => {
           console.log(data);
-
           setTitle(data.title || '메일 생성 성공');
-          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
         },
         onError: (error) => {
           setTitle('메일 생성 실패');
@@ -74,7 +72,11 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {status === 'pending' ? <Spinner size="xl" /> : <p>{content}</p>}
+                {status === 'pending' ? (
+                  <Spinner size="xl" />
+                ) : (
+                  <div style={{ whiteSpace: 'pre-wrap' }}>{content}</div>
+                )}
               </ModalBody>
             </SmallModalContent>
           ) : (
