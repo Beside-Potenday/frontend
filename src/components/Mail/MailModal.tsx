@@ -232,18 +232,14 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                           onFocus={() => setIsFocused(true)}
                           onBlur={() => setIsFocused(false)}
                           onChange={(e) => {
-                            field.onChange(e);
-                            if (currentIndex === 0) {
-                              const combinedValue = `${firstInput} ${e.target.value}`.trim();
-                              setValue(inputNames[currentIndex], combinedValue, {
-                                shouldValidate: true,
-                              });
-                              setFirstInput(combinedValue);
-                            } else {
-                              setValue(inputNames[currentIndex], e.target.value, {
-                                shouldValidate: true,
-                              });
-                            }
+                            const combinedValue =
+                              currentIndex === 0
+                                ? `${firstInput} ${e.target.value}`.trim()
+                                : e.target.value;
+                            field.onChange(combinedValue);
+                            setValue(inputNames[currentIndex], combinedValue, {
+                              shouldValidate: true,
+                            });
                           }}
                           onKeyDown={handleKeyDown}
                         />
