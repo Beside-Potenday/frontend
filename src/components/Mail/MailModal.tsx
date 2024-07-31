@@ -73,6 +73,7 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   const [content, setContent] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isHide, setIsHide] = useState(false);
+  const [firstInput, setFirstInput] = useState('');
 
   const { mutate } = usePostUniv();
   const {
@@ -131,12 +132,12 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   };
 
   const handleOptionClick = (value: string) => {
-    setValue('content', value);
-    handleNextClick();
+    setFirstInput(value);
   };
 
   const handleKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
+      console.log(firstInput);
       event.preventDefault();
       await handleNextClick();
     }
@@ -224,9 +225,17 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                           onBlur={() => setIsFocused(false)}
                           onChange={(e) => {
                             field.onChange(e);
-                            setValue(inputNames[currentIndex], e.target.value, {
-                              shouldValidate: true,
-                            });
+                            if (currentIndex === 0) {
+                              const combinedValue = `${firstInput} ${e.target.value}`.trim();
+                              setValue(inputNames[currentIndex], combinedValue, {
+                                shouldValidate: true,
+                              });
+                              setFirstInput(combinedValue);
+                            } else {
+                              setValue(inputNames[currentIndex], e.target.value, {
+                                shouldValidate: true,
+                              });
+                            }
                           }}
                           onKeyDown={handleKeyDown}
                         />
