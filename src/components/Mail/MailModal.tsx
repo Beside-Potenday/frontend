@@ -206,10 +206,10 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                     rules={{
                       required: currentIndex === 0 ? '필수 입력 항목입니다.' : false,
                       validate: (value) => {
-                        if (currentIndex === 0 && (value.length < 5 || value.length > 300)) {
+                        if (currentIndex === 0 && value.length > 300) {
                           return warningTexts.content[1];
                         }
-                        if (currentIndex === 3 && !/^\d+$/.test(value)) {
+                        if (currentIndex === 3 && (!/^\d+$/.test(value) || '')) {
                           return warningTexts.studentId;
                         }
                         return true;
