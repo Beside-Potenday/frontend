@@ -9,7 +9,7 @@ import { Buttons } from './Buttons';
 import { breakpoints } from '@/styles/variants';
 
 export const TestersBox = () => {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState('univ');
   const [randomInput, setRandomInput] = useState({
     sender: '홍길동',
     content: '질문',
@@ -19,8 +19,8 @@ export const TestersBox = () => {
     receiver: '안지선',
   });
 
-  const onIsActive = () => {
-    setIsActive(!isActive);
+  const onIsActive = (state: string) => {
+    setIsActive(state);
   };
 
   const handleList = () => {
