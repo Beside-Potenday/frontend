@@ -39,7 +39,7 @@ export const Header = () => {
             <Logo src="/images/logo.svg" />
           </Link>
           <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '47px' }}>
-            <MidWrapper onClick={() => scrollToSection('section2')}> 시스템 체험</MidWrapper>
+            <MidWrapper onClick={() => scrollToSection('section2')}> 서비스 체험</MidWrapper>
             <MidWrapper onClick={() => scrollToSection('section3')}> 기능 살펴보기</MidWrapper>
           </div>
         </div>
