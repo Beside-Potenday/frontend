@@ -50,14 +50,13 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
     <>
       <ButtonContainer>
         <ExampleButton onClick={handleList}>
-          <ExampleChangeIcon />
-          예시 변경
+          <ExampleChangeIcon className="example-change-icon" /> 예시 변경
         </ExampleButton>
         <HoverImage1 src="/images/exampleChange.svg" alt="Hover Image" />
       </ButtonContainer>
       <ButtonContainer>
         <MailButton onClick={setMailInput}>
-          <MakeMailIcon />
+          <MakeMailIcon className="make-mail-icon" />
           메일 생성하기
         </MailButton>
         <HoverImage2 src="/images/makeMail.svg" alt="Hover Image" />
@@ -103,6 +102,15 @@ const ButtonContainer = styled.div`
   }
 `;
 
+const ExampleChangeIcon = styled.span`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-image: url('/images/exampleChangeIcon.svg');
+  background-size: cover;
+  transition: background-image 0.3s ease;
+`;
+
 const ExampleButton = styled(Button)`
   position: relative;
   display: flex;
@@ -122,6 +130,10 @@ const ExampleButton = styled(Button)`
   &:hover {
     background: linear-gradient(to right, #6ab9f2, #7a89f0);
     color: white;
+
+    .example-change-icon {
+      background-image: url('/images/exampleChangeIconHover.svg');
+    }
   }
 
   &:before {
@@ -138,6 +150,15 @@ const ExampleButton = styled(Button)`
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
+`;
+
+const MakeMailIcon = styled.span`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-image: url('/images/makeMailIcon.svg');
+  background-size: cover;
+  transition: background-image 0.3s ease;
 `;
 
 const MailButton = styled(Button)`
@@ -159,6 +180,10 @@ const MailButton = styled(Button)`
   &:hover {
     background: linear-gradient(to right, #6ab9f2, #7a89f0);
     color: white;
+
+    .make-mail-icon {
+      background-image: url('/images/makeMailIconHover.svg');
+    }
   }
 
   &:before {
@@ -175,22 +200,6 @@ const MailButton = styled(Button)`
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
-`;
-
-const ExampleChangeIcon = styled.span`
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  background: url('/images/exampleChangeIcon.svg');
-  background-size: cover;
-`;
-
-const MakeMailIcon = styled.span`
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  background: url('/images/makeMailIcon.svg');
-  background-size: cover;
 `;
 
 const HoverImage1 = styled.img`
