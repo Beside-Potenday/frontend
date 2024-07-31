@@ -204,7 +204,7 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                     name={inputNames[currentIndex]}
                     control={control}
                     rules={{
-                      required: '필수 입력 항목입니다.',
+                      required: currentIndex === 0 ? '필수 입력 항목입니다.' : false,
                       validate: (value) => {
                         if (currentIndex === 0 && (value.length < 5 || value.length > 300)) {
                           return warningTexts.content[1];
