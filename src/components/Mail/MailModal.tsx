@@ -147,10 +147,17 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
     }
   };
 
-  const handleKeyDown = async (event: React.KeyboardEvent) => {
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      console.log(firstInput);
       event.preventDefault();
+      const inputValue = (event.target as HTMLInputElement).value;
+
+      if (currentIndex === 0) {
+        const combinedValue = `${firstInput} ${inputValue}`.trim();
+        setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
+        console.log(combinedValue);
+      }
+
       await handleNextClick();
     }
   };
@@ -232,12 +239,8 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                           onFocus={() => setIsFocused(true)}
                           onBlur={() => setIsFocused(false)}
                           onChange={(e) => {
-                            const combinedValue =
-                              currentIndex === 0
-                                ? `${firstInput} ${e.target.value}`.trim()
-                                : e.target.value;
-                            field.onChange(combinedValue);
-                            setValue(inputNames[currentIndex], combinedValue, {
+                            field.onChange(e);
+                            setValue(inputNames[currentIndex], e.target.value, {
                               shouldValidate: true,
                             });
                           }}
