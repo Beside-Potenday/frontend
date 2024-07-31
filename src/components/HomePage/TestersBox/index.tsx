@@ -7,9 +7,9 @@ import { AskList } from './AskList';
 import { Header } from './Header';
 import { Buttons } from './Buttons';
 import { breakpoints } from '@/styles/variants';
+import { useMail } from '@/Provider/MailContext';
 
 export const TestersBox = () => {
-  const [isActive, setIsActive] = useState('univ');
   const [randomInput, setRandomInput] = useState({
     sender: '홍길동',
     content: '질문',
@@ -18,10 +18,7 @@ export const TestersBox = () => {
     subject: '자료구조',
     receiver: '안지선',
   });
-
-  const onIsActive = (state: string) => {
-    setIsActive(state);
-  };
+  const { isActive, onIsActive } = useMail();
 
   const handleList = () => {
     const randomIndex = Math.floor(Math.random() * mockData.length);

@@ -7,7 +7,6 @@ import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
 
 export const MailPage = () => {
-  const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(true); // 모달을 처음에 열리게 설정
   const mailContext = useMail();
 
@@ -15,10 +14,6 @@ export const MailPage = () => {
     throw new Error('MailContext not found');
   }
   const { mailInput } = mailContext;
-
-  const onIsActive = () => {
-    setIsActive(!isActive);
-  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -36,7 +31,7 @@ export const MailPage = () => {
           <StyledGrid>
             <StyledGridItem className="empty"></StyledGridItem>
             <StyledGridItem className="header">
-              <Header isActive={isActive} onIsActive={onIsActive}></Header>
+              <Header isActive={mailContext.isActive} onIsActive={mailContext.onIsActive}></Header>
             </StyledGridItem>
             <StyledGridItem className="content">
               <InnerGrid>

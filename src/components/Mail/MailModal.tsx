@@ -144,7 +144,6 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
 
   useEffect(() => {
     setIsFocused(false);
-    // Clear the value of the current input when the currentIndex changes
     setValue(inputNames[currentIndex], '', { shouldValidate: true });
   }, [currentIndex, setValue]);
 

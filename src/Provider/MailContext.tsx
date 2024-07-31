@@ -6,11 +6,14 @@ import { mailSend } from '@/types';
 interface MailContextProps {
   mailInput: mailSend;
   handleMail: (mailBox: mailSend) => void;
+  isActive: string;
+  onIsActive: (state: string) => void;
 }
 
 export const MailContext = createContext<MailContextProps | null>(null);
 
 export const MailProvider = ({ children }: { children: ReactNode }) => {
+  const [isActive, setIsActive] = useState('univ');
   const [mailInput, setMailInput] = useState<mailSend>({
     sender: '',
     content: '',
@@ -31,7 +34,15 @@ export const MailProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  return <MailContext.Provider value={{ mailInput, handleMail }}>{children}</MailContext.Provider>;
+  const onIsActive = (state: string) => {
+    setIsActive(state);
+  };
+
+  return (
+    <MailContext.Provider value={{ mailInput, handleMail, isActive, onIsActive }}>
+      {children}
+    </MailContext.Provider>
+  );
 };
 
 export const useMail = () => {
