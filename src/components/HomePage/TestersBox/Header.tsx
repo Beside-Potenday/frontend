@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
 interface HeaderProps {
-  isActive: boolean;
-  onIsActive: (isActive: boolean) => void;
+  isActive: string;
+  onIsActive: (isActive: string) => void;
 }
 
 interface StudentProps {
-  isActive: boolean;
+  isActive: string;
 }
 
 export const Header = ({ isActive, onIsActive }: HeaderProps) => {
@@ -21,7 +21,7 @@ export const Header = ({ isActive, onIsActive }: HeaderProps) => {
           paddingTop: '33px',
         }}
       >
-        <Student isActive={isActive} onClick={() => onIsActive(!isActive)}>
+        <Student isActive={isActive} onClick={() => onIsActive('univ')}>
           대학생
         </Student>
         <Office>
@@ -37,7 +37,7 @@ export const Header = ({ isActive, onIsActive }: HeaderProps) => {
 const Student = styled.div<StudentProps>`
   margin-left: 167px;
   cursor: pointer;
-  box-shadow: ${(props) => (props.isActive ? '0 3px 0 0 #6AB9F2' : 'none')};
+  box-shadow: ${(props) => (props.isActive === 'univ' ? '0 3px 0 0 #6AB9F2' : 'none')};
   position: relative;
   z-index: 2;
   bottom: -1px;
