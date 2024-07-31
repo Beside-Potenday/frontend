@@ -39,7 +39,7 @@ export const Header = () => {
             <Logo src="/images/logo.svg" />
           </Link>
           <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '47px' }}>
-            <MidWrapper onClick={() => scrollToSection('section2')}> 시스템 체험</MidWrapper>
+            <MidWrapper onClick={() => scrollToSection('section2')}> 서비스 체험</MidWrapper>
             <MidWrapper onClick={() => scrollToSection('section3')}> 기능 살펴보기</MidWrapper>
           </div>
         </div>
@@ -79,12 +79,45 @@ const Container = styled.div`
 `;
 
 const AiButton = styled(Button)`
+  position: relative;
+  display: flex;
   height: 40px;
   width: 136px;
   padding: 10px 20px;
   border-radius: 20px;
-  border: 1px solid var(--black, #6ab9f2);
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: transparent;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19.6px;
+  letter-spacing: -2%;
+  background-clip: padding-box;
+
+  &:hover {
+    background: linear-gradient(to right, #6ab9f2, #7a89f0);
+    color: white;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(to right, #6ab9f2, #7a89f0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
 `;
+
 const MidWrapper = styled.div`
   cursor: pointer;
   margin: 0px 20px;
