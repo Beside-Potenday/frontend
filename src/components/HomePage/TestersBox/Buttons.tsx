@@ -73,11 +73,7 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {status === 'pending' ? (
-                  <Spinner size="xl" />
-                ) : (
-                  <div style={{ whiteSpace: 'pre-wrap' }}>{content}</div>
-                )}
+                {status === 'pending' ? <Spinner size="xl" /> : <p>{content}</p>}
               </ModalBody>
             </SmallModalContent>
           ) : (
@@ -263,6 +259,7 @@ const StyledModalBody = styled(ModalBody)`
   align-items: center;
   justify-content: center;
   width: 100%;
+  white-space: pre-wrap;
 `;
 
 const ModalWrapper = styled.div`
