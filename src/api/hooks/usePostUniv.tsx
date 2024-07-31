@@ -14,6 +14,9 @@ export const usePostUniv = () => {
   const mutation = useMutation<mailResponseData, Error, mailSend>({
     mutationFn: postUniv,
     retry: 3,
+    onSuccess: (data) => {
+      data.content = data.content.replace(/\n/g, '<br>');
+    },
     onError: (error) => {
       console.error('API call failed:', error);
     },
