@@ -59,10 +59,22 @@ const placeholderTexts = [
   '김알파',
 ];
 
+const options = [
+  { label: '🙋🏻‍♂️ 질문', value: '질문' },
+  { label: '📚 과제 제출', value: '과제 제출' },
+  { label: '💯 성적 정정', value: '성적 정정' },
+  { label: '💧 병결 요청', value: '병결 요청' },
+  { label: '📝 상담 요청', value: '상담 요청' },
+];
+
 const warningTexts = {
   content: ['메일 작성 목적을 선택하거나 입력해주세요', '5자 이상~300자 이하로 입력해주세요'],
   studentId: '숫자만 입력 가능해요',
 };
+
+interface OptionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  selected?: boolean; // selected prop 추가
+}
 
 export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   const { handleMail } = useMail();
@@ -74,6 +86,10 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isHide, setIsHide] = useState(false);
   const [firstInput, setFirstInput] = useState('');
+
+  const handleOptionClick = (value: string) => {
+    setFirstInput(value);
+  };
 
   const { mutate } = usePostUniv();
   const {
@@ -131,10 +147,6 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
     }
   };
 
-  const handleOptionClick = (value: string) => {
-    setFirstInput(value);
-  };
-
   const handleKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       console.log(firstInput);
@@ -185,19 +197,15 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                 <>
                   {currentIndex === 0 && (
                     <ButtonContainer>
-                      <OptionButton onClick={() => handleOptionClick('질문')}>🙋🏻‍♂️ 질문</OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('과제 제출')}>
-                        📚 과제 제출
-                      </OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('성적 정정')}>
-                        💯 성적 정정
-                      </OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('병결 요청')}>
-                        💧 병결 요청
-                      </OptionButton>
-                      <OptionButton onClick={() => handleOptionClick('상담 요청')}>
-                        📝 상담 요청
-                      </OptionButton>
+                      {options.map((option) => (
+                        <OptionButton
+                          key={option.value}
+                          onClick={() => handleOptionClick(option.value)}
+                          selected={firstInput === option.value}
+                        >
+                          {option.label}
+                        </OptionButton>
+                      ))}
                     </ButtonContainer>
                   )}
 
@@ -348,7 +356,7 @@ const ButtonContainer = styled.div`
   gap: 20px;
 `;
 
-const OptionButton = styled(Button)`
+const OptionButton = styled(Button)<OptionButtonProps>`
   position: relative;
   display: flex;
   align-items: center;
@@ -365,6 +373,9 @@ const OptionButton = styled(Button)`
     color: white;
   }
 
+  background: ${(props) =>
+    props.selected ? 'linear-gradient(to right, #6ab9f2, #7a89f0)' : '#fff'};
+
   &:before {
     content: '';
     position: absolute;
@@ -378,6 +389,7 @@ const OptionButton = styled(Button)`
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
+  }
 `;
 
 const StyledInput = styled(Input)`
