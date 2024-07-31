@@ -154,7 +154,7 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
 
       if (currentIndex === 0) {
         const combinedValue = `${firstInput} ${inputValue}`.trim();
-        setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
+        await setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
         console.log(combinedValue);
       }
 
