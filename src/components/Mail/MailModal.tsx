@@ -92,7 +92,6 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
     setIsLoading(true);
     handleMail(data);
     setIsHide(true);
-    console.log(data);
     mutate(
       { ...data },
       {
