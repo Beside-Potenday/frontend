@@ -89,6 +89,7 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
 
   const handleOptionClick = (value: string) => {
     setFirstInput(value);
+    console.log(firstInput);
   };
 
   const { mutate } = usePostUniv();
@@ -130,8 +131,14 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
     setIsHide(!isHide);
   };
 
-  const handleNextClick = async () => {
+  const handleNextClick = async (inputValue: string) => {
     const isValid = await trigger(inputNames[currentIndex]);
+    console.log('fuck');
+
+    if (currentIndex === 0 && firstInput && !inputValue) {
+      setValue(inputNames[currentIndex], firstInput, { shouldValidate: true });
+    }
+
     if (isValid) {
       if (currentIndex < inputNames.length - 1) {
         setCurrentIndex(currentIndex + 1);
@@ -148,13 +155,19 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   };
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && content) {
-      event.preventDefault();
+    if (event.key === 'Enter' && event.nativeEvent.isComposing === false) {
       const inputValue = (event.target as HTMLInputElement).value;
-      const combinedValue = `${firstInput} ${inputValue}`.trim();
-      await setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
-      console.log(combinedValue);
-      await handleNextClick();
+      if (currentIndex === 0 && firstInput) {
+        event.preventDefault();
+        const combinedValue = `${firstInput} : ${inputValue}`.trim();
+        await setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
+        console.log(combinedValue);
+      } else {
+        await setValue(inputNames[currentIndex], inputValue, { shouldValidate: true });
+        console.log(inputValue);
+      }
+      await handleNextClick(inputValue);
+      return;
     }
   };
 
@@ -216,11 +229,16 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                     name={inputNames[currentIndex]}
                     control={control}
                     rules={{
-                      required: currentIndex === 0 ? '필수 입력 항목입니다.' : false,
                       validate: (value) => {
-                        if (currentIndex === 0 && (value.length < 5 || value.length > 300)) {
-                          return warningTexts.content[1];
+                        if (currentIndex === 0) {
+                          if (!value && !firstInput) {
+                            return warningTexts.content[0];
+                          }
+                          if (value.length < 5 || value.length > 300) {
+                            return warningTexts.content[1];
+                          }
                         }
+
                         if (currentIndex === 3 && (!/^\d+$/.test(value) || '')) {
                           return warningTexts.studentId;
                         }
@@ -256,7 +274,7 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
         {!isHide && (
           <CustomModalFooter>
             {currentIndex < inputNames.length - 1 ? (
-              <ArrowButton onClick={handleNextClick} />
+              <ArrowButton onClick={() => handleNextClick('')} />
             ) : (
               <StyledButton onClick={handleSubmit(onSubmit)} disabled={!isValid}>
                 <PenIcon />
