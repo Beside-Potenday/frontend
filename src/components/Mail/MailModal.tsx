@@ -352,6 +352,7 @@ const CustomModalBody = styled(ModalBody)`
   align-items: center;
   justify-content: center;
   width: 100%;
+  white-space: pre-wrap;
 `;
 
 const CustomModalFooter = styled(ModalFooter)`
