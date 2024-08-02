@@ -14,24 +14,17 @@ jobs:
         run: apk add ruby && gem install mustache
       - name: creates output
         run: sh ./build.sh
-
-      - name: Get commit message
-        id: get_commit_message
-        run: echo "::set-output name=commit_message::$(git log --format=%B -n 1 ${{ github.sha }})"
-
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_KEY }}
-          COMMIT_MESSAGE: ${{ steps.get_commit_message.outputs.commit_message }}
         with:
           source-directory: 'output'
           destination-github-username: 'seung365'
           destination-repository-name: 'alphamail-frontend'
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL}}
-          commit-message: ${{ env.COMMIT_MESSAGE }}
+          commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
-
       - name: Test get variable exported by push-to-another-repository
         run: echo $DESTINATION_CLONED_DIRECTORY
