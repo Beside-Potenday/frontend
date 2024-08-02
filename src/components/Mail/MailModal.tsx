@@ -148,16 +148,12 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   };
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && content) {
       event.preventDefault();
       const inputValue = (event.target as HTMLInputElement).value;
-
-      if (currentIndex === 0) {
-        const combinedValue = `${firstInput} ${inputValue}`.trim();
-        await setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
-        console.log(combinedValue);
-      }
-
+      const combinedValue = `${firstInput} ${inputValue}`.trim();
+      await setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
+      console.log(combinedValue);
       await handleNextClick();
     }
   };
