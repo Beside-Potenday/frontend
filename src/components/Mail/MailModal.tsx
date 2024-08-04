@@ -89,7 +89,6 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
 
   const handleOptionClick = (value: string) => {
     setFirstInput(value);
-    console.log(firstInput);
   };
 
   const { mutate } = usePostUniv();
@@ -120,7 +119,6 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
           setIsLoading(false);
         },
         onError: (error) => {
-          console.error('API call failed:', error);
           setTitle('메일 생성 실패');
           setContent('메일 생성 중 오류가 발생했습니다.');
           setIsSubmitted(true);
@@ -133,7 +131,6 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
 
   const handleNextClick = async (inputValue: string) => {
     const isValid = await trigger(inputNames[currentIndex]);
-    console.log('fuck');
 
     if (currentIndex === 0 && firstInput && !inputValue) {
       setValue(inputNames[currentIndex], firstInput, { shouldValidate: true });
@@ -161,10 +158,8 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
         event.preventDefault();
         const combinedValue = `${firstInput} : ${inputValue}`.trim();
         await setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
-        console.log(combinedValue);
       } else {
         await setValue(inputNames[currentIndex], inputValue, { shouldValidate: true });
-        console.log(inputValue);
       }
       await handleNextClick(inputValue);
       return;
@@ -352,6 +347,7 @@ const CustomModalBody = styled(ModalBody)`
   align-items: center;
   justify-content: center;
   width: 100%;
+  white-space: pre-wrap;
 `;
 
 const CustomModalFooter = styled(ModalFooter)`

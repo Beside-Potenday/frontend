@@ -6,46 +6,59 @@ export const AskList = ({ randomInput }: { randomInput: mailSend }) => {
     <AskListWrapper>
       <AskListItemWrapper>
         <AskListItem>메일 작성 목적을 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.content}</InputListItem>
+        <InputListItem visible={!!randomInput.content}>{randomInput.content || ' '}</InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>보내는 사람의 이름을 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.sender}</InputListItem>
+        <InputListItem visible={!!randomInput.sender}>{randomInput.sender || ' '}</InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>보내는 사람의 학과를 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.department}</InputListItem>
+        <InputListItem visible={!!randomInput.department}>
+          {randomInput.department || ' '}
+        </InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>보내는 사람의 학번을 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.studentId}</InputListItem>
+        <InputListItem visible={!!randomInput.studentId}>
+          {randomInput.studentId || ' '}
+        </InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>강의명을 입력해 주세요</AskListItem>
-        <InputListItem>{randomInput.subject}</InputListItem>
+        <InputListItem visible={!!randomInput.subject}>{randomInput.subject || ' '}</InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>받는 사람의 이름을 입력해주세요</AskListItem>
-        <InputListItem>{randomInput.receiver}</InputListItem>
+        <InputListItem visible={!!randomInput.receiver}>
+          {randomInput.receiver || ' '}
+        </InputListItem>
       </AskListItemWrapper>
     </AskListWrapper>
   );
 };
 
 const AskListWrapper = styled.div`
-  width: 568px;
-  height: 100%;
+  width: 768px;
+  height: 750px;
   flex-shrink: 0;
   border-radius: 10px;
-  background: #f9f9f9;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.04);
-  margin-left: 120px;
-  margin-top: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(165, 165, 165, 0.2);
   display: flex;
   flex-direction: column;
   padding-left: 36px;
   padding-top: 46px;
-  gap: 40px;
+  padding-bottom: 86px;
+  gap: 10px;
+`;
+
+const AskListItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  gap: 16px;
 `;
 
 const AskListItem = styled.div`
@@ -55,19 +68,24 @@ const AskListItem = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.35px;
+  border-radius: 39px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  width: fit-content;
 `;
 
-const AskListItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const InputListItem = styled.div`
+const InputListItem = styled.div<{ visible: boolean }>`
   color: var(--Grey800, #3c3c3f);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   letter-spacing: -0.4px;
+  border-radius: 39px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: 16px;
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
 `;

@@ -33,40 +33,35 @@ export const TestersBox = () => {
           <Grid
             w="100%"
             h="100%"
-            templateRows={{ base: 'repeat(4, 1fr)', md: '106px 80px 752px' }}
+            templateRows={{ base: 'auto 1fr', md: '106px 80px 752px' }}
             templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(1, 1fr)' }}
           >
-            <MedeaItems rowSpan={1}></MedeaItems>
-            <MedeaItems
-              rowSpan={1}
-              background={'white'}
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-              position="relative"
-            >
+            <MedeaItems>
               <Header isActive={isActive} onIsActive={onIsActive}></Header>
             </MedeaItems>
-            <GridItem rowSpan={{ base: 3, md: 2 }}>
+            <GridItem>
               <Grid
                 w="100%"
                 h="100%"
-                templateRows={{ base: 'repeat(3, 1fr)', md: 'repeat(1, 1fr)' }}
+                templateRows={{ base: 'auto auto auto', md: 'repeat(1, 1fr)' }}
                 templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }}
+                gap={{ base: '20px', md: '0' }}
               >
-                <GridItem colSpan={{ base: 1, md: 2 }} rowSpan={{ base: 2, md: 1 }}>
+                <GridItem colSpan={{ base: 1, md: 2 }}>
                   <AskList randomInput={randomInput} />
                 </GridItem>
                 <GridItem
                   colSpan={1}
-                  rowSpan={1}
                   display={'flex'}
                   justifyContent={{ base: 'center', md: 'space-between' }}
                   alignItems={{ base: 'center', md: 'flex-end' }}
-                  flexDirection={{ base: 'row', md: 'column' }}
-                  marginRight="56px"
-                  marginBottom="25px"
+                  flexDirection={{ base: 'column', md: 'column' }}
+                  marginRight={{ base: '0', md: '56px' }}
+                  marginBottom={{ base: '0', md: '25px' }}
+                  backgroundImage={'/images/exampleImage2.svg'}
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  maxWidth={400}
                 >
                   <Buttons handleList={handleList} randomInput={randomInput} />
                 </GridItem>
@@ -83,19 +78,18 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 `;
 
 const LogoWrapper = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
 `;
 
 const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background: #fff;
   border-radius: 10px;
-  box-shadow: 0px 0px 8px 0px rgba(106, 185, 242, 0.3);
   overflow: hidden;
 `;
 
