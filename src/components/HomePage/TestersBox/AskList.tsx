@@ -19,13 +19,13 @@ export const AskList = ({ randomInput }: AskListProps) => {
     <AskListWrapper>
       <AskListItemWrapper>
         <AskListItem>메일 작성 목적을 입력해 주세요</AskListItem>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
+        <InputListItem style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
           {purposes.map((purpose) => (
             <PurposeButton key={purpose.id} selected={randomInput.content === purpose.id}>
               {purpose.label}
             </PurposeButton>
           ))}
-        </div>
+        </InputListItem>
       </AskListItemWrapper>
       <AskListItemWrapper>
         <AskListItem>보내는 사람의 이름을 입력해 주세요</AskListItem>
@@ -52,19 +52,26 @@ export const AskList = ({ randomInput }: AskListProps) => {
 };
 
 const AskListWrapper = styled.div`
-  width: 608px;
-  height: 100%;
+  width: 768px;
+  height: auto;
   flex-shrink: 0;
   border-radius: 10px;
-  background: #f9f9f9;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.04);
-  margin-left: 120px;
-  margin-top: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(165, 165, 165, 0.2);
   display: flex;
   flex-direction: column;
   padding-left: 36px;
-  padding-top: 75px;
+  padding-top: 46px;
+  padding-bottom: 46px;
   gap: 40px;
+`;
+
+const AskListItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  gap: 16px;
 `;
 
 const AskListItem = styled.div`
@@ -74,12 +81,10 @@ const AskListItem = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.35px;
-`;
-
-const AskListItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  border-radius: 39px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  width: fit-content;
 `;
 
 const InputListItem = styled.div`
@@ -89,6 +94,12 @@ const InputListItem = styled.div`
   font-weight: 700;
   line-height: normal;
   letter-spacing: -0.4px;
+  border-radius: 39px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: 16px;
 `;
 
 const PurposeButton = styled.div<{ selected: boolean }>`
