@@ -34,18 +34,19 @@ export const Header = () => {
   return (
     <Wrapper>
       <Container>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>Login</div>
+        <LogoLink to={'/'}>
+          <Logo src="/images/logo.svg" />
+        </LogoLink>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Link to={'/'}>
-            <Logo src="/images/logo.svg" />
-          </Link>
           <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '47px' }}>
             <MidWrapper onClick={() => scrollToSection('section2')}> 서비스 체험</MidWrapper>
             <MidWrapper onClick={() => scrollToSection('section3')}> 기능 살펴보기</MidWrapper>
           </div>
+          <Link to={'/mail'} style={{ display: 'flex', alignItems: 'center' }}>
+            <AiButton onClick={handleMailInput}>AI 메일 생성하기</AiButton>
+          </Link>
         </div>
-        <Link to={'/mail'} style={{ display: 'flex', alignItems: 'center' }}>
-          <AiButton onClick={handleMailInput}>AI 메일 생성하기</AiButton>
-        </Link>
       </Container>
     </Wrapper>
   );
@@ -123,5 +124,13 @@ const MidWrapper = styled.div`
   margin: 0px 20px;
   @media (max-width: ${breakpoints.md}) {
     display: none;
+  }
+`;
+
+const LogoLink = styled(Link)`
+  margin-left: 250px;
+
+  @media (max-width: ${breakpoints.md}) {
+    margin-left: 100px;
   }
 `;
