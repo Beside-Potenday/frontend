@@ -1,13 +1,13 @@
-import { Contents } from "@/components/HomePage/Contents"
-import styled from "@emotion/styled"
+import { Contents } from '@/components/HomePage/Contents';
+import styled from '@emotion/styled';
 
 export const HomePage = () => {
   return (
     <Wrapper>
       <Contents />
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.div`
   width: 100%;
@@ -15,4 +15,5 @@ const Wrapper = styled.div`
     radial-gradient(50% 50% at 25% 25%, #dee2fd 0%, rgba(230, 233, 255, 0) 100%),
     linear-gradient(180deg, #e5efff 0%, #fff 100%);
   overflow-x: hidden;
-`
+  height: 100%;
+`;
