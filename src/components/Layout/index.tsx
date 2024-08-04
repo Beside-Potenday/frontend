@@ -1,14 +1,18 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
-import { Header, HEADER_HEIGHT } from './Header';
-
 import { Footer } from './Footer';
-
+import { MainHeader } from './MainHeader';
+import { UpperImage } from './UpperImage';
 
 export const Layout = () => {
   return (
     <Wrapper>
-      <Header />
+      <UpperImageWrapper>
+        <UpperImage />
+      </UpperImageWrapper>
+      <HeaderWrapper>
+        <MainHeader />
+      </HeaderWrapper>
       <InnerWrapper>
         <Outlet />
       </InnerWrapper>
@@ -22,9 +26,20 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
+const UpperImageWrapper = styled.div`
+  width: 100%;
+  height: 93vh; /* 필요에 따라 조정 */
+`;
+
+const HeaderWrapper = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+`;
+
 const InnerWrapper = styled.div`
   width: 100%;
-  padding-top: ${HEADER_HEIGHT};
   position: relative;
   background-color: transparent;
 `;
