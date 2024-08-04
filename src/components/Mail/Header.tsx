@@ -37,17 +37,17 @@ export const Header = ({ isActive, onIsActive }: HeaderProps) => {
 const Student = styled.div<StudentProps>`
   margin-left: 167px;
   cursor: pointer;
-  box-shadow: ${(props) => (props.isActive ? '0 3px 0 0 #6AB9F2' : 'none')};
+  box-shadow: ${(props) => (props.isActive ? '0 4px 0 0 #6AB9F2' : 'none')};
   position: relative;
   z-index: 2;
-  bottom: -1px;
+  bottom: -13px;
 `;
 
 const Office = styled.div`
   margin-left: 44px;
   position: relative;
   z-index: 2;
-  bottom: -1px;
+  bottom: -13px;
   &:hover > img {
     visibility: visible;
   }
@@ -66,8 +66,8 @@ const HoverImage = styled.img`
 `;
 
 const Bar = styled.div`
-  background: var(--Grey300, #e5e5ea);
-  width: 1080px;
+  background: white;
+  width: 1200px;
   height: 3px;
   position: absolute;
   bottom: 24px;
