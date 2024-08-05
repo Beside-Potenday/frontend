@@ -29,6 +29,7 @@ export const Header = () => {
       subject: '',
       receiver: '',
     });
+    window.location.reload();
   };
 
   return (
