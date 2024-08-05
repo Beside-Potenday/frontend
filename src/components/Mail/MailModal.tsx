@@ -13,16 +13,54 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { mailSend } from '@/types';
+import { mailSendUniv, mailSendBusiness } from '@/types';
 import { usePostUniv } from '@/api/hooks/usePostUniv';
 import { useForm, Controller } from 'react-hook-form';
+import { usePostBusiness } from '@/api/hooks/usePostBusiness';
 
 interface MailModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const mailLetterInitialState: mailSend = {
+const mailLetterInitialStateBusiness: mailSendBusiness = {
+  content: '',
+  sender: '',
+  company: '',
+  department: '',
+  additional: '',
+  receiver: '',
+};
+
+const currentInputNamesBusiness: (keyof mailSendBusiness)[] = [
+  'content',
+  'sender',
+  'company',
+  'department',
+  'additional',
+  'receiver',
+];
+
+const placeholderTextsBusiness = [
+  '글자 수 제한: 5자 이상~300자 이하',
+  '홍길동',
+  '알파코',
+  '인사팀',
+  '추가 기재사항',
+  '김알파',
+];
+
+const modalHeaderContentBusiness = [
+  '메일 작성 목적을 선택해 주세요',
+  '보내는 사람의 이름을 입력해 주세요',
+  '소속 회사명을 입력해 주세요',
+  '소속 부서를 입력해 주세요',
+  '추가 기재사항을 입력해 주세요',
+  '받는 사람의 이름을 입력해 주세요',
+  '메일을 생성 중 입니다',
+];
+
+const mailLetterInitialState: mailSendUniv = {
   content: '',
   sender: '',
   department: '',
@@ -41,7 +79,7 @@ const modalHeaderContent = [
   '메일을 생성 중 입니다',
 ];
 
-const inputNames: (keyof mailSend)[] = [
+const currentInputNames: (keyof mailSendUniv)[] = [
   'content',
   'sender',
   'department',
@@ -67,9 +105,13 @@ const options = [
   { label: '📝 상담 요청', value: '상담 요청' },
 ];
 
-const warningTexts = {
+const warningTextsUniv = {
   content: ['메일 작성 목적을 선택하거나 입력해주세요', '5자 이상~300자 이하로 입력해주세요'],
   studentId: '숫자만 입력 가능해요',
+};
+
+const warningTextsBusiness = {
+  content: ['메일 작성 목적을 입력해주세요', '5자 이상~300자 이하로 입력해주세요'],
 };
 
 interface OptionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -86,43 +128,70 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isHide, setIsHide] = useState(false);
   const [firstInput, setFirstInput] = useState('');
+  const { isActive } = useMail();
+
+  const currentcurrentInputNames =
+    isActive === 'univ' ? currentInputNames : currentInputNamesBusiness;
+  const currentPlaceholderTexts = isActive === 'univ' ? placeholderTexts : placeholderTextsBusiness;
+  const currentModalHeaderContent =
+    isActive === 'univ' ? modalHeaderContent : modalHeaderContentBusiness;
 
   const handleOptionClick = (value: string) => {
     setFirstInput(value);
   };
 
-  const { mutate } = usePostUniv();
+  const { univMutate } = usePostUniv();
+  const { businessMutate } = usePostBusiness();
+
   const {
     control,
     handleSubmit,
     setValue,
     trigger,
-    formState: { errors, isValid },
-  } = useForm<mailSend>({
+    formState: { isValid },
+  } = useForm<mailSendUniv | mailSendBusiness>({
     mode: 'onChange',
-    defaultValues: {
-      ...mailLetterInitialState,
-    },
+    defaultValues: isActive === 'univ' ? mailLetterInitialState : mailLetterInitialStateBusiness,
   });
 
-  const onSubmit = (data: mailSend) => {
+  const setMailInputUniv = (data: mailSendUniv) => {
     setIsLoading(true);
     handleMail(data);
     setIsHide(true);
-    mutate(
-      { ...data },
+
+    univMutate(
+      { ...(data as unknown as mailSendUniv) },
       {
-        onSuccess: (response) => {
-          setTitle(response.title || '메일 생성 성공');
-          setContent(response.content || '메일이 성공적으로 생성되었습니다.');
-          setIsSubmitted(true);
-          setIsLoading(false);
+        onSuccess: (data) => {
+          console.log(data);
+          setTitle(data.title || '메일 생성 성공');
+          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
         },
         onError: (error) => {
           setTitle('메일 생성 실패');
           setContent('메일 생성 중 오류가 발생했습니다.');
-          setIsSubmitted(true);
-          setIsLoading(false);
+        },
+      },
+    );
+    setIsHide(!isHide);
+  };
+
+  const setMailInputBusiness = (data: mailSendBusiness) => {
+    setIsLoading(true);
+    handleMail(data);
+    setIsHide(true);
+
+    businessMutate(
+      { ...(data as unknown as mailSendBusiness) },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          setTitle(data.title || '메일 생성 성공');
+          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
+        },
+        onError: (error) => {
+          setTitle('메일 생성 실패');
+          setContent('메일 생성 중 오류가 발생했습니다.');
         },
       },
     );
@@ -130,14 +199,14 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
   };
 
   const handleNextClick = async (inputValue: string) => {
-    const isValid = await trigger(inputNames[currentIndex]);
+    const isValid = await trigger(currentcurrentInputNames[currentIndex]);
 
     if (currentIndex === 0 && firstInput && !inputValue) {
-      setValue(inputNames[currentIndex], firstInput, { shouldValidate: true });
+      setValue(currentcurrentInputNames[currentIndex], firstInput, { shouldValidate: true });
     }
 
     if (isValid) {
-      if (currentIndex < inputNames.length - 1) {
+      if (currentIndex < currentInputNames.length - 1) {
         setCurrentIndex(currentIndex + 1);
         setIsFocused(false);
       }
@@ -157,9 +226,9 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
       if (currentIndex === 0 && firstInput) {
         event.preventDefault();
         const combinedValue = `${firstInput} : ${inputValue}`.trim();
-        await setValue(inputNames[currentIndex], combinedValue, { shouldValidate: true });
+        await setValue(currentInputNames[currentIndex], combinedValue, { shouldValidate: true });
       } else {
-        await setValue(inputNames[currentIndex], inputValue, { shouldValidate: true });
+        await setValue(currentInputNames[currentIndex], inputValue, { shouldValidate: true });
       }
       await handleNextClick(inputValue);
       return;
@@ -168,8 +237,10 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
 
   useEffect(() => {
     setIsFocused(false);
-    setValue(inputNames[currentIndex], '', { shouldValidate: true });
+    setValue(currentInputNames[currentIndex], '', { shouldValidate: true });
   }, [currentIndex, setValue]);
+
+  const currentWarningTexts = isActive === 'univ' ? warningTextsUniv : warningTextsBusiness;
 
   return (
     <CustomModal
@@ -195,7 +266,7 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
             ? title
             : isLoading
             ? '메일 생성 중 입니다...'
-            : modalHeaderContent[currentIndex]}
+            : currentModalHeaderContent[currentIndex]}
         </CustomModalHeader>
         <CustomModalBody>
           {isSubmitted ? (
@@ -206,7 +277,7 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                 <Spinner size="xl" />
               ) : (
                 <>
-                  {currentIndex === 0 && (
+                  {currentIndex === 0 && isActive === 'univ' && (
                     <ButtonContainer>
                       {options.map((option) => (
                         <OptionButton
@@ -221,22 +292,28 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                   )}
 
                   <Controller
-                    name={inputNames[currentIndex]}
+                    name={currentInputNames[currentIndex]}
                     control={control}
                     rules={{
                       validate: (value) => {
                         if (currentIndex === 0) {
                           if (!value && !firstInput) {
-                            return warningTexts.content[0];
+                            return currentWarningTexts.content[0];
                           }
                           if (value.length < 5 || value.length > 300) {
-                            return warningTexts.content[1];
+                            return currentWarningTexts.content[1];
                           }
                         }
 
-                        if (currentIndex === 3 && (!/^\d+$/.test(value) || '')) {
-                          return warningTexts.studentId;
+                        if (currentIndex === 3) {
+                          if (isActive === 'univ' && (!/^\d+$/.test(value) || '')) {
+                            return (currentWarningTexts as typeof warningTextsUniv).studentId;
+                          }
+                          if (isActive === 'business' && value.length < 5) {
+                            return currentWarningTexts.content[1];
+                          }
                         }
+
                         return true;
                       },
                     }}
@@ -244,20 +321,17 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
                       <>
                         <StyledInput
                           {...field}
-                          placeholder={isFocused ? '' : placeholderTexts[currentIndex]}
+                          placeholder={isFocused ? '' : currentPlaceholderTexts[currentIndex]}
                           onFocus={() => setIsFocused(true)}
                           onBlur={() => setIsFocused(false)}
                           onChange={(e) => {
                             field.onChange(e);
-                            setValue(inputNames[currentIndex], e.target.value, {
+                            setValue(currentInputNames[currentIndex], e.target.value, {
                               shouldValidate: true,
                             });
                           }}
                           onKeyDown={handleKeyDown}
                         />
-                        {errors[inputNames[currentIndex]] && (
-                          <WarningText>{errors[inputNames[currentIndex]]?.message}</WarningText>
-                        )}
                       </>
                     )}
                   />
@@ -268,10 +342,15 @@ export const MailModal = ({ isOpen, onClose }: MailModalProps) => {
         </CustomModalBody>
         {!isHide && (
           <CustomModalFooter>
-            {currentIndex < inputNames.length - 1 ? (
+            {currentIndex < currentInputNames.length - 1 ? (
               <ArrowButton onClick={() => handleNextClick('')} />
             ) : (
-              <StyledButton onClick={handleSubmit(onSubmit)} disabled={!isValid}>
+              <StyledButton
+                onClick={handleSubmit(() =>
+                  isActive === 'univ' ? setMailInputUniv : setMailInputBusiness,
+                )}
+                disabled={!isValid}
+              >
                 <PenIcon />
                 생성하기
               </StyledButton>
@@ -412,11 +491,11 @@ const StyledInput = styled(Input)`
   text-align: center;
 `;
 
-const WarningText = styled(Text)`
-  color: red;
-  font-size: 15px;
-  margin-top: 10px;
-`;
+// const WarningText = styled(Text)`
+//   color: red;
+//   font-size: 15px;
+//   margin-top: 10px;
+// `;
 
 const ArrowButton = styled(Button)`
   background: none;
