@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import { Footer } from './Footer';
-import { MainHeader } from './MainHeader';
+import { HEADER_HEIGHT, MainHeader } from './MainHeader';
 import { UpperImage } from './UpperImage';
 
 export const Layout = () => {
@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 
 const UpperImageWrapper = styled.div`
   width: 100%;
-  height: 93vh; /* 필요에 따라 조정 */
+  height: calc(100vh - ${HEADER_HEIGHT});
 `;
 
 const HeaderWrapper = styled.div`
