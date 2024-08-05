@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { mailSend } from '@/types';
+import { MailInput, mailSendUniv, mailSendBusiness } from '@/types';
 import { usePostUniv } from '@/api/hooks/usePostUniv';
 import { useState } from 'react';
 import {
@@ -13,27 +13,33 @@ import {
   Button,
   Spinner,
 } from '@chakra-ui/react';
+import { useMail } from '@/Provider/MailContext';
+import { usePostBusiness } from '@/api/hooks/usePostBusiness';
 
 interface ButtonsProps {
-  handleList: () => void;
-  randomInput: mailSend;
+  handleListUniv: () => void;
+  handleListBusiness: () => void;
+  randomInput: MailInput;
 }
 
-export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
-  const { mutate, status } = usePostUniv();
+export const Buttons = ({ handleListUniv, handleListBusiness, randomInput }: ButtonsProps) => {
+  const { univMutate, univStatus } = usePostUniv();
+  const { businessMutate, businessStatus } = usePostBusiness();
 
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const { isActive } = useMail();
+
   const onClose = () => {
     setIsOpen(false);
   };
 
-  const setMailInput = () => {
+  const setMailInputUniv = () => {
     setIsOpen(true);
 
-    mutate(
-      { ...randomInput },
+    univMutate(
+      { ...(randomInput as unknown as mailSendUniv) },
       {
         onSuccess: (data) => {
           console.log(data);
@@ -48,15 +54,40 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
     );
   };
 
+  const setMailInputBusiness = () => {
+    setIsOpen(true);
+
+    businessMutate(
+      { ...(randomInput as unknown as mailSendBusiness) },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          setTitle(data.title || '메일 생성 성공');
+          setContent(data.content || '메일이 성공적으로 생성되었습니다.');
+        },
+        onError: (error) => {
+          setTitle('메일 생성 실패');
+          setContent('메일 생성 중 오류가 발생했습니다.');
+        },
+      },
+    );
+  };
+
+  const isLoading = univStatus === 'pending' || businessStatus === 'pending';
+
   return (
     <ButtonsWrapper>
       <ButtonContainer>
-        <ExampleButton onClick={handleList}>
+        <ExampleButton
+          onClick={() => (isActive === 'univ' ? handleListUniv() : handleListBusiness())}
+        >
           <ExampleChangeIcon className="example-change-icon" /> 예시 변경
         </ExampleButton>
       </ButtonContainer>
       <ButtonContainer>
-        <MailButton onClick={setMailInput}>
+        <MailButton
+          onClick={() => (isActive === 'univ' ? setMailInputUniv() : setMailInputBusiness())}
+        >
           <MakeMailIcon className="make-mail-icon" />
           메일 생성하기
         </MailButton>
@@ -64,14 +95,12 @@ export const Buttons = ({ handleList, randomInput }: ButtonsProps) => {
       <ModalWrapper>
         <StyledModal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          {status === 'pending' || status === 'error' ? (
+          {isLoading ? (
             <SmallModalContent>
-              <ModalHeader>
-                {status === 'pending' ? '메일 생성 중...조금만 기다려 주세요!' : title}
-              </ModalHeader>
+              <ModalHeader>메일 생성 중...조금만 기다려 주세요!</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {status === 'pending' ? <Spinner size="xl" /> : <p>{content}</p>}
+                <Spinner size="xl" />
               </ModalBody>
             </SmallModalContent>
           ) : (
@@ -105,6 +134,10 @@ const ButtonsWrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   padding: 20px 0;
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 20%;
 `;
 
 const ButtonContainer = styled.div`

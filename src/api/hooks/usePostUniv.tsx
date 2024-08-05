@@ -1,17 +1,21 @@
 import { useMutation } from '@tanstack/react-query';
-import { mailSend, mailResponseData } from '@/types';
+import { mailSendUniv, mailResponseData } from '@/types';
 import { BASE_URL } from '..';
 import axios from 'axios';
 
 export const postUnivPath = () => `${BASE_URL}/api/mails/univ`;
 
-export const postUniv = async (mailData: mailSend): Promise<mailResponseData> => {
+export const postUniv = async (mailData: mailSendUniv): Promise<mailResponseData> => {
   const response = await axios.post<mailResponseData>(postUnivPath(), mailData);
   return response.data;
 };
 
 export const usePostUniv = () => {
-  const mutation = useMutation<mailResponseData, Error, mailSend>({
+  const { mutate: univMutate, status: univStatus } = useMutation<
+    mailResponseData,
+    Error,
+    mailSendUniv
+  >({
     mutationFn: postUniv,
     retry: 3,
     onError: (error) => {
@@ -19,5 +23,5 @@ export const usePostUniv = () => {
     },
   });
 
-  return mutation;
+  return { univMutate, univStatus };
 };

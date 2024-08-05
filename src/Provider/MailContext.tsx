@@ -1,20 +1,37 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
+import { MailInput } from '@/types';
 
-import { mailSend } from '@/types';
+export type mailSendUniv = {
+  sender: string;
+  content: string;
+  department: string;
+  studentId: string;
+  subject: string;
+  receiver: string;
+};
+
+export type mailSendBusiness = {
+  content: string;
+  sender: string;
+  company: string;
+  department: string;
+  additional: string;
+  name: string;
+};
 
 interface MailContextProps {
-  mailInput: mailSend;
-  handleMail: (mailBox: mailSend) => void;
-  isActive: string;
-  onIsActive: (state: string) => void;
+  mailInput: MailInput;
+  handleMail: (mailBox: MailInput) => void;
+  isActive: 'univ' | 'business';
+  onIsActive: (state: 'univ' | 'business') => void;
 }
 
 export const MailContext = createContext<MailContextProps | null>(null);
 
 export const MailProvider = ({ children }: { children: ReactNode }) => {
-  const [isActive, setIsActive] = useState('univ');
-  const [mailInput, setMailInput] = useState<mailSend>({
+  const [isActive, setIsActive] = useState<'univ' | 'business'>('univ');
+  const [mailInput, setMailInput] = useState<MailInput>({
     sender: '',
     content: '',
     department: '',
@@ -23,19 +40,31 @@ export const MailProvider = ({ children }: { children: ReactNode }) => {
     receiver: '',
   });
 
-  const handleMail = (mailBox: mailSend) => {
-    setMailInput({
-      sender: mailBox.sender,
-      content: mailBox.content,
-      department: mailBox.department,
-      studentId: mailBox.studentId,
-      subject: mailBox.subject,
-      receiver: mailBox.receiver,
-    });
+  const handleMail = (mailBox: MailInput) => {
+    setMailInput(mailBox);
   };
 
-  const onIsActive = (state: string) => {
+  const onIsActive = (state: 'univ' | 'business') => {
     setIsActive(state);
+    if (state === 'business') {
+      setMailInput({
+        content: '',
+        sender: '',
+        company: '',
+        department: '',
+        additional: '',
+        receiver: '',
+      });
+    } else {
+      setMailInput({
+        sender: '',
+        content: '',
+        department: '',
+        studentId: '',
+        subject: '',
+        receiver: '',
+      });
+    }
   };
 
   return (

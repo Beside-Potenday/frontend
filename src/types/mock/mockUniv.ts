@@ -1,4 +1,4 @@
-export const mockData = [
+export const mockDataUniv = [
   {
     subject: '자료구조',
     department: '컴퓨터공학과',
@@ -80,5 +80,3 @@ export const mockData = [
     receiver: '오준석',
   },
 ];
-
-export default mockData;

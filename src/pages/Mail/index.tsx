@@ -16,6 +16,10 @@ export const MailPage = () => {
   }
   const { mailInput } = mailContext;
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -42,12 +46,17 @@ export const MailPage = () => {
               justifyContent="center"
               position="relative"
             >
-              <Header isActive={mailContext.isActive} onIsActive={mailContext.onIsActive} />
+              <Header
+                isActive={mailContext.isActive}
+                onIsActive={mailContext.onIsActive}
+                onOpen={openModal}
+                onClose={closeModal}
+              />
             </MedeaItems>
 
             <GridItem colSpan={1}>
               <Grid templateColumns="repeat(3, 1fr)" h="100%">
-                <GridItem colSpan={{ base: 2 }}>
+                <GridItem colSpan={{ base: 1, md: 2 }}>
                   <AskList randomInput={mailInput}></AskList>
                 </GridItem>
                 <GridItem

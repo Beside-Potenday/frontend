@@ -2,14 +2,26 @@ import styled from '@emotion/styled';
 
 interface HeaderProps {
   isActive: string;
-  onIsActive: (isActive: string) => void;
+  onIsActive: (state: 'univ' | 'business') => void;
+  onOpen: () => void;
+  onClose: () => void;
 }
 
-interface StudentProps {
+interface ActiveProps {
   isActive: string;
 }
 
-export const Header = ({ isActive, onIsActive }: HeaderProps) => {
+export const Header = ({ isActive, onIsActive, onOpen, onClose }: HeaderProps) => {
+  const handleUniv = () => {
+    onIsActive('univ');
+    onOpen();
+  };
+
+  const handleBusiness = () => {
+    onIsActive('business');
+    onOpen();
+  };
+
   return (
     <>
       <div
@@ -21,12 +33,11 @@ export const Header = ({ isActive, onIsActive }: HeaderProps) => {
           paddingTop: '33px',
         }}
       >
-        <Student isActive={isActive} onClick={() => onIsActive('univ')}>
+        <Student isActive={isActive} onClick={handleUniv}>
           대학생
         </Student>
-        <Office>
+        <Office isActive={isActive} onClick={handleBusiness}>
           직장인
-          <HoverImage src="/images/hoveroffice.svg" alt="Hover Image" />
         </Office>
       </div>
       <Bar></Bar>
@@ -34,35 +45,22 @@ export const Header = ({ isActive, onIsActive }: HeaderProps) => {
   );
 };
 
-const Student = styled.div<StudentProps>`
+const Student = styled.div<ActiveProps>`
   margin-left: 167px;
   cursor: pointer;
-  box-shadow: ${(props) => (props.isActive ? '0 4px 0 0 #6AB9F2' : 'none')};
+  box-shadow: ${(props) => (props.isActive === 'univ' ? '0 4px 0 0 #6AB9F2' : 'none')};
   position: relative;
   z-index: 2;
   bottom: -13px;
 `;
 
-const Office = styled.div`
+const Office = styled.div<ActiveProps>`
   margin-left: 44px;
+  cursor: pointer;
+  box-shadow: ${(props) => (props.isActive === 'business' ? '0 4px 0 0 #6AB9F2' : 'none')};
   position: relative;
   z-index: 2;
   bottom: -13px;
-  &:hover > img {
-    visibility: visible;
-  }
-`;
-
-const HoverImage = styled.img`
-  visibility: hidden;
-  position: relative;
-  top: -70px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 174px;
-  height: 34px;
-  flex-shrink: 0;
-  z-index: 3;
 `;
 
 const Bar = styled.div`
@@ -70,5 +68,5 @@ const Bar = styled.div`
   width: 1200px;
   height: 3px;
   position: absolute;
-  bottom: 24px;
+  bottom: 8px;
 `;
