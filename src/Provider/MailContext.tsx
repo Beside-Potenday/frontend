@@ -25,6 +25,8 @@ interface MailContextProps {
   handleMail: (mailBox: MailInput) => void;
   isActive: 'univ' | 'business';
   onIsActive: (state: 'univ' | 'business') => void;
+  resetMailInputUniv: () => void;
+  resetMailInputBusiness: () => void;
 }
 
 export const MailContext = createContext<MailContextProps | null>(null);
@@ -44,31 +46,48 @@ export const MailProvider = ({ children }: { children: ReactNode }) => {
     setMailInput(mailBox);
   };
 
+  const resetMailInputUniv = () => {
+    setMailInput({
+      content: '',
+      sender: '',
+      company: '',
+      department: '',
+      additional: '',
+      receiver: '',
+    });
+  };
+
+  const resetMailInputBusiness = () => {
+    setMailInput({
+      sender: '',
+      content: '',
+      department: '',
+      studentId: '',
+      subject: '',
+      receiver: '',
+    });
+  };
+
   const onIsActive = (state: 'univ' | 'business') => {
     setIsActive(state);
     if (state === 'business') {
-      setMailInput({
-        content: '',
-        sender: '',
-        company: '',
-        department: '',
-        additional: '',
-        receiver: '',
-      });
+      resetMailInputBusiness();
     } else {
-      setMailInput({
-        sender: '',
-        content: '',
-        department: '',
-        studentId: '',
-        subject: '',
-        receiver: '',
-      });
+      resetMailInputUniv();
     }
   };
 
   return (
-    <MailContext.Provider value={{ mailInput, handleMail, isActive, onIsActive }}>
+    <MailContext.Provider
+      value={{
+        mailInput,
+        handleMail,
+        isActive,
+        onIsActive,
+        resetMailInputUniv,
+        resetMailInputBusiness,
+      }}
+    >
       {children}
     </MailContext.Provider>
   );
