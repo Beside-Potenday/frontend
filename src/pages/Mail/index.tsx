@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Grid, GridItem, Box } from '@chakra-ui/react';
 import { Header } from '@/components/Mail/Header';
@@ -6,10 +6,12 @@ import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
 import { breakpoints } from '@/styles/variants';
+import { useDisclosure } from '@chakra-ui/react';
 
 export const MailPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true); // 모달을 처음에 열리게 설정
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const mailContext = useMail();
+  const { isActive } = useMail();
 
   if (!mailContext) {
     throw new Error('MailContext not found');
@@ -17,16 +19,22 @@ export const MailPage = () => {
   const { mailInput } = mailContext;
 
   const openModal = () => {
-    setIsModalOpen(true);
+    if (isActive === 'univ') {
+      mailContext.resetMailInputUniv();
+    }
+    if (isActive === 'business') {
+      mailContext.resetMailInputBusiness();
+    }
+    onOpen();
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    onClose();
   };
 
   useEffect(() => {
-    setIsModalOpen(true);
-  }, []);
+    onOpen();
+  }, [onOpen]);
 
   return (
     <Wrapper>
@@ -73,7 +81,7 @@ export const MailPage = () => {
           </Grid>
         </ContentWrapper>
       </LogoWrapper>
-      <AnimatedMailModal isOpen={isModalOpen} onClose={closeModal} />
+      <AnimatedMailModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
     </Wrapper>
   );
 };
