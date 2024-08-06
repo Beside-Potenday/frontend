@@ -1,3 +1,4 @@
+import { breakpoints } from '@/styles/variants';
 import styled from '@emotion/styled';
 
 interface HeaderProps {
@@ -52,6 +53,10 @@ const Student = styled.div<ActiveProps>`
   position: relative;
   z-index: 2;
   bottom: -13px;
+  @media (max-width: ${breakpoints.md}) {
+    bottom: 11px;
+    left: 120px;
+  }
 `;
 
 const Office = styled.div<ActiveProps>`
@@ -61,6 +66,10 @@ const Office = styled.div<ActiveProps>`
   position: relative;
   z-index: 2;
   bottom: -13px;
+  @media (max-width: ${breakpoints.md}) {
+    bottom: 11px;
+    left: 120px;
+  }
 `;
 
 const Bar = styled.div`
@@ -69,4 +78,7 @@ const Bar = styled.div`
   height: 3px;
   position: absolute;
   bottom: 8px;
+  @media (max-width: ${breakpoints.md}) {
+    width: 400px;
+  }
 `;

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { AskListProps, Question } from '@/types';
 import { useMail } from '@/Provider/MailContext';
 import { useState, useEffect } from 'react';
+import { breakpoints } from '@/styles/variants';
 
 export const AskList = ({ randomInput }: AskListProps) => {
   const { isActive } = useMail();
@@ -54,6 +55,10 @@ const AskListWrapper = styled.div`
   padding-top: 46px;
   padding-bottom: 86px;
   gap: 10px;
+
+  @media (max-width: ${breakpoints.md}) {
+    width: 400px;
+  }
 `;
 
 const AskListItemWrapper = styled.div`

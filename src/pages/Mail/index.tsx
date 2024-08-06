@@ -43,11 +43,11 @@ export const MailPage = () => {
           <Grid
             w="100%"
             h="100%"
-            templateRows={{ base: '106px 780px' }}
+            templateRows={{ base: 'auto auto auto', md: '106px 780px' }}
             templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(1, 1fr)' }}
           >
             <MedeaItems
-              rowSpan={1}
+              rowSpan={{ base: 1, md: 1 }}
               display="flex"
               flexDirection="column"
               alignItems="center"
@@ -62,17 +62,29 @@ export const MailPage = () => {
               />
             </MedeaItems>
 
-            <GridItem colSpan={1}>
-              <Grid templateColumns="repeat(3, 1fr)" h="100%">
-                <GridItem colSpan={{ base: 1, md: 2 }}>
+            <GridItem rowSpan={{ base: 2, md: 1 }}>
+              <Grid
+                templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+                templateRows={{ base: 'auto auto', md: '1fr' }}
+                h="100%"
+                justifyContent="center"
+                alignItems="center"
+                maxWidth="1200px"
+                margin="0 auto"
+              >
+                <GridItem
+                  colSpan={{ base: 1, md: 2 }}
+                  width="100%"
+                  display="flex"
+                  justifyContent="center"
+                >
                   <AskList randomInput={mailInput}></AskList>
                 </GridItem>
                 <GridItem
-                  colSpan={1}
-                  display={'flex'}
-                  justifyContent={{ base: 'center', md: 'space-between' }}
-                  alignItems={{ base: 'center', md: 'flex-end' }}
-                  flexDirection={{ base: 'row', md: 'column' }}
+                  colSpan={{ base: 1, md: 1 }}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
                 >
                   <ImageWrapper src="/images/exampleImage.svg" />
                 </GridItem>
