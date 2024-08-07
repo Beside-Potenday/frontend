@@ -63,6 +63,6 @@ export interface MailGetData {
 
 export interface MailListResponse {
   totalPages: number;
-  content: [{ subjet: string; body: string; createDate: string }];
+  content: Array<{ subject: string; body: string; createDate: string }>;
   pageable: { pageNumber: number; pageSize: number };
 }
