@@ -31,7 +31,7 @@ import {
   warningTextsUniv,
 } from './MailModalData';
 import { useAuth } from '@/Provider/Auth';
-import { usePostMail } from '@/api/hooks/usePostMail';
+import { usePostMail } from '@/api/hooks/Mail/usePostMail';
 
 interface MailModalProps {
   isOpen: boolean;
