@@ -7,6 +7,7 @@ import { UpperImage } from './UpperImage';
 export const Layout = () => {
   return (
     <Wrapper>
+      <HeaderPadding />
       <UpperImageWrapper>
         <UpperImage />
       </UpperImageWrapper>
@@ -24,7 +25,12 @@ export const Layout = () => {
 const Wrapper = styled.div`
   width: 100%;
   position: relative;
-  padding-top: ${HEADER_HEIGHT};
+`;
+
+const HeaderPadding = styled.div`
+  width: 100%;
+  height: ${HEADER_HEIGHT};
+  background-color: #E5EFFF;
 `;
 
 const UpperImageWrapper = styled.div`
