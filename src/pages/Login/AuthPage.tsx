@@ -24,7 +24,7 @@ export const AuthPage = () => {
         name: data.name,
         email: data.email,
       });
-      sessionStorage.setItem('authToken', data.accessToken);
+      sessionStorage.setItem('accessToken', data.accessToken);
       sessionStorage.setItem('name', data.name);
       sessionStorage.setItem('picture', data.picture);
       sessionStorage.setItem('email', data.email);
