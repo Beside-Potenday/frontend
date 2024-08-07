@@ -7,11 +7,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalBody,
   ModalFooter,
   Button,
-  Spinner,
 } from '@chakra-ui/react';
 import { useMail } from '@/Provider/MailContext';
 import { usePostBusiness } from '@/api/hooks/usePostBusiness';
@@ -97,16 +95,18 @@ export const Buttons = ({ handleListUniv, handleListBusiness, randomInput }: But
           <ModalOverlay />
           {isLoading ? (
             <SmallModalContent>
-              <ModalHeader>메일 생성 중...조금만 기다려 주세요!</ModalHeader>
-              <ModalCloseButton />
               <ModalBody>
-                <Spinner size="xl" />
+                <VideoContainer>
+                  <video src="/images/loading.mp4" autoPlay loop muted playsInline>
+                    Your browser does not support the video tag.
+                  </video>
+                  <OverlayImage src="/images/loading.svg" alt="Loading" />
+                </VideoContainer>
               </ModalBody>
             </SmallModalContent>
           ) : (
             <LargeModalContent>
               <StyledModalHeader>{title}</StyledModalHeader>
-              <ModalCloseButton />
               <StyledModalBody>
                 <p>{content}</p>
               </StyledModalBody>
@@ -201,7 +201,9 @@ const MailButton = styled(Button)`
 
 const SmallModalContent = styled(ModalContent)`
   width: auto;
+  max-width: 600px;
   height: auto;
+  max-height: 800px;
   border-radius: 10px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 1px rgba(115, 128, 239, 0.3);
@@ -210,12 +212,34 @@ const SmallModalContent = styled(ModalContent)`
   justify-content: center;
 `;
 
+const OverlayImage = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101; /* Ensure the overlay is above the video */
+`;
+
 const LargeModalContent = styled(ModalContent)`
   width: auto;
   height: auto;
   border-radius: 20px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 1px rgba(115, 128, 239, 0.3);
+`;
+
+const VideoContainer = styled.div`
+  position: relative; /* Add this line */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  video {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const StyledModalHeader = styled(ModalHeader)`

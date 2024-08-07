@@ -11,6 +11,7 @@ export const UpperImage = () => {
 
   return (
     <StyledWrapper>
+      <TransparentOverlay />
       <ImageContainer>
         <VStack spacing={4} align="stretch">
           <LeftBubble>
@@ -54,6 +55,17 @@ const StyledWrapper = styled(Box)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+`;
+
+const TransparentOverlay = styled(Box)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  z-index: 1;
 `;
 
 const ImageContainer = styled(Box)`
@@ -63,6 +75,7 @@ const ImageContainer = styled(Box)`
   align-items: center;
   justify-content: center;
   transform: translateY(-80px);
+  z-index: 2;
 `;
 
 const ArrowContainer = styled(Box)`
@@ -73,6 +86,7 @@ const ArrowContainer = styled(Box)`
   justify-content: center;
   cursor: pointer;
   margin-top: -90px; /* 화살표의 상단 마진 */
+  z-index: 2;
 `;
 
 const ArrowIcon = styled(Image)`

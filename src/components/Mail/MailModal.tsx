@@ -10,7 +10,6 @@ import {
   Button,
   Input,
   Text,
-  Spinner,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { mailSendUniv, mailSendBusiness } from '@/types';
@@ -256,17 +255,13 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
     >
       <ModalOverlay />
       <CustomModalContent>
-        {currentIndex > 0 && !isSubmitted && (
+        {currentIndex > 0 && !isLoading && !isSubmitted && (
           <ArrowUpButtonWrapper>
             <ArrowUpButton onClick={handlePrevClick} />
           </ArrowUpButtonWrapper>
         )}
         <CustomModalHeader>
-          {isSubmitted
-            ? title
-            : isLoading
-            ? '메일 생성 중 입니다...'
-            : currentModalHeaderContent[currentIndex]}
+          {isSubmitted ? title : isLoading ? '' : currentModalHeaderContent[currentIndex]}
         </CustomModalHeader>
         <CustomModalBody>
           {isSubmitted ? (
@@ -274,7 +269,12 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
           ) : (
             <>
               {isLoading ? (
-                <Spinner size="xl" />
+                <VideoContainer>
+                  <video src="/images/loading.mp4" autoPlay loop muted playsInline>
+                    Your browser does not support the video tag.
+                  </video>
+                  <OverlayImage src="/images/loading.svg" alt="Loading" />
+                </VideoContainer>
               ) : (
                 <>
                   {currentIndex === 0 && isActive === 'univ' && (
@@ -592,6 +592,28 @@ const PenIcon = styled.span`
   height: 18px;
   background: url('/images/penIcon.svg');
   background-size: cover;
+`;
+
+const OverlayImage = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101; /* Ensure the overlay is above the video */
+`;
+
+const VideoContainer = styled.div`
+  position: relative; /* Add this line */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  video {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 export default MailModal;

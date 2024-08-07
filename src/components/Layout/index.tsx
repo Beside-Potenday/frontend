@@ -3,10 +3,12 @@ import { Outlet } from 'react-router-dom';
 import { Footer } from './Footer';
 import { HEADER_HEIGHT, MainHeader } from './Header/MainHeader';
 import { UpperImage } from './UpperImage';
+import { Box } from '@chakra-ui/react';
 
 export const Layout = () => {
   return (
     <Wrapper>
+      <TransparentOverlay />
       <HeaderPadding />
       <UpperImageWrapper>
         <UpperImage />
@@ -27,10 +29,20 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
+const TransparentOverlay = styled(Box)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: ${HEADER_HEIGHT};
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 1;
+`;
+
 const HeaderPadding = styled.div`
   width: 100%;
   height: ${HEADER_HEIGHT};
-  background-color: #E5EFFF;
+  background-color: #e5efff;
 `;
 
 const UpperImageWrapper = styled.div`
