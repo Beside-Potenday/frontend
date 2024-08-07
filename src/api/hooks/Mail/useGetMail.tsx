@@ -6,21 +6,21 @@ import { useQuery } from '@tanstack/react-query';
 export const getMailPath = (page: number, size: number) =>
   `${BASE_URL}/emails?page=${page}&size=${size}`;
 
-const createApiClient = () => {
+const createApiClient = (job: string) => {
   const token = sessionStorage.getItem('accessToken');
   return axios.create({
     baseURL: BASE_URL,
     headers: {
       Authorization: `Bearer ${token}`,
-      Job: 'business',
+      Job: job,
     },
   });
 };
 
-const getMailBusiness = async (page: number, size: number) => {
+const getMail = async (page: number, size: number, job: string) => {
   try {
     console.log('business', page, size);
-    const apiClient = createApiClient();
+    const apiClient = createApiClient(job);
     const response = await apiClient.get<MailListResponse>(getMailPath(page, size));
     return response.data;
   } catch (error) {
@@ -29,11 +29,14 @@ const getMailBusiness = async (page: number, size: number) => {
   }
 };
 
-export const useGetMailBusiness = (page: number, size: number) => {
+export const useGetMail = (page: number, size: number, job: string) => {
   const {
-    data: businessData,
-    isLoading: businessLoading,
-    isError: businessError,
-  } = useQuery({ queryKey: ['emails', page, size], queryFn: () => getMailBusiness(page, size) });
-  return { businessData, businessLoading, businessError };
+    data: mailData,
+    isLoading: mailLoading,
+    isError: mailError,
+  } = useQuery({
+    queryKey: ['emails', page, size, job],
+    queryFn: () => getMail(page, size, job),
+  });
+  return { mailData, mailLoading, mailError };
 };
