@@ -24,7 +24,10 @@ export const AuthPage = () => {
         name: data.name,
         email: data.email,
       });
-
+      sessionStorage.setItem('authToken', data.accessToken);
+      sessionStorage.setItem('name', data.name);
+      sessionStorage.setItem('picture', data.picture);
+      sessionStorage.setItem('email', data.email);
       navigate(RouterPath.home);
     } else if (error) {
       console.error('Login failed:', error);
