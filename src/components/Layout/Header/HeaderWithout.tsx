@@ -23,7 +23,6 @@ export const Header = () => {
       subject: '',
       receiver: '',
     });
-    window.location.reload();
   };
 
   const { authInfo } = useAuth();
