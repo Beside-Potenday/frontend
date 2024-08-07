@@ -72,7 +72,7 @@ export const TestersBox = () => {
                 templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }}
                 gap={{ base: '20px', md: '0' }}
               >
-                <GridItem colSpan={{ base: 1, md: 2 }} marginLeft={'60px'}>
+                <GridItem colSpan={{ base: 1, md: 2 }} marginLeft={'0px'}>
                   <AskList randomInput={randomInput} />
                 </GridItem>
                 <GridItem
@@ -83,6 +83,7 @@ export const TestersBox = () => {
                   flexDirection={{ base: 'column', md: 'column' }}
                   position={'relative'}
                   width={'fit-content'}
+                  marginLeft={'-10px'}
                 >
                   <Buttons
                     handleListUniv={handleListUniv}

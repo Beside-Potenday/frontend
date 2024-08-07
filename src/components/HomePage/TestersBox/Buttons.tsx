@@ -127,7 +127,7 @@ const ButtonsWrapper = styled.div`
   width: 95px;
   height: 265px;
   border-radius: 132.5px;
-  background: #ffffff;
+  background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -136,8 +136,8 @@ const ButtonsWrapper = styled.div`
   padding: 20px 0;
   z-index: 2;
   position: absolute;
-  top: 50%;
-  left: 20%;
+  top: 60%;
+  left: 5%;
 `;
 
 const ButtonContainer = styled.div`

@@ -39,7 +39,7 @@ export const Header = ({ isActive, onIsActive }: HeaderProps) => {
 };
 
 const Student = styled.div<StudentProps>`
-  margin-left: 167px;
+  margin-left: 70px;
   cursor: pointer;
   box-shadow: ${(props) => (props.isActive === 'univ' ? '0 4px 0 0 #6AB9F2' : 'none')};
   position: relative;
