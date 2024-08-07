@@ -24,6 +24,7 @@ export const Layout = () => {
 const Wrapper = styled.div`
   width: 100%;
   position: relative;
+  padding-top: ${HEADER_HEIGHT};
 `;
 
 const UpperImageWrapper = styled.div`
