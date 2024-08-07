@@ -1,35 +1,51 @@
 import { AuthContextType, AuthInfo } from '@/types';
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
 
-  const updateAuthInfo = (auth: AuthInfo) => {
-    if (auth) {
-      setAuthInfo(auth);
-    }
-  };
+  const updateAuthInfo = useCallback((auth: AuthInfo) => {
+    setAuthInfo((prevAuth) => {
+      if (JSON.stringify(prevAuth) !== JSON.stringify(auth)) {
+        return auth;
+      }
+      return prevAuth;
+    });
+  }, []);
 
-  const handleAuthInfo = () => {
+  const handleAuthInfo = useCallback(() => {
     const authToken = sessionStorage.getItem('accessToken');
     if (authToken) {
       const email = sessionStorage.getItem('email') || '';
       const name = sessionStorage.getItem('name') || '';
       const picture = sessionStorage.getItem('picture') || '';
-      setAuthInfo({
+      updateAuthInfo({
         accessToken: authToken,
-        email: email,
-        name: name,
-        picture: picture,
+        email,
+        name,
+        picture,
       });
+    } else {
+      setAuthInfo(undefined);
     }
-  };
+  }, [updateAuthInfo]);
 
   useEffect(() => {
     handleAuthInfo();
-  });
+
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'accessToken') {
+        handleAuthInfo();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [handleAuthInfo]);
 
   return (
     <AuthContext.Provider value={{ authInfo, updateAuthInfo }}>{children}</AuthContext.Provider>
