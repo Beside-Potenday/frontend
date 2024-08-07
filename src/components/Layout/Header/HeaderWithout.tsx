@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { breakpoints } from '@/styles/variants';
 import { useMail } from '@/Provider/MailContext';
@@ -13,6 +13,7 @@ export const Header = () => {
     throw new Error('MailContext not found');
   }
   const { handleMail } = mailContext;
+  const navigate = useNavigate();
 
   const handleMailInput = () => {
     handleMail({
@@ -23,6 +24,7 @@ export const Header = () => {
       subject: '',
       receiver: '',
     });
+    navigate(RouterPath.mail);
   };
 
   const { authInfo } = useAuth();
@@ -46,9 +48,7 @@ export const Header = () => {
           <Logo src="/images/logo.svg" />
         </LogoLink>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Link to={RouterPath.mail} style={{ display: 'flex', alignItems: 'center' }}>
-            <AiButton onClick={handleMailInput}>AI 메일 생성하기</AiButton>
-          </Link>
+          <AiButton onClick={handleMailInput}>AI 메일 생성하기</AiButton>
         </div>
       </Container>
     </Wrapper>
