@@ -7,5 +7,6 @@ export const RouterPath = {
   contact: '/contact',
   login: '/login',
   mypage: '/mypage',
+  auth: '/auth',
   notFound: '*',
 };
