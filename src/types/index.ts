@@ -33,10 +33,10 @@ export interface Question {
 export type MailInput = mailSendUniv | mailSendBusiness;
 
 export interface LoginResponse {
-  accessToken: String;
-  name: String;
-  picture: String;
-  email: String;
+  accessToken: string;
+  name: string;
+  picture: string;
+  email: string;
 }
 
 export type AuthInfo = LoginResponse;
