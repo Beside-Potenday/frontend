@@ -60,3 +60,9 @@ export interface MailGetData {
   day: string;
   job: string;
 }
+
+export interface MailListResponse {
+  subjet: string;
+  body: string;
+  createDate: string;
+}
