@@ -62,7 +62,7 @@ export interface MailGetData {
 }
 
 export interface MailListResponse {
-  subjet: string;
-  body: string;
-  createDate: string;
+  totalPages: number;
+  content: [{ subjet: string; body: string; createDate: string }];
+  pageable: { pageNumber: number; pageSize: number };
 }
