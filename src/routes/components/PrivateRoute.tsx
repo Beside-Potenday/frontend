@@ -3,10 +3,12 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { getDynamicPath } from '../path';
 
 export const PrivateRoute = () => {
-  const authInfo = useAuth();
+  const { authInfo } = useAuth();
 
   if (!authInfo) {
     return <Navigate to={getDynamicPath.login()} />;
+  } else {
+    console.log(authInfo.accessToken);
   }
 
   return <Outlet />;
