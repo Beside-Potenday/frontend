@@ -10,3 +10,10 @@ export const RouterPath = {
   auth: '/auth',
   notFound: '*',
 };
+
+export const getDynamicPath = {
+  login: (redirect?: string) => {
+    const currentRedirect = redirect ?? window.location.href;
+    return `${RouterPath.login}?redirect=${encodeURIComponent(currentRedirect)}`;
+  },
+};
