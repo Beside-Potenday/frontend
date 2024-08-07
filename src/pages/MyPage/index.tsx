@@ -18,13 +18,13 @@ export const MyPage = () => {
       >
         <GridItem backgroundColor={'yellow'}>
           <h2>User Information</h2>
-          <h1>{authInfo?.email}</h1>
+          <h1>{authInfo?.name}</h1>
           <h1>{authInfo?.email}</h1>
           <img src={authInfo?.picture} alt="사용자 프로필" />
         </GridItem>
         <GridItem backgroundColor={'blue'}>
-          <h2>User History</h2>
-          {/* user history */}
+          <h2>메일 내역</h2>
+          
         </GridItem>
       </Grid>
     </Wrapper>

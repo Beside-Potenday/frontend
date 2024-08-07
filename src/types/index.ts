@@ -45,3 +45,18 @@ export interface AuthContextType {
   authInfo?: AuthInfo;
   updateAuthInfo: (auth: AuthInfo) => void;
 }
+
+export interface MailPostData {
+  subject: string;
+  body: string;
+  job: string;
+}
+
+export interface MailGetData {
+  sender: string;
+  body: string;
+  year: string;
+  month: string;
+  day: string;
+  job: string;
+}
