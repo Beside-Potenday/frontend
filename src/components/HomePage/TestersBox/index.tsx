@@ -52,6 +52,7 @@ export const TestersBox = () => {
             h="100%"
             templateRows={{ base: 'auto 1fr', md: '106px 780px' }}
             templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(1, 1fr)' }}
+            gap={5}
           >
             <MedeaItems
               rowSpan={1}
@@ -104,6 +105,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  margin-top: 20px;
 `;
 
 const LogoWrapper = styled.div`
