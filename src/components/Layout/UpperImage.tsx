@@ -1,60 +1,136 @@
-import { Box, Text, VStack } from '@chakra-ui/react';
+import { Image, Box, Text, VStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const UpperImage = () => {
+  const scrollDown = () => {
+    window.scrollBy({
+      top: window.innerHeight,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <StyledWrapper>
-      <VStack spacing={4} align="flex-start">
-        <LeftBubble>
-          <Text fontSize="lg" fontWeight="bold">
-            메일 작성 한번 할 때마다 어떻게 써야할지 나만 막막해?
-          </Text>
-        </LeftBubble>
-        <LeftBubble>
-          <Text fontSize="lg">별거 아닌 것 같은데 막상 쓰려니 왜 이렇게 까다로운지...😢</Text>
-        </LeftBubble>
-        <RightBubble>
-          <Text fontSize="lg">알파메일로 메일 작성하면 1분도 안걸린다고?</Text>
-        </RightBubble>
-        <RightBubble>
-          <Text fontSize="lg">교수님께 보내는 메일..이제 수백번 안고쳐도 된다고!</Text>
-        </RightBubble>
-        <RightBubble>
-          <Text fontSize="lg">
-            누구나 일잘러가 될 수 있는 업무툴, 알파메일이 있으면 칼퇴도 문제없다
-          </Text>
-        </RightBubble>
-      </VStack>
+      <ImageContainer>
+        <VStack spacing={4} align="stretch">
+          <LeftBubble>
+            <BubbleText>메일 작성 한번 할 때마다 어떻게 써야할지 나만 막막해?</BubbleText>
+          </LeftBubble>
+          <LeftBubble>
+            <BubbleText>별거 아닌 것 같은데 막상 쓰려니 왜 이렇게 까다로운지...😢</BubbleText>
+          </LeftBubble>
+          <CenterTextFirst>메일 작성에 대한 고민은 덜고</CenterTextFirst>
+          <CenterTextSecond>더 중요한 일에 집중하세요!</CenterTextSecond>
+          <RightBubble>
+            <BubbleText>알파메일로 메일 작성하면 1분도 안걸린다고?</BubbleText>
+          </RightBubble>
+          <RightBubble>
+            <BubbleText>교수님께 보내는 메일..이제 수백번 안고쳐도 된다고!</BubbleText>
+          </RightBubble>
+          <RightBubble>
+            <BubbleText>
+              누구나 일잘러가 될 수 있는 업무툴, 알파메일이 있으면 칼퇴도 문제없다😆
+            </BubbleText>
+          </RightBubble>
+        </VStack>
+      </ImageContainer>
+      <ArrowContainer onClick={scrollDown}>
+        <ArrowIcon src="/images/downArrow.svg" alt="아래로 이동" />
+      </ArrowContainer>
     </StyledWrapper>
   );
 };
 
+// 스타일 정의 부분
 const StyledWrapper = styled(Box)`
   width: 100%;
-  height: 400px;
-  background-image: url('/images/upper_image.jpg');
-  background-size: cover;
+  height: 100%;
+  background: #e5efff;
+  background-image: url('/images/upper_image.svg');
+  background-size: 90% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImageContainer = styled(Box)`
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  transform: translateY(-80px);
+`;
+
+const ArrowContainer = styled(Box)`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: -90px; /* 화살표의 상단 마진 */
+`;
+
+const ArrowIcon = styled(Image)`
+  width: 100%;
+  height: auto;
 `;
 
 const Bubble = styled(Box)`
-  max-width: 60%;
-  padding: 12px 16px;
-  border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 8px;
+  width: auto;
+  padding: 14px;
+  border-radius: 39px;
+  background-color: #ffffffb3; /* 70% 불투명한 흰색 */
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
 `;
 
 const LeftBubble = styled(Bubble)`
-  background: rgba(255, 255, 255, 0.8);
   align-self: flex-start;
+  margin-left: -450px;
 `;
 
 const RightBubble = styled(Bubble)`
-  background: rgba(0, 123, 255, 0.8);
-  color: white;
   align-self: flex-end;
+  margin-right: -450px;
+`;
+
+const CenterTextFirst = styled(Text)`
+  width: 100%;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 800; /* ExtraBold */
+  font-size: 40px;
+  line-height: 1.6;
+  letter-spacing: -2.5%;
+  color: #3c3c3f;
+  margin-top: 20px;
+  margin-bottom: -15px; /* 간격 조정 */
+`;
+
+const CenterTextSecond = styled(Text)`
+  width: 100%;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 800; /* ExtraBold */
+  font-size: 40px;
+  line-height: 1.6;
+  letter-spacing: -2.5%;
+  color: #3c3c3f;
+  margin-top: -10px; /* 간격 조정 */
+  margin-bottom: -35px;
+`;
+
+const BubbleText = styled(Text)`
+  font-family: Inter, sans-serif;
+  font-weight: 600; /* Semi Bold */
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: -2.5%;
+  color: #8e8e93;
 `;
