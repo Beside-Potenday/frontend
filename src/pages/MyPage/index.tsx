@@ -12,43 +12,27 @@ import {
   Button,
   Spinner,
 } from '@chakra-ui/react';
-import { useGetMailBusiness } from '@/api/hooks/Mail/useGetMailBusiness';
-import { useGetMailUniv } from '@/api/hooks/Mail/useGetMailUniv';
+import { useGetMail } from '@/api/hooks/Mail/useGetMail';
 import { useEffect, useState } from 'react';
 
 export const MyPage = () => {
   const { authInfo } = useAuth();
 
   const [isJob, setIsJob] = useState('univ');
+  const [page, setPage] = useState(0);
 
-  const [univPage, setUnivPage] = useState(0);
-  const [businessPage, setBusinessPage] = useState(0);
-
-  const { univData, univLoading, univError } = useGetMailUniv(univPage, 5);
-  const { businessData, businessLoading, businessError } = useGetMailBusiness(businessPage, 5);
+  const { mailData, mailLoading, mailError } = useGetMail(page, 5, isJob);
 
   useEffect(() => {
-    if (isJob === 'univ') {
-      setUnivPage(0);
-    } else {
-      setBusinessPage(0);
-    }
+    setPage(0);
   }, [isJob]);
 
   const handlePrev = () => {
-    if (isJob === 'univ') {
-      setUnivPage((prev) => Math.max(prev - 1, 0));
-    } else {
-      setBusinessPage((prev) => Math.max(prev - 1, 0));
-    }
+    setPage((prev) => Math.max(prev - 1, 0));
   };
 
   const handleNext = () => {
-    if (isJob === 'univ') {
-      setUnivPage((prev) => (univData && !univData.totalPages ? prev + 1 : prev));
-    } else {
-      setBusinessPage((prev) => (businessData && !businessData.totalPages ? prev + 1 : prev));
-    }
+    setPage((prev) => (mailData && mailData.totalPages > prev + 1 ? prev + 1 : prev));
   };
 
   return (
@@ -65,50 +49,19 @@ export const MyPage = () => {
         <GridItem bg="white" p={6} borderRadius="md" boxShadow="md">
           <VStack align="start" spacing={6} w="100%">
             <Heading size="md">메일 내역</Heading>
-            <Button
-              onClick={() => {
-                setIsJob('univ');
-                setUnivPage(0); // 페이지를 0으로 초기화
-              }}
-              disabled={isJob === 'univ'}
-            >
+            <Button onClick={() => setIsJob('univ')} disabled={isJob === 'univ'}>
               대학생
             </Button>
-            <Button
-              onClick={() => {
-                setIsJob('business');
-                setBusinessPage(0); // 페이지를 0으로 초기화
-              }}
-              disabled={isJob === 'business'}
-            >
+            <Button onClick={() => setIsJob('business')} disabled={isJob === 'business'}>
               직장인
             </Button>
 
-            {isJob === 'univ' ? (
-              univLoading ? (
-                <Spinner />
-              ) : univError ? (
-                <Text color="red.500">오류가 발생했습니다.</Text>
-              ) : (
-                univData?.content.map((email, index) => (
-                  <Box key={email.createDate} w="100%">
-                    <HStack justify="space-between" mb={2}>
-                      <Text fontWeight="bold">{email.subject}</Text>
-                      <Text fontSize="sm" color="gray.500">
-                        {email.createDate}
-                      </Text>
-                    </HStack>
-                    <Text noOfLines={2}>{email.body}</Text>
-                    <Divider mt={2} />
-                  </Box>
-                ))
-              )
-            ) : businessLoading ? (
+            {mailLoading ? (
               <Spinner />
-            ) : businessError ? (
+            ) : mailError ? (
               <Text color="red.500">오류가 발생했습니다.</Text>
             ) : (
-              businessData?.content.map((email, index) => (
+              mailData?.content.map((email, index) => (
                 <Box key={email.createDate} w="100%">
                   <HStack justify="space-between" mb={2}>
                     <Text fontWeight="bold">{email.subject}</Text>
@@ -123,20 +76,10 @@ export const MyPage = () => {
             )}
 
             <HStack mt={4} justify="space-between" w="100%">
-              <Button
-                onClick={handlePrev}
-                disabled={isJob === 'univ' ? univPage === 0 : businessPage === 0}
-              >
+              <Button onClick={handlePrev} disabled={page === 0}>
                 이전
               </Button>
-              <Button
-                onClick={handleNext}
-                disabled={
-                  isJob === 'univ'
-                    ? !univData || univData.totalPages <= univPage + 1
-                    : !businessData || businessData.totalPages <= businessPage + 1
-                }
-              >
+              <Button onClick={handleNext} disabled={!mailData || mailData.totalPages <= page + 1}>
                 다음
               </Button>
             </HStack>
