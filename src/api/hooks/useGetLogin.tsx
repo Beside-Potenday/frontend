@@ -12,6 +12,7 @@ export const getLoginPath = (code: string) => `${BASE_URL}/google/login/redirect
 export const getLogin = async ({ code }: AuthResponse): Promise<LoginResponse> => {
   try {
     const response = await axios.get<LoginResponse>(getLoginPath(code));
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);

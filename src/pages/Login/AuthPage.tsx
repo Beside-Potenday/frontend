@@ -14,6 +14,7 @@ export const AuthPage = () => {
 
   useEffect(() => {
     if (data && !error) {
+      console.log('data' + data);
       sessionStorage.setItem('authToken', data.accessToken);
       navigate(RouterPath.home);
     }
