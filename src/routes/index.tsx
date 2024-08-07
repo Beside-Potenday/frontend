@@ -11,6 +11,7 @@ import { Login } from '@/pages/Login';
 import { MyPage } from '@/pages/MyPage';
 import { PrivateRoute } from './components/PrivateRoute';
 import { Navigate } from 'react-router-dom';
+import { AuthPage } from '@/pages/Login/AuthPage';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: RouterPath.login,
     element: <Login />,
+  },
+  {
+    path: RouterPath.auth,
+    element: <AuthPage />,
   },
 ]);
 
