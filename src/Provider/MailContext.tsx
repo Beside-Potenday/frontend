@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
-import { MailInput } from '@/types';
+import { MailPostData, MailInput } from '@/types';
 
 export type mailSendUniv = {
   sender: string;
@@ -27,6 +27,8 @@ interface MailContextProps {
   onIsActive: (state: 'univ' | 'business') => void;
   resetMailInputUniv: () => void;
   resetMailInputBusiness: () => void;
+  mailResult: MailPostData;
+  handleMailResult: (mailResult: MailPostData) => void;
 }
 
 export const MailContext = createContext<MailContextProps | null>(null);
@@ -41,6 +43,14 @@ export const MailProvider = ({ children }: { children: ReactNode }) => {
     subject: '',
     receiver: '',
   });
+  const [mailResult, setMailResult] = useState<MailPostData>({
+    subject: '',
+    body: '',
+  });
+
+  const handleMailResult = (mailResult: MailPostData) => {
+    setMailResult(mailResult);
+  };
 
   const handleMail = (mailBox: MailInput) => {
     setMailInput(mailBox);
@@ -86,6 +96,8 @@ export const MailProvider = ({ children }: { children: ReactNode }) => {
         onIsActive,
         resetMailInputUniv,
         resetMailInputBusiness,
+        mailResult,
+        handleMailResult,
       }}
     >
       {children}

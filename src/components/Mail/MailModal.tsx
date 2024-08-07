@@ -30,6 +30,8 @@ import {
   warningTextsBusiness,
   warningTextsUniv,
 } from './MailModalData';
+import { useAuth } from '@/Provider/Auth';
+import { usePostMail } from '@/api/hooks/usePostMail';
 
 interface MailModalProps {
   isOpen: boolean;
@@ -51,7 +53,11 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isHide, setIsHide] = useState(false);
   const [firstInput, setFirstInput] = useState('');
-  const { isActive } = useMail();
+  const { isActive, handleMailResult, mailResult } = useMail();
+  const [noError, setNoError] = useState(false);
+  const { authInfo } = useAuth();
+
+  const { mutate: mailmutate } = usePostMail();
 
   const currentcurrentInputNames =
     isActive === 'univ' ? currentInputNames : currentInputNamesBusiness;
@@ -102,12 +108,18 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
           setContent(data.content || '메일이 성공적으로 생성되었습니다.');
           setIsSubmitted(true);
           setIsLoading(false);
+          setNoError(true);
+          handleMailResult({
+            subject: data.title,
+            body: data.content,
+          });
         },
         onError: (error) => {
           setTitle('메일 생성 실패');
           setContent('메일 생성 중 오류가 발생했습니다.');
           setIsSubmitted(true);
           setIsLoading(false);
+          setNoError(false);
         },
       },
     );
@@ -139,12 +151,19 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
           setContent(data.content || '메일이 성공적으로 생성되었습니다.');
           setIsSubmitted(true);
           setIsLoading(false);
+          setNoError(true);
+
+          handleMailResult({
+            subject: data.title,
+            body: data.content,
+          });
         },
         onError: (error) => {
           setTitle('메일 생성 실패');
           setContent('메일 생성 중 오류가 발생했습니다.');
           setIsSubmitted(true);
           setIsLoading(false);
+          setNoError(false);
         },
       },
     );
@@ -189,6 +208,14 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
       }
       await handleNextClick(inputValue);
       return;
+    }
+  };
+
+  const handlePutMail = () => {
+    if (authInfo) {
+      mailmutate({ ...mailResult });
+    } else {
+      alert('로그인 후 메일을 저장 할 수 있습니다.');
     }
   };
 
@@ -336,6 +363,13 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
               </StyledButton>
             )}
           </CustomModalFooter>
+        )}
+        {isSubmitted && noError && (
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={handlePutMail}>
+              저장하기
+            </Button>
+          </ModalFooter>
         )}
       </CustomModalContent>
     </CustomModal>
