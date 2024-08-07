@@ -19,6 +19,8 @@ const createApiClient = () => {
 
 const getMailUniv = async (page: number, size: number) => {
   try {
+    console.log('univ', page, size);
+
     const apiClient = createApiClient();
     const response = await apiClient.get<MailListResponse>(getMailPath(page, size));
     return response.data;
