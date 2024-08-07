@@ -112,6 +112,7 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
           handleMailResult({
             subject: data.title,
             body: data.content,
+            job: 'univ',
           });
         },
         onError: (error) => {
@@ -156,6 +157,7 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
           handleMailResult({
             subject: data.title,
             body: data.content,
+            job: 'business',
           });
         },
         onError: (error) => {

@@ -49,6 +49,7 @@ export interface AuthContextType {
 export interface MailPostData {
   subject: string;
   body: string;
+  job: string;
 }
 
 export interface MailGetData {
