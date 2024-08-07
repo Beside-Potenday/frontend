@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BASE_URL } from '..';
 import { useMutation } from '@tanstack/react-query';
 
-export const postMailPath = () => `${BASE_URL}/save-mail`;
+export const postMailPath = () => `${BASE_URL}/save-email`;
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
