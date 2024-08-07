@@ -127,8 +127,6 @@ const ButtonsWrapper = styled.div`
   width: 95px;
   height: 265px;
   border-radius: 132.5px;
-  background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -136,8 +134,15 @@ const ButtonsWrapper = styled.div`
   padding: 20px 0;
   z-index: 2;
   position: absolute;
-  top: 60%;
+  top: 10%;
   left: 5%;
+  background-clip: padding-box;
+
+  /* Using border and pseudo-element for gradient border */
+  border: 1px solid transparent;
+  background-image: linear-gradient(white, white), linear-gradient(to right, #6ab9f2, #7a89f0);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
 `;
 
 const ButtonContainer = styled.div`
@@ -152,11 +157,15 @@ const ExampleChangeIcon = styled.span`
   width: 24px;
   height: 24px;
   background-image: url('/images/exampleChangeIcon.svg');
-  background-size: cover;
+  background-size: contain; /* 이미지의 크기를 유지하면서 전체를 보여줌 */
+  background-position: center; /* 이미지를 중앙에 배치 */
+  background-repeat: no-repeat; /* 이미지를 반복하지 않음 */
   transition: background-image 0.3s ease;
 `;
 
 const ExampleButton = styled(Button)`
+  width: 90px;
+  margin-top: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -178,11 +187,14 @@ const MakeMailIcon = styled.span`
   width: 24px;
   height: 24px;
   background-image: url('/images/makeMailIcon.svg');
-  background-size: cover;
+  background-size: contain; /* 이미지의 크기를 유지하면서 전체를 보여줌 */
+  background-position: center; /* 이미지를 중앙에 배치 */
+  background-repeat: no-repeat; /* 이미지를 반복하지 않음 */
   transition: background-image 0.3s ease;
 `;
 
 const MailButton = styled(Button)`
+  width: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;

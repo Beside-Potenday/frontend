@@ -5,7 +5,7 @@ export const ContentsInfo = () => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Img src="/images/contentsInfoLogo.svg" alt="Logo" mb={-2} />
+        <Img src="/images/contentsInfoLogo.svg" alt="Logo" mb={5} />
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
           {cardContents.map((content, index) => (
             <StyledGridItem key={index}>

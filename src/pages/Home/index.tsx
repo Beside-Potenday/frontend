@@ -1,7 +1,13 @@
+import { useEffect } from 'react';
 import { Contents } from '@/components/HomePage/Contents';
 import styled from '@emotion/styled';
 
+
 export const HomePage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Wrapper>
       <Contents />

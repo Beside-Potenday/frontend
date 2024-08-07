@@ -45,7 +45,7 @@ export const TestersBox = () => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Img src="/images/testerslogo.svg" style={{ marginBottom: '10px' }} />
+        <Img src="/images/testerslogo.svg" style={{ marginBottom: '-50px' }} />
         <ContentWrapper>
           <Grid
             w="100%"
