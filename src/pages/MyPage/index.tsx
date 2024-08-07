@@ -1,5 +1,4 @@
 import { useAuth } from '@/Provider/Auth';
-import { useMail } from '@/Provider/MailContext';
 import {
   Box,
   Grid,
@@ -10,12 +9,38 @@ import {
   Avatar,
   Heading,
   Divider,
+  Button,
+  Spinner,
 } from '@chakra-ui/react';
+import { useGetMailBusiness } from '@/api/hooks/Mail/useGetMailBusiness';
+import { useGetMailUniv } from '@/api/hooks/Mail/useGetMailUniv';
+import { useState } from 'react';
 
 export const MyPage = () => {
   const { authInfo } = useAuth();
 
-  const { isActive } = useMail();
+  const [isJob, setIsJob] = useState('univ');
+
+  const [univPage, setUnivPage] = useState(0);
+  const [businessPage, setBusinessPage] = useState(0);
+
+  const { univData, univLoading, univError } = useGetMailUniv(univPage, 5);
+  const { businessData, businessLoading, businessError } = useGetMailBusiness(businessPage, 5);
+  const handlePrev = () => {
+    if (isJob === 'univ') {
+      setUnivPage((prev) => Math.max(prev - 1, 0));
+    } else {
+      setBusinessPage((prev) => Math.max(prev - 1, 0));
+    }
+  };
+
+  const handleNext = () => {
+    if (isJob === 'univ') {
+      setUnivPage((prev) => (univData && !univData.totalPages ? prev + 1 : prev));
+    } else {
+      setBusinessPage((prev) => (businessData && !businessData.totalPages ? prev + 1 : prev));
+    }
+  };
 
   return (
     <Box w="100%" h="1000px" p={10}>
@@ -31,22 +56,81 @@ export const MyPage = () => {
         <GridItem bg="white" p={6} borderRadius="md" boxShadow="md">
           <VStack align="start" spacing={6} w="100%">
             <Heading size="md">메일 내역</Heading>
-            {[1, 2, 3].map((_, index) => (
-              <Box key={index} w="100%">
-                <HStack justify="space-between" mb={2}>
-                  <Text fontWeight="bold">메일 제목 {index + 1}</Text>
-                  <Text fontSize="sm" color="gray.500">
-                    2024년 08월 {25 - index}일
-                  </Text>
-                </HStack>
-                <Text noOfLines={2}>
-                  안녕하세요. 어떠고입니다. 더욱이 아니라, 외려를 써버 드러고자 애썼 드라며
-                  되었습니다. 저희 7시에서 5\u0013으로 되었을 채워오셔도 J배열 보펠브져덮이여 상환
-                  서업의 떼로작는 거커...
-                </Text>
-                <Divider mt={2} />
-              </Box>
-            ))}
+            <Button
+              onClick={() => {
+                setIsJob('univ');
+                setUnivPage(0); // 페이지를 0으로 초기화
+              }}
+              disabled={isJob === 'univ'}
+            >
+              대학생
+            </Button>
+            <Button
+              onClick={() => {
+                setIsJob('business');
+                setBusinessPage(0); // 페이지를 0으로 초기화
+              }}
+              disabled={isJob === 'business'}
+            >
+              직장인
+            </Button>
+
+            {isJob === 'univ' ? (
+              univLoading ? (
+                <Spinner />
+              ) : univError ? (
+                <Text color="red.500">오류가 발생했습니다.</Text>
+              ) : (
+                univData?.content.map((email, index) => (
+                  <Box key={email.createDate} w="100%">
+                    <HStack justify="space-between" mb={2}>
+                      <Text fontWeight="bold">{email.subjet}</Text>
+                      <Text fontSize="sm" color="gray.500">
+                        {email.createDate}
+                      </Text>
+                    </HStack>
+                    <Text noOfLines={2}>{email.body}</Text>
+                    <Divider mt={2} />
+                  </Box>
+                ))
+              )
+            ) : businessLoading ? (
+              <Spinner />
+            ) : businessError ? (
+              <Text color="red.500">오류가 발생했습니다.</Text>
+            ) : (
+              businessData?.content.map((email, index) => (
+                <Box key={email.createDate} w="100%">
+                  <HStack justify="space-between" mb={2}>
+                    <Text fontWeight="bold">{email.subjet}</Text>
+                    <Text fontSize="sm" color="gray.500">
+                      {email.createDate}
+                    </Text>
+                  </HStack>
+                  <Text noOfLines={2}>{email.body}</Text>
+                  <Divider mt={2} />
+                </Box>
+              ))
+            )}
+
+            <HStack mt={4} justify="space-between" w="100%">
+              <Button
+                onClick={handlePrev}
+                disabled={isJob === 'univ' ? univPage === 0 : businessPage === 0}
+              >
+                이전
+              </Button>
+              <Button
+                onClick={handleNext}
+                disabled={
+                  isJob === 'univ'
+                    ? !univData || univData.totalPages <= univPage + 1
+                    : !businessData || businessData.totalPages <= businessPage + 1
+                }
+              >
+                다음
+              </Button>
+            </HStack>
           </VStack>
         </GridItem>
       </Grid>
