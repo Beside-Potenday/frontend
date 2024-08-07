@@ -4,17 +4,21 @@ import { BASE_URL } from '../..';
 import { useMutation } from '@tanstack/react-query';
 
 export const postMailPath = () => `${BASE_URL}/save-email`;
-const token = sessionStorage.getItem('accessToken');
 
-const apiClient = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+const createApiClient = () => {
+  const token = sessionStorage.getItem('accessToken');
+
+  return axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 const postMail = async (mailInput: MailPostData) => {
   try {
+    const apiClient = createApiClient();
     const response = await apiClient.post<number>(postMailPath(), mailInput);
     return response.data;
   } catch (error) {
