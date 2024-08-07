@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useGetMailBusiness } from '@/api/hooks/Mail/useGetMailBusiness';
 import { useGetMailUniv } from '@/api/hooks/Mail/useGetMailUniv';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const MyPage = () => {
   const { authInfo } = useAuth();
@@ -26,6 +26,14 @@ export const MyPage = () => {
 
   const { univData, univLoading, univError } = useGetMailUniv(univPage, 5);
   const { businessData, businessLoading, businessError } = useGetMailBusiness(businessPage, 5);
+
+  useEffect(() => {
+    if (isJob === 'univ') {
+      setUnivPage(0);
+    } else {
+      setBusinessPage(0);
+    }
+  }, [isJob]);
 
   const handlePrev = () => {
     if (isJob === 'univ') {
