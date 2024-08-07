@@ -26,6 +26,7 @@ export const MyPage = () => {
 
   const { univData, univLoading, univError } = useGetMailUniv(univPage, 5);
   const { businessData, businessLoading, businessError } = useGetMailBusiness(businessPage, 5);
+
   const handlePrev = () => {
     if (isJob === 'univ') {
       setUnivPage((prev) => Math.max(prev - 1, 0));
@@ -84,7 +85,7 @@ export const MyPage = () => {
                 univData?.content.map((email, index) => (
                   <Box key={email.createDate} w="100%">
                     <HStack justify="space-between" mb={2}>
-                      <Text fontWeight="bold">{email.subjet}</Text>
+                      <Text fontWeight="bold">{email.subject}</Text>
                       <Text fontSize="sm" color="gray.500">
                         {email.createDate}
                       </Text>
@@ -102,7 +103,7 @@ export const MyPage = () => {
               businessData?.content.map((email, index) => (
                 <Box key={email.createDate} w="100%">
                   <HStack justify="space-between" mb={2}>
-                    <Text fontWeight="bold">{email.subjet}</Text>
+                    <Text fontWeight="bold">{email.subject}</Text>
                     <Text fontSize="sm" color="gray.500">
                       {email.createDate}
                     </Text>
