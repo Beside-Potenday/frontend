@@ -1,15 +1,27 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Box,
+  Grid,
+  GridItem,
+} from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { Grid, GridItem, Box } from '@chakra-ui/react';
 import { Header } from '@/components/Mail/Header';
 import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
 import { breakpoints } from '@/styles/variants';
-import { useDisclosure } from '@chakra-ui/react';
 
 export const MailPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isAlertOpen, setAlertOpen] = useState(true);
   const mailContext = useMail();
   const { isActive } = useMail();
 
@@ -33,8 +45,8 @@ export const MailPage = () => {
   };
 
   useEffect(() => {
-    onOpen();
-  }, [onOpen]);
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Wrapper>
@@ -94,7 +106,32 @@ export const MailPage = () => {
         </ContentWrapper>
       </LogoWrapper>
       <AnimatedMailModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <CustomAlert isOpen={isAlertOpen} onClose={() => setAlertOpen(false)} />
     </Wrapper>
+  );
+};
+
+interface CustomAlertProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const CustomAlert: React.FC<CustomAlertProps> = ({ isOpen, onClose }) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>✉️알파메일이 처음이신가요✉️</ModalHeader>
+        <ModalBody>
+          상단바에서 대학생, 직장인 중 해당되는 것을 눌러 메일을 생성해봐요!
+        </ModalBody>
+        <ModalFooter>
+          <Button colorScheme="blue" onClick={onClose}>
+            닫기
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

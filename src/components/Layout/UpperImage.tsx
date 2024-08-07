@@ -1,10 +1,11 @@
-import { Image, Box, Text, VStack } from '@chakra-ui/react';
+import { Image, Box, Text, VStack, keyframes, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const UpperImage = () => {
   const scrollDown = () => {
+    const scrollAmount = window.innerHeight - window.scrollY;
     window.scrollBy({
-      top: window.innerHeight,
+      top: scrollAmount,
       behavior: 'smooth',
     });
   };
@@ -85,7 +86,7 @@ const ArrowContainer = styled(Box)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-top: -90px; /* 화살표의 상단 마진 */
+  margin-top: -120px; /* 화살표의 상단 마진 */
   z-index: 2;
 `;
 
@@ -94,15 +95,30 @@ const ArrowIcon = styled(Image)`
   height: auto;
 `;
 
-const Bubble = styled(Box)`
-  width: auto;
-  padding: 14px;
-  border-radius: 39px;
-  background-color: #ffffffb3; /* 70% 불투명한 흰색 */
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
+const float = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 `;
+
+const Bubble = chakra(Box, {
+  baseStyle: {
+    width: 'auto',
+    padding: '14px',
+    borderRadius: '39px',
+    backgroundColor: '#ffffffb3', // 70% 불투명한 흰색
+    marginBottom: '5px',
+    display: 'flex',
+    alignItems: 'center',
+    animation: `${float} 3s ease-in-out infinite`, // 애니메이션 적용
+  },
+});
 
 const LeftBubble = styled(Bubble)`
   align-self: flex-start;

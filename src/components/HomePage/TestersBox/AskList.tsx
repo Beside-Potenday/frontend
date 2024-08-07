@@ -19,7 +19,7 @@ export const AskList = ({ randomInput }: AskListProps) => {
   useEffect(() => {
     if (isActive === 'business' && 'company' in randomInput) {
       setQuestions([
-        { ask: '메일 작성 목적을 입력해 주세요', input: randomInput.content },
+        { ask: '메일 작성 목적을 선택해 주세요', input: randomInput.content },
         { ask: '보내는 사람의 이름을 입력해 주세요', input: randomInput.sender },
         { ask: '소속 회사명을 입력해 주세요', input: randomInput.company },
         { ask: '소속 부서를 입력해 주세요', input: randomInput.department },
@@ -28,7 +28,7 @@ export const AskList = ({ randomInput }: AskListProps) => {
       ]);
     } else if (isActive !== 'business' && 'studentId' in randomInput) {
       setQuestions([
-        { ask: '메일 작성 목적을 입력해 주세요', input: randomInput.content },
+        { ask: '메일 작성 목적을 선택해 주세요', input: randomInput.content },
         { ask: '보내는 사람의 이름을 입력해 주세요', input: randomInput.sender },
         { ask: '보내는 사람의 학과를 입력해 주세요', input: randomInput.department },
         { ask: '보내는 사람의 학번을 입력해 주세요', input: randomInput.studentId },
