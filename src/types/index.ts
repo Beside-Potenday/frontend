@@ -60,3 +60,9 @@ export interface MailGetData {
   day: string;
   job: string;
 }
+
+export interface MailListResponse {
+  totalPages: number;
+  content: [{ subjet: string; body: string; createDate: string }];
+  pageable: { pageNumber: number; pageSize: number };
+}
