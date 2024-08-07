@@ -12,7 +12,7 @@ const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
     Authorization: `Bearer ${token}`,
-    job: `univ`,
+    Job: `univ`,
   },
 });
 
