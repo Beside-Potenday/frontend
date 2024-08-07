@@ -1,6 +1,6 @@
 import { MailPostData } from '@/types';
 import axios from 'axios';
-import { BASE_URL } from '..';
+import { BASE_URL } from '../..';
 import { useMutation } from '@tanstack/react-query';
 
 export const postMailPath = () => `${BASE_URL}/save-email`;
