@@ -1,13 +1,16 @@
+import { useAuth } from '@/Provider/Auth';
 import { Grid, GridItem } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const MyPage = () => {
+  const { authInfo } = useAuth();
+
   return (
     <Wrapper>
       <Grid
         h="100%"
         w="100%"
-        templateColumns="repeat(2, 1fr)"
+        templateColumns="0.5fr 1fr"
         gap={20}
         p={10}
         background="gray.50"
@@ -15,7 +18,9 @@ export const MyPage = () => {
       >
         <GridItem backgroundColor={'yellow'}>
           <h2>User Information</h2>
-          {/* user information */}
+          <h1>{authInfo?.email}</h1>
+          <h1>{authInfo?.email}</h1>
+          <img src={authInfo?.picture} alt="사용자 프로필" />
         </GridItem>
         <GridItem backgroundColor={'blue'}>
           <h2>User History</h2>
