@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleAuthInfo = () => {
-    const authToken = sessionStorage.getItem('authToken');
+    const authToken = sessionStorage.getItem('accessToken');
     if (authToken) {
       const email = sessionStorage.getItem('email') || '';
       const name = sessionStorage.getItem('name') || '';
