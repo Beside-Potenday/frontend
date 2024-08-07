@@ -46,6 +46,7 @@ export const MailProvider = ({ children }: { children: ReactNode }) => {
   const [mailResult, setMailResult] = useState<MailPostData>({
     subject: '',
     body: '',
+    job: '',
   });
 
   const handleMailResult = (mailResult: MailPostData) => {
