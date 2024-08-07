@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { breakpoints } from '@/styles/variants';
 import { useMail } from '@/Provider/MailContext';
+import { RouterPath } from '@/routes/path';
+import { useAuth } from '@/Provider/Auth';
 
 const scrollToSection = (sectionId: string) => {
   const element = document.getElementById(sectionId);
@@ -31,11 +33,24 @@ export const MainHeader = () => {
     });
   };
 
+  const { authInfo } = useAuth();
+
   return (
     <Wrapper>
       <Container>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>Login</div>
-        <LogoLink to={'/'}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          {authInfo ? (
+            <Link to={RouterPath.mypage}>
+              <AuthWrapper>My Page</AuthWrapper>
+            </Link>
+          ) : (
+            <Link to={RouterPath.login}>
+              <AuthWrapper>Login</AuthWrapper>
+            </Link>
+          )}
+        </div>
+
+        <LogoLink to={RouterPath.home}>
           <Logo src="/images/logo.svg" />
         </LogoLink>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -43,7 +58,7 @@ export const MainHeader = () => {
             <MidWrapper onClick={() => scrollToSection('section2')}> 서비스 체험</MidWrapper>
             <MidWrapper onClick={() => scrollToSection('section3')}> 기능 살펴보기</MidWrapper>
           </div>
-          <Link to={'/mail'} style={{ display: 'flex', alignItems: 'center' }}>
+          <Link to={RouterPath.mail} style={{ display: 'flex', alignItems: 'center' }}>
             <AiButton onClick={handleMailInput}>AI 메일 생성하기</AiButton>
           </Link>
         </div>
@@ -128,4 +143,8 @@ const LogoLink = styled(Link)`
   @media (max-width: ${breakpoints.md}) {
     margin-left: 100px;
   }
+`;
+
+const AuthWrapper = styled.div`
+  cursor: pointer;
 `;

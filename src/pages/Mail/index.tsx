@@ -45,6 +45,7 @@ export const MailPage = () => {
             h="100%"
             templateRows={{ base: 'auto auto auto', md: '106px 780px' }}
             templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(1, 1fr)' }}
+            gap={2}
           >
             <MedeaItems
               rowSpan={{ base: 1, md: 1 }}
@@ -61,7 +62,6 @@ export const MailPage = () => {
                 onClose={closeModal}
               />
             </MedeaItems>
-
             <GridItem rowSpan={{ base: 2, md: 1 }}>
               <Grid
                 templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}

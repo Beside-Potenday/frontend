@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
-import { Header, HEADER_HEIGHT } from './Header';
+import { Header, HEADER_HEIGHT } from './Header/HeaderWithout';
 
 export const NoFooterLayout = () => {
   return (

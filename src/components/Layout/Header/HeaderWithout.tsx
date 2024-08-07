@@ -3,14 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { breakpoints } from '@/styles/variants';
 import { useMail } from '@/Provider/MailContext';
-
-const scrollToSection = (sectionId: string) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    const elementPosition = element.getBoundingClientRect().top + window.scrollY - 80;
-    window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-  }
-};
+import { RouterPath } from '@/routes/path';
+import { useAuth } from '@/Provider/Auth';
 
 export const Header = () => {
   const mailContext = useMail();
@@ -32,19 +26,28 @@ export const Header = () => {
     window.location.reload();
   };
 
+  const { authInfo } = useAuth();
+
   return (
     <Wrapper>
       <Container>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>Login</div>
-        <LogoLink to={'/'}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          {authInfo ? (
+            <Link to={RouterPath.mypage}>
+              <AuthWrapper>My Page</AuthWrapper>
+            </Link>
+          ) : (
+            <Link to={RouterPath.login}>
+              <AuthWrapper>Login</AuthWrapper>
+            </Link>
+          )}
+        </div>
+
+        <LogoLink to={RouterPath.home}>
           <Logo src="/images/logo.svg" />
         </LogoLink>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '47px' }}>
-            <MidWrapper onClick={() => scrollToSection('section2')}> 서비스 체험</MidWrapper>
-            <MidWrapper onClick={() => scrollToSection('section3')}> 기능 살펴보기</MidWrapper>
-          </div>
-          <Link to={'/mail'} style={{ display: 'flex', alignItems: 'center' }}>
+          <Link to={RouterPath.mail} style={{ display: 'flex', alignItems: 'center' }}>
             <AiButton onClick={handleMailInput}>AI 메일 생성하기</AiButton>
           </Link>
         </div>
@@ -120,12 +123,8 @@ const AiButton = styled(Button)`
   }
 `;
 
-const MidWrapper = styled.div`
+const AuthWrapper = styled.div`
   cursor: pointer;
-  margin: 0px 20px;
-  @media (max-width: ${breakpoints.md}) {
-    display: none;
-  }
 `;
 
 const LogoLink = styled(Link)`

@@ -79,6 +79,6 @@ const Bar = styled.div`
   position: absolute;
   bottom: 8px;
   @media (max-width: ${breakpoints.md}) {
-    width: 400px;
+    visibility: hidden;
   }
 `;

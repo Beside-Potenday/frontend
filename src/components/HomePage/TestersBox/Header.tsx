@@ -1,3 +1,4 @@
+import { breakpoints } from '@/styles/variants';
 import styled from '@emotion/styled';
 
 interface HeaderProps {
@@ -44,6 +45,12 @@ const Student = styled.div<StudentProps>`
   position: relative;
   z-index: 2;
   bottom: -13px;
+
+  @media (max-width: ${breakpoints.md}) {
+    bottom: 11px;
+    left: 120px;
+    box-shadow: ${(props) => (props.isActive === 'univ' ? '4px #6AB9F2' : 'none')};
+  }
 `;
 
 const Business = styled.div<BusinessProps>`
@@ -53,6 +60,12 @@ const Business = styled.div<BusinessProps>`
   position: relative;
   z-index: 2;
   bottom: -13px;
+
+  @media (max-width: ${breakpoints.md}) {
+    bottom: 11px;
+    left: 120px;
+    box-shadow: ${(props) => (props.isActive === 'business' ? '4px #6AB9F2' : 'none')};
+  }
 `;
 
 const Bar = styled.div`
@@ -61,4 +74,8 @@ const Bar = styled.div`
   height: 3px;
   position: absolute;
   bottom: 8px;
+
+  @media (max-width: ${breakpoints.md}) {
+    visibility: hidden;
+  }
 `;
