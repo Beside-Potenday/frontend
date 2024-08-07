@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const updateAuthInfo = (auth: AuthInfo) => {
     if (auth) {
       setAuthInfo(auth);
+      sessionStorage.setItem('authToken', auth.accessToken);
     }
   };
 
