@@ -1,10 +1,12 @@
 import { AuthContextType, AuthInfo } from '@/types';
+import { Spinner } from '@chakra-ui/react';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
+  const [isReady, setIsReady] = useState(false);
 
   const updateAuthInfo = (auth: AuthInfo) => {
     if (auth) {
@@ -29,7 +31,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     handleAuthInfo();
-  });
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return <Spinner />;
 
   return (
     <AuthContext.Provider value={{ authInfo, updateAuthInfo }}>{children}</AuthContext.Provider>
