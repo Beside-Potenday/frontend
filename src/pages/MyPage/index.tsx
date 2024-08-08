@@ -9,7 +9,6 @@ import {
   HStack,
   Text,
   Avatar,
-  Heading,
   Divider,
   Button,
   Spinner,
