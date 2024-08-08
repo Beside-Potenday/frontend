@@ -138,7 +138,7 @@ const MidWrapper = styled.div`
 `;
 
 const LogoLink = styled(Link)`
-  margin-left: 200px;
+  margin-left: 277px;
 
   @media (max-width: ${breakpoints.md}) {
     margin-left: 50px;

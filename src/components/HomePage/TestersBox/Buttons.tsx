@@ -132,7 +132,7 @@ const ButtonsWrapper = styled.div`
   padding: 20px 0;
   z-index: 2;
   position: absolute;
-  top: 10%;
+  top: 60%;
   left: 5%;
   background-clip: padding-box;
 

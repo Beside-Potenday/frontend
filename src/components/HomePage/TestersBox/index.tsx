@@ -83,7 +83,7 @@ export const TestersBox = () => {
                   flexDirection={{ base: 'column', md: 'column' }}
                   position={'relative'}
                   width={'fit-content'}
-                  marginLeft={'-10px'}
+                  marginLeft={{ base: '0px', md: '-10px' }}
                 >
                   <Buttons
                     handleListUniv={handleListUniv}
@@ -106,6 +106,15 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  @media (max-width: ${breakpoints.md}) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    margin: 0px;
+    padding: 0px;
+  }
 `;
 
 const LogoWrapper = styled.div`
@@ -126,4 +135,8 @@ const MedeaItems = styled(Grid)`
   }
 `;
 
-const ImageWrapper = styled.img``;
+const ImageWrapper = styled.img`
+  @media (max-width: ${breakpoints.md}) {
+    width: 100%;
+  }
+`;
