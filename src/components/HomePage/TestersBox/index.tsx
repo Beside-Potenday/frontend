@@ -106,7 +106,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 const LogoWrapper = styled.div`

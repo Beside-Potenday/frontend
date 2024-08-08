@@ -5,9 +5,9 @@ import { TestersBox } from './TestersBox';
 export const Contents = () => {
   return (
     <Grid
-      h={{ base: '1500px', md: '2000px' }} // 'md' 이상일 때 2500px, 작을 때 2000px
+      h={{ base: '1500px', md: '1700px' }}
       w="100%"
-      templateRows={{ base: 'auto auto', md: ' 1fr 600px' }} // 'md' 이상일 때 '1fr 1fr 600px', 작을 때 'repeat(3, 1fr)'
+      templateRows={{ base: 'auto auto', md: ' 1fr 500px' }} // 'md' 이상일 때 '1fr 1fr 600px', 작을 때 'repeat(3, 1fr)'
       templateColumns={{ base: 'auto', md: 'repeat(1, 1fr)' }} // 'md' 이상일 때 'repeat(1, 1fr)', 작을 때 '1fr'
       gap={{ base: 50, md: 100 }} // 'md' 이상일 때 100, 작을 때 50
     >
