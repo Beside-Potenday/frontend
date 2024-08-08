@@ -26,6 +26,10 @@ export const MyPage = () => {
   const { mailData, mailLoading, mailError } = useGetMail(page, 5, isJob);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     setPage(0);
   }, [isJob]);
 
@@ -41,7 +45,7 @@ export const MyPage = () => {
     <Wrapper>
       <LogoWrapper>
         <Grid h="100%" templateColumns="1fr 3fr" gap={10}>
-          <GridItem bg="white" p={4} borderRadius="md" boxShadow="md" alignSelf="flex-start">
+          <GridItem bg="white" padding="25px 10px" borderRadius="md" alignSelf="flex-start">
             <HStack spacing={4}>
               <Avatar size="md" name={authInfo?.name} src={authInfo?.picture} />
               <VStack align="start" spacing={1}>
@@ -52,7 +56,7 @@ export const MyPage = () => {
           </GridItem>
           <GridItem bg="transparent" p={6}>
             <VStack align="start" spacing={6} w="100%">
-              <HStack w="100%" justify="center" borderBottom="1px solid #ffffff">
+              <HStack w="100%" justify="flex-start" borderBottom="3px solid #ffffff">
                 <TabButton active={isJob === 'univ'} onClick={() => setIsJob('univ')}>
                   대학생
                 </TabButton>
