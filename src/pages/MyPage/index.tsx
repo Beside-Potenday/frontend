@@ -40,7 +40,7 @@ export const MyPage = () => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Grid h="100%" templateColumns="1fr 3fr" gap={20}>
+        <Grid h="100%" templateColumns="1fr 3fr" gap={10}>
           <GridItem bg="white" p={4} borderRadius="md" boxShadow="md" alignSelf="flex-start">
             <HStack spacing={4}>
               <Avatar size="md" name={authInfo?.name} src={authInfo?.picture} />
@@ -50,10 +50,9 @@ export const MyPage = () => {
               </VStack>
             </HStack>
           </GridItem>
-          <GridItem bg="white" p={6} borderRadius="md" boxShadow="md">
+          <GridItem bg="transparent" p={6}>
             <VStack align="start" spacing={6} w="100%">
-              <Heading size="md">메일 내역</Heading>
-              <HStack w="100%" justify="center" borderBottom="1px solid #e2e8f0">
+              <HStack w="100%" justify="center" borderBottom="1px solid #ffffff">
                 <TabButton active={isJob === 'univ'} onClick={() => setIsJob('univ')}>
                   대학생
                 </TabButton>
@@ -104,7 +103,8 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #E5F3FF;
+  background-color: #e5f3ff;
+  padding: 80px 0;
 `;
 
 const LogoWrapper = styled.div`
@@ -119,8 +119,8 @@ const TabButton = styled(Button)<{ active: boolean }>`
   border: none;
   padding: 16px;
   font-size: 16px;
-  font-weight: ${props => (props.active ? 'bold' : 'normal')};
-  border-bottom: 2px solid ${props => (props.active ? '#4299e1' : 'transparent')};
+  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+  border-bottom: 2px solid ${(props) => (props.active ? '#4299e1' : 'transparent')};
   cursor: pointer;
   &:hover {
     border-bottom: 2px solid #4299e1;
