@@ -31,10 +31,10 @@ export const useGoMail = () => {
   const { mutate } = useMutation({
     mutationFn: goMail,
     onSuccess: (result) => {
-      console.log('Mail send successfully:', result);
+      alert('📨 메일을 보냈습니다!');
     },
     onError: (error) => {
-      console.error('Error sending mail:', error);
+      alert('⚠️ 메일 보내기에 실패하였습니다!');
     },
   });
   return { mutate };

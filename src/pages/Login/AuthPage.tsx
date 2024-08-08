@@ -16,8 +16,6 @@ export const AuthPage = () => {
 
   useEffect(() => {
     if (data && !error) {
-      console.log('data', data);
-
       updateAuthInfo({
         accessToken: data.accessToken,
         picture: data.picture,

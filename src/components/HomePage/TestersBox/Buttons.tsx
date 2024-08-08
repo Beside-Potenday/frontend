@@ -40,7 +40,6 @@ export const Buttons = ({ handleListUniv, handleListBusiness, randomInput }: But
       { ...(randomInput as unknown as mailSendUniv) },
       {
         onSuccess: (data) => {
-          console.log(data);
           setTitle(data.title || '메일 생성 성공');
           setContent(data.content || '메일이 성공적으로 생성되었습니다.');
         },
@@ -59,7 +58,6 @@ export const Buttons = ({ handleListUniv, handleListBusiness, randomInput }: But
       { ...(randomInput as unknown as mailSendBusiness) },
       {
         onSuccess: (data) => {
-          console.log(data);
           setTitle(data.title || '메일 생성 성공');
           setContent(data.content || '메일이 성공적으로 생성되었습니다.');
         },
