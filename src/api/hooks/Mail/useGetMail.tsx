@@ -39,7 +39,7 @@ export const useGetMail = (page: number, size: number, job: string) => {
     queryKey: ['emails', page, size, job],
     queryFn: () => getMail(page, size, job),
     enabled: !!job, // job이 존재할 때만 쿼리 실행
-    retry: 1, // 에러 시 1번만 재시도
+    staleTime: 0, // 항상 새로운 데이터를 가져오도록 설정
   });
 
   return { mailData, mailLoading, mailError, refetch };
