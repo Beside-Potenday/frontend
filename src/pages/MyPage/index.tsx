@@ -40,14 +40,15 @@ export const MyPage = () => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Grid h="100%" templateColumns="1fr 3fr" gap={20} bg="gray.50" borderRadius="lg" p={10}>
-          <GridItem bg="white" p={6} borderRadius="md" boxShadow="md">
-            <VStack align="start" spacing={4}>
-              <Heading size="md">사용자 정보</Heading>
-              <Avatar size="2xl" name={authInfo?.name} src={authInfo?.picture} />
-              <Text fontWeight="bold">{authInfo?.name}</Text>
-              <Text>{authInfo?.email}</Text>
-            </VStack>
+        <Grid h="100%" templateColumns="1fr 3fr" gap={20}>
+          <GridItem bg="white" p={4} borderRadius="md" boxShadow="md" alignSelf="flex-start">
+            <HStack spacing={4}>
+              <Avatar size="md" name={authInfo?.name} src={authInfo?.picture} />
+              <VStack align="start" spacing={1}>
+                <Text fontWeight="bold">{authInfo?.name}</Text>
+                <Text>{authInfo?.email}</Text>
+              </VStack>
+            </HStack>
           </GridItem>
           <GridItem bg="white" p={6} borderRadius="md" boxShadow="md">
             <VStack align="start" spacing={6} w="100%">
@@ -103,6 +104,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #E5F3FF;
 `;
 
 const LogoWrapper = styled.div`
