@@ -73,6 +73,11 @@ const Wrapper = styled.header`
   z-index: 100;
   height: ${HEADER_HEIGHT};
   padding: 16px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background: linear-gradient(90deg, #e6e9ff 0%, #e5f3ff 100%);
   box-shadow: 0px 2px 18px 2px rgba(0, 0, 0, 0.1);
 `;
@@ -138,7 +143,7 @@ const MidWrapper = styled.div`
 `;
 
 const LogoLink = styled(Link)`
-  margin-left: 200px;
+  margin-left: 277px;
 
   @media (max-width: ${breakpoints.md}) {
     margin-left: 50px;

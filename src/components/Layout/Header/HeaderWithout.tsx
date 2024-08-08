@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
-import { breakpoints } from '@/styles/variants';
 import { useMail } from '@/Provider/MailContext';
 import { RouterPath } from '@/routes/path';
 import { useAuth } from '@/Provider/Auth';
@@ -79,7 +78,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   font-size: 14px;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 `;
 
 const AiButton = styled(Button)`
@@ -127,9 +127,5 @@ const AuthWrapper = styled.div`
 `;
 
 const LogoLink = styled(Link)`
-  margin-left: 250px;
-
-  @media (max-width: ${breakpoints.md}) {
-    margin-left: 100px;
-  }
+  margin: 0 auto;
 `;
