@@ -19,7 +19,7 @@ const createApiClient = (job: string) => {
 
 const getMail = async (page: number, size: number, job: string) => {
   try {
-    console.log('business', page, size);
+    console.log(job, page, size);
     const apiClient = createApiClient(job);
     const response = await apiClient.get<MailListResponse>(getMailPath(page, size));
     return response.data;
