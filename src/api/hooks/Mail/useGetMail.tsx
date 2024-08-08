@@ -34,9 +34,13 @@ export const useGetMail = (page: number, size: number, job: string) => {
     data: mailData,
     isLoading: mailLoading,
     isError: mailError,
+    refetch,
   } = useQuery({
     queryKey: ['emails', page, size, job],
     queryFn: () => getMail(page, size, job),
+    enabled: !!job, // job이 존재할 때만 쿼리 실행
+    retry: 1, // 에러 시 1번만 재시도
   });
-  return { mailData, mailLoading, mailError };
+
+  return { mailData, mailLoading, mailError, refetch };
 };

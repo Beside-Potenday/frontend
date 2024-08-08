@@ -72,7 +72,7 @@ export const MyPage = () => {
               {mailLoading ? (
                 <Spinner />
               ) : mailError ? (
-                <Text color="red.500">오류가 발생했습니다.</Text>
+                <Text>메일이 없습니다!</Text>
               ) : (
                 mailData?.content.map((email, index) => (
                   <Box key={email.createDate} w="100%">
