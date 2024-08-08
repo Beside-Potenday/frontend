@@ -19,6 +19,7 @@ export const ContentsInfo = () => {
 };
 
 const Wrapper = styled.div`
+  margin-top: -70px;
   display: flex;
   align-items: center;
   justify-content: center;
