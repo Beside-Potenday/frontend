@@ -24,7 +24,7 @@ export const Header = () => {
       subject: '',
       receiver: '',
     });
-    navigate(RouterPath.mail);
+    navigate(RouterPath.mail, { state: { openModal: true } }); // Pass state to indicate modal should open
   };
 
   const { authInfo } = useAuth();

@@ -18,12 +18,15 @@ import { AskList } from '@/components/Mail/AskList';
 import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
 import { breakpoints } from '@/styles/variants';
+import { useLocation } from 'react-router-dom';
 
 export const MailPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isAlertOpen, setAlertOpen] = useState(true);
   const mailContext = useMail();
   const { isActive } = useMail();
+
+  const location = useLocation();
 
   if (!mailContext) {
     throw new Error('MailContext not found');
@@ -46,7 +49,10 @@ export const MailPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    if (location.state?.openModal) {
+      setAlertOpen(true);
+    }
+  }, [location]);
 
   return (
     <Wrapper>
@@ -122,9 +128,7 @@ const CustomAlert: React.FC<CustomAlertProps> = ({ isOpen, onClose }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>✉️알파메일이 처음이신가요✉️</ModalHeader>
-        <ModalBody>
-          상단바에서 대학생, 직장인 중 해당되는 것을 눌러 메일을 생성해봐요!
-        </ModalBody>
+        <ModalBody>상단바에서 대학생, 직장인 중 해당되는 것을 눌러 메일을 생성해봐요!</ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" onClick={onClose}>
             닫기
