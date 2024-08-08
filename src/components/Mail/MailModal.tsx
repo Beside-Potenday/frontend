@@ -396,7 +396,7 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
           </CustomModalFooter>
         )}
         {isSubmitted && noError && (
-          <ModalFooter>
+          <ModalFooter gap={10}>
             <Button colorScheme="blue" onClick={handlePutMail}>
               저장하기
             </Button>
