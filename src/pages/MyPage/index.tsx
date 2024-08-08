@@ -22,7 +22,7 @@ export const MyPage = () => {
   const [isJob, setIsJob] = useState('univ');
   const [page, setPage] = useState(0);
 
-  const { mailData, mailLoading, mailError } = useGetMail(page, 5, isJob);
+  const { mailData, mailLoading, mailError, refetch } = useGetMail(page, 5, isJob);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,7 +30,8 @@ export const MyPage = () => {
 
   useEffect(() => {
     setPage(0);
-  }, [isJob]);
+    refetch(); // isJob이 변경될 때 데이터를 리프레시합니다.
+  }, [isJob, refetch]);
 
   const handlePrev = () => {
     setPage((prev) => Math.max(prev - 1, 0));
