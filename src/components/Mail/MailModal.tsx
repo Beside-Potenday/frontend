@@ -98,13 +98,10 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
       content: data.content,
     };
 
-    console.log(univData);
-
     univMutate(
       { ...(univData as unknown as mailSendUniv) },
       {
         onSuccess: (data) => {
-          console.log(data);
           setTitle(data.title || '메일 생성 성공');
           setContent(data.content || '메일이 성공적으로 생성되었습니다.');
           setIsSubmitted(true);
@@ -142,13 +139,10 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
       content: data.content,
     };
 
-    console.log(businessData);
-
     businessMutate(
       { ...(businessData as unknown as mailSendBusiness) },
       {
         onSuccess: (data) => {
-          console.log(data);
           setTitle(data.title || '메일 생성 성공');
           setContent(data.content || '메일이 성공적으로 생성되었습니다.');
           setIsSubmitted(true);
@@ -217,7 +211,6 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
   const handlePutMail = () => {
     if (authInfo) {
       mailmutate({ ...mailResult });
-      alert('📨 저장이 완료되었습니다!');
     } else {
       alert('로그인 후 메일을 저장 할 수 있습니다.');
     }
@@ -226,19 +219,23 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
 
   const handleGoMail = () => {
     const recipientEmail = prompt('받는 사람의 이메일 주소를 입력해 주세요:');
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (authInfo) {
       const myMailAddress = sessionStorage.getItem('email');
 
       if (recipientEmail) {
-        const mailGoContent = {
-          to: recipientEmail,
-          from: myMailAddress as string,
-          subject: mailResult.subject,
-          body: mailResult.body,
-        };
-        mailGo({ ...mailGoContent });
-        alert('📨 메일을 보냈습니다!');
+        if (emailPattern.test(recipientEmail)) {
+          const mailGoContent = {
+            to: recipientEmail,
+            from: myMailAddress as string,
+            subject: mailResult.subject,
+            body: mailResult.body,
+          };
+          mailGo({ ...mailGoContent });
+        } else {
+          alert('유효한 이메일 주소를 입력해 주세요.');
+        }
       } else {
         alert('유효한 이메일 주소를 입력해 주세요.');
       }
@@ -380,7 +377,6 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
             ) : (
               <StyledButton
                 onClick={handleSubmit((data) => {
-                  console.log('Form submitted', data);
                   if (isActive === 'univ') {
                     setMailInputUniv(data as mailSendUniv);
                   } else {

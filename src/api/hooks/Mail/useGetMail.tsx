@@ -8,7 +8,6 @@ export const getMailPath = (page: number, size: number) =>
 
 const createApiClient = (job: string) => {
   const token = sessionStorage.getItem('accessToken');
-  console.log(job);
   return axios.create({
     baseURL: BASE_URL,
     headers: {

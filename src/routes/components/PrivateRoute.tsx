@@ -7,9 +7,6 @@ export const PrivateRoute = () => {
 
   if (!authInfo) {
     return <Navigate to={getDynamicPath.login()} />;
-  } else {
-    console.log(authInfo.accessToken);
   }
-
   return <Outlet />;
 };

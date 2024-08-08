@@ -31,10 +31,10 @@ export const usePostMail = () => {
   const { mutate } = useMutation({
     mutationFn: postMail,
     onSuccess: (result) => {
-      console.log('Mail posted successfully:', result);
+      alert('📨 저장이 완료되었습니다!');
     },
     onError: (error) => {
-      console.error('Error posting mail:', error);
+      alert('⚠️ 저장에 실패하였습니다');
     },
   });
   return { mutate };
