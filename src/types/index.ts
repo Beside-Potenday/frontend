@@ -66,3 +66,10 @@ export interface MailListResponse {
   content: Array<{ subject: string; body: string; createDate: string }>;
   pageable: { pageNumber: number; pageSize: number };
 }
+
+export interface MailGoData {
+  to: string;
+  from: string;
+  subject: string;
+  body: string;
+}
