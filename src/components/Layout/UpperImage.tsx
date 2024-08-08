@@ -1,5 +1,12 @@
+import { useState, useEffect } from 'react';
 import { Image, Box, Text, VStack, keyframes, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+
+interface AirplaneType {
+  size: number;
+  left: number;
+  bottom: number;
+}
 
 export const UpperImage = () => {
   const scrollDown = () => {
@@ -8,6 +15,37 @@ export const UpperImage = () => {
       top: scrollAmount,
       behavior: 'smooth',
     });
+  };
+
+  const [airplanes, setAirplanes] = useState<(AirplaneType & { id: number })[]>([]);
+
+  useEffect(() => {
+    const createAirplane = () => {
+      const size = Math.random() * 150 + 100; // 비행기 크기 (100px ~ 300px)
+      const left = Math.random() * (window.innerWidth / 2 - size); // 화면의 왼쪽 절반에서 랜덤 위치
+      const bottom = Math.random() * (window.innerHeight / 2 - size); // 화면의 아래쪽 절반에서 랜덤 위치
+
+      const airplane = {
+        id: Date.now(),
+        size,
+        left,
+        bottom,
+      };
+
+      setAirplanes((prev) => [...prev, airplane]);
+
+      setTimeout(() => {
+        setAirplanes((prev) => prev.filter((ap) => ap.id !== airplane.id));
+      }, 10000); // 비행기 애니메이션 시간이 지나면 제거
+    };
+
+    const interval = setInterval(createAirplane, Math.random() * 5000 + 5000); // 5초에서 10초 사이의 랜덤 시간
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleAnimationEnd = (id: number) => {
+    setAirplanes((prev) => prev.filter((ap) => ap.id !== id));
   };
 
   return (
@@ -36,6 +74,17 @@ export const UpperImage = () => {
           </RightBubble>
         </VStack>
       </ImageContainer>
+      {airplanes.map((airplane) => (
+        <Airplane
+          key={airplane.id}
+          size={airplane.size}
+          left={airplane.left}
+          bottom={airplane.bottom}
+          src="/images/airplane.svg"
+          alt="비행기"
+          onAnimationEnd={() => handleAnimationEnd(airplane.id)}
+        />
+      ))}
       <ArrowContainer onClick={scrollDown}>
         <ArrowIcon src="/images/downArrow.svg" alt="아래로 이동" />
       </ArrowContainer>
@@ -43,7 +92,35 @@ export const UpperImage = () => {
   );
 };
 
-// 스타일 정의 부분
+// 비행기 애니메이션 키프레임
+const fly = keyframes`
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(calc(100vw - 100%)) rotate(15deg);
+    opacity: 0;
+  }
+`;
+
+interface AirplaneProps extends AirplaneType {
+  onAnimationEnd: () => void;
+}
+
+// 비행기 컴포넌트 스타일링
+const Airplane = styled(Image)<AirplaneProps>`
+  position: absolute;
+  width: ${({ size }) => `${size}px`};
+  height: auto;
+  left: ${({ left }) => `${left}px`};
+  bottom: ${({ bottom }) => `${bottom}px`};
+  animation: ${fly} 10s linear;
+`;
+
 const StyledWrapper = styled(Box)`
   width: 100%;
   height: 100%;
@@ -57,6 +134,7 @@ const StyledWrapper = styled(Box)`
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden; /* 수평 스크롤을 방지 */
 `;
 
 const TransparentOverlay = styled(Box)`
