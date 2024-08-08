@@ -215,9 +215,11 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
   const handlePutMail = () => {
     if (authInfo) {
       mailmutate({ ...mailResult });
+      alert('📨 저장이 완료되었습니다!');
     } else {
       alert('로그인 후 메일을 저장 할 수 있습니다.');
     }
+    onClose();
   };
 
   useEffect(() => {

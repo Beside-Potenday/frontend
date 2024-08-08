@@ -28,7 +28,7 @@ export const placeholderTextsBusiness = [
 ];
 
 export const modalHeaderContentBusiness = [
-  '메일 작성 목적을 선택해 주세요',
+  '메일 작성 목적을 입력해 주세요',
   '보내는 사람의 이름을 입력해 주세요',
   '소속 회사명을 입력해 주세요',
   '소속 부서를 입력해 주세요',
