@@ -31,6 +31,7 @@ import {
 } from './MailModalData';
 import { useAuth } from '@/Provider/Auth';
 import { usePostMail } from '@/api/hooks/Mail/usePostMail';
+import { useGoMail } from '@/api/hooks/Mail/useGoMail';
 
 interface MailModalProps {
   isOpen: boolean;
@@ -57,6 +58,7 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
   const { authInfo } = useAuth();
 
   const { mutate: mailmutate } = usePostMail();
+  const { mutate: mailGo } = useGoMail();
 
   const currentcurrentInputNames =
     isActive === 'univ' ? currentInputNames : currentInputNamesBusiness;
@@ -222,6 +224,31 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
     onClose();
   };
 
+  const handleGoMail = () => {
+    const recipientEmail = prompt('받는 사람의 이메일 주소를 입력해 주세요:');
+
+    if (authInfo) {
+      const myMailAddress = sessionStorage.getItem('email');
+
+      if (recipientEmail) {
+        const mailGoContent = {
+          to: recipientEmail,
+          from: myMailAddress as string,
+          subject: mailResult.subject,
+          body: mailResult.body,
+        };
+        mailGo({ ...mailGoContent });
+        alert('📨 메일을 보냈습니다!');
+      } else {
+        alert('유효한 이메일 주소를 입력해 주세요.');
+      }
+    } else {
+      alert('로그인 후 메일을 보낼할 수 있습니다.');
+    }
+
+    onClose();
+  };
+
   useEffect(() => {
     setIsFocused(false);
     setValue(currentcurrentInputNames[currentIndex], '', { shouldValidate: true });
@@ -372,6 +399,9 @@ export const MailModal = ({ isOpen, onOpen, onClose }: MailModalProps) => {
           <ModalFooter>
             <Button colorScheme="blue" onClick={handlePutMail}>
               저장하기
+            </Button>
+            <Button colorScheme="blue" onClick={handleGoMail}>
+              메일 보내기
             </Button>
           </ModalFooter>
         )}
