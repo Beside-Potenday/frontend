@@ -38,8 +38,9 @@ export const MyPage = () => {
   };
 
   return (
-    <StyledWrapper>
-        <Grid h="100%" templateColumns="0.5fr 1fr" gap={20} bg="gray.50" borderRadius="lg" p={10}>
+    <Wrapper>
+      <LogoWrapper>
+        <Grid h="100%" templateColumns="1fr 3fr" gap={20} bg="gray.50" borderRadius="lg" p={10}>
           <GridItem bg="white" p={6} borderRadius="md" boxShadow="md">
             <VStack align="start" spacing={4}>
               <Heading size="md">사용자 정보</Heading>
@@ -51,12 +52,14 @@ export const MyPage = () => {
           <GridItem bg="white" p={6} borderRadius="md" boxShadow="md">
             <VStack align="start" spacing={6} w="100%">
               <Heading size="md">메일 내역</Heading>
-              <Button onClick={() => setIsJob('univ')} disabled={isJob === 'univ'}>
-                대학생
-              </Button>
-              <Button onClick={() => setIsJob('business')} disabled={isJob === 'business'}>
-                직장인
-              </Button>
+              <HStack w="100%" justify="center" borderBottom="1px solid #e2e8f0">
+                <TabButton active={isJob === 'univ'} onClick={() => setIsJob('univ')}>
+                  대학생
+                </TabButton>
+                <TabButton active={isJob === 'business'} onClick={() => setIsJob('business')}>
+                  직장인
+                </TabButton>
+              </HStack>
 
               {mailLoading ? (
                 <Spinner />
@@ -91,14 +94,33 @@ export const MyPage = () => {
             </VStack>
           </GridItem>
         </Grid>
-    </StyledWrapper>
+      </LogoWrapper>
+    </Wrapper>
   );
 };
 
-const StyledWrapper = styled(Box)`
-  width: 100%;
-  background: #e5f3ff;
+const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const LogoWrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  max-width: 1200px;
+  text-align: center;
+`;
+
+const TabButton = styled(Button)<{ active: boolean }>`
+  background: none;
+  border: none;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: ${props => (props.active ? 'bold' : 'normal')};
+  border-bottom: 2px solid ${props => (props.active ? '#4299e1' : 'transparent')};
+  cursor: pointer;
+  &:hover {
+    border-bottom: 2px solid #4299e1;
+  }
 `;

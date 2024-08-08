@@ -39,7 +39,7 @@ export const UpperImage = () => {
       }, 10000); // 비행기 애니메이션 시간이 지나면 제거
     };
 
-    const interval = setInterval(createAirplane, Math.random() * 3000 + 7000); // 7초에서 10초 사이의 랜덤 시간
+    const interval = setInterval(createAirplane, Math.random() * 5000 + 10000); // 10초에서 15초 사이의 랜덤 시간
 
     return () => clearInterval(interval);
   }, []);
