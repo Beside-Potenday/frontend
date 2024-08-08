@@ -1,6 +1,5 @@
 import { useAuth } from '@/Provider/Auth';
 import styled from '@emotion/styled';
-
 import {
   Box,
   Grid,
@@ -18,7 +17,6 @@ import { useEffect, useState } from 'react';
 
 export const MyPage = () => {
   const { authInfo } = useAuth();
-
   const [isJob, setIsJob] = useState('univ');
   const [page, setPage] = useState(0);
 
@@ -30,7 +28,7 @@ export const MyPage = () => {
 
   useEffect(() => {
     setPage(0);
-    refetch(); // isJob이 변경될 때 데이터를 리프레시합니다.
+    refetch();
   }, [isJob, refetch]);
 
   const handlePrev = () => {
@@ -39,6 +37,11 @@ export const MyPage = () => {
 
   const handleNext = () => {
     setPage((prev) => (mailData && mailData.totalPages > prev + 1 ? prev + 1 : prev));
+  };
+
+  const handleJobChange = (newJob: string) => {
+    setIsJob(newJob);
+    setPage(0);
   };
 
   return (
@@ -62,10 +65,13 @@ export const MyPage = () => {
                 borderBottom="3px solid #ffffff"
                 paddingLeft="20px"
               >
-                <TabButton active={isJob === 'univ'} onClick={() => setIsJob('univ')}>
+                <TabButton active={isJob === 'univ'} onClick={() => handleJobChange('univ')}>
                   대학생
                 </TabButton>
-                <TabButton active={isJob === 'business'} onClick={() => setIsJob('business')}>
+                <TabButton
+                  active={isJob === 'business'}
+                  onClick={() => handleJobChange('business')}
+                >
                   직장인
                 </TabButton>
               </HStack>
@@ -73,10 +79,10 @@ export const MyPage = () => {
               {mailLoading ? (
                 <Spinner />
               ) : mailError ? (
-                <Text>메일이 없습니다!</Text>
-              ) : (
-                mailData?.content.map((email, index) => (
-                  <Box key={email.createDate} w="100%">
+                <Text>메일을 불러오는 중 오류가 발생했습니다.</Text>
+              ) : mailData && mailData.content && mailData.content.length > 0 ? (
+                mailData.content.map((email, index) => (
+                  <Box key={`${isJob}-${email.createDate}-${index}`} w="100%">
                     <HStack justify="space-between" mb={2}>
                       <Text fontWeight="bold">{email.subject}</Text>
                       <Text fontSize="sm" color="gray.500">
@@ -87,19 +93,23 @@ export const MyPage = () => {
                     <Divider mt={2} />
                   </Box>
                 ))
+              ) : (
+                <Text>메일이 없습니다!</Text>
               )}
 
-              <HStack mt={4} justify="space-between" w="100%">
-                <Button onClick={handlePrev} disabled={page === 0}>
-                  이전
-                </Button>
-                <Button
-                  onClick={handleNext}
-                  disabled={!mailData || mailData.totalPages <= page + 1}
-                >
-                  다음
-                </Button>
-              </HStack>
+              {mailData && mailData.content && mailData.content.length > 0 && (
+                <HStack mt={4} justify="space-between" w="100%">
+                  <Button onClick={handlePrev} isDisabled={page === 0}>
+                    이전
+                  </Button>
+                  <Button
+                    onClick={handleNext}
+                    isDisabled={!mailData || mailData.totalPages <= page + 1}
+                  >
+                    다음
+                  </Button>
+                </HStack>
+              )}
             </VStack>
           </GridItem>
         </Grid>
