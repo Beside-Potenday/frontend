@@ -11,7 +11,9 @@ import {
   Divider,
   Button,
   Spinner,
+  IconButton,
 } from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useGetMail } from '@/api/hooks/Mail/useGetMail';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +21,7 @@ export const MyPage = () => {
   const { authInfo } = useAuth();
   const [isJob, setIsJob] = useState('univ');
   const [page, setPage] = useState(0);
+  const [expandedMails, setExpandedMails] = useState<{ [key: string]: boolean }>({});
 
   const { mailData, mailLoading, mailError, refetch } = useGetMail(page, 5, isJob);
 
@@ -42,6 +45,13 @@ export const MyPage = () => {
   const handleJobChange = (newJob: string) => {
     setIsJob(newJob);
     setPage(0);
+  };
+
+  const toggleMailContent = (mailId: string) => {
+    setExpandedMails((prev) => ({
+      ...prev,
+      [mailId]: !prev[mailId],
+    }));
   };
 
   return (
@@ -81,18 +91,30 @@ export const MyPage = () => {
               ) : mailError ? (
                 <Text>메일을 불러오는 중 오류가 발생했습니다.</Text>
               ) : mailData && mailData.content && mailData.content.length > 0 ? (
-                mailData.content.map((email, index) => (
-                  <Box key={`${isJob}-${email.createDate}-${index}`} w="100%">
-                    <HStack justify="space-between" mb={2}>
-                      <Text fontWeight="bold">{email.subject}</Text>
-                      <Text fontSize="sm" color="gray.500">
-                        {email.createDate}
-                      </Text>
-                    </HStack>
-                    <Text noOfLines={2}>{email.body}</Text>
-                    <Divider mt={2} />
-                  </Box>
-                ))
+                mailData.content.map((email, index) => {
+                  const mailId = `${isJob}-${email.createDate}-${index}`;
+                  const isExpanded = expandedMails[mailId];
+                  return (
+                    <Box key={mailId} w="100%">
+                      <HStack justify="space-between" mb={2}>
+                        <Text fontWeight="bold">{email.subject}</Text>
+                        <HStack>
+                          <Text fontSize="sm" color="gray.500">
+                            {email.createDate}
+                          </Text>
+                          <IconButton
+                            aria-label={isExpanded ? 'Collapse' : 'Expand'}
+                            icon={isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                            size="sm"
+                            onClick={() => toggleMailContent(mailId)}
+                          />
+                        </HStack>
+                      </HStack>
+                      <Text noOfLines={isExpanded ? undefined : 2}>{email.body}</Text>
+                      <Divider mt={2} />
+                    </Box>
+                  );
+                })
               ) : (
                 <Text>메일이 없습니다!</Text>
               )}
