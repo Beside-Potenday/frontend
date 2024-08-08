@@ -8,6 +8,7 @@ export const getMailPath = (page: number, size: number) =>
 
 const createApiClient = (job: string) => {
   const token = sessionStorage.getItem('accessToken');
+  console.log(job);
   return axios.create({
     baseURL: BASE_URL,
     headers: {
@@ -19,7 +20,6 @@ const createApiClient = (job: string) => {
 
 const getMail = async (page: number, size: number, job: string) => {
   try {
-    console.log(job, page, size);
     const apiClient = createApiClient(job);
     const response = await apiClient.get<MailListResponse>(getMailPath(page, size));
     return response.data;
