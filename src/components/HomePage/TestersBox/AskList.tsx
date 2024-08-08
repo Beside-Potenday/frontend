@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { AskListProps, Question } from '@/types';
 import { useMail } from '@/Provider/MailContext';
 import { useState, useEffect } from 'react';
+import { breakpoints } from '@/styles/variants';
 
 const purposes = [
   { id: '질문', label: '🙋🏻‍♂️질문' },
@@ -44,7 +45,10 @@ export const AskList = ({ randomInput }: AskListProps) => {
         <AskListItemWrapper key={index}>
           <AskListItem>{question.ask}</AskListItem>
           {isActive === 'univ' && index === 0 ? (
-            <InputListItem style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
+            <InputListItem
+              className="input"
+              style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}
+            >
               {purposes.map((purpose) => (
                 <PurposeButton key={purpose.id} selected={randomInput.content === purpose.id}>
                   {purpose.label}
@@ -73,6 +77,15 @@ const AskListWrapper = styled.div`
   padding-top: 46px;
   padding-bottom: 86px;
   gap: 10px;
+
+  @media (max-width: ${breakpoints.md}) {
+    width: 100%;
+    padding: 2px;
+    gap: 5px;
+    .input {
+      align-items: center;
+    }
+  }
 `;
 const AskListItemWrapper = styled.div`
   display: flex;
@@ -93,6 +106,9 @@ const AskListItem = styled.div`
   background: rgba(255, 255, 255, 0.7);
   padding: 8px 16px;
   width: fit-content;
+  @media (max-width: ${breakpoints.md}) {
+    font-size: 12px;
+  }
 `;
 
 const InputListItem = styled.div`
@@ -108,6 +124,11 @@ const InputListItem = styled.div`
   width: fit-content;
   margin-left: auto;
   margin-right: 16px;
+  @media (max-width: ${breakpoints.md}) {
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const PurposeButton = styled.div<{ selected: boolean }>`
