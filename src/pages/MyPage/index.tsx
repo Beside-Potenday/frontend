@@ -44,8 +44,8 @@ export const MyPage = () => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Grid h="100%" templateColumns="1fr 3fr" gap={10}>
-          <GridItem bg="white" padding="25px 10px" borderRadius="md" alignSelf="flex-start">
+        <Grid h="100%" templateColumns="1fr 3fr" gap={5}>
+          <GridItem bg="white" padding="50px 20px" borderRadius="md" alignSelf="flex-start">
             <HStack spacing={4}>
               <Avatar size="md" name={authInfo?.name} src={authInfo?.picture} />
               <VStack align="start" spacing={1}>
@@ -56,7 +56,12 @@ export const MyPage = () => {
           </GridItem>
           <GridItem bg="transparent" p={6}>
             <VStack align="start" spacing={6} w="100%">
-              <HStack w="100%" justify="flex-start" borderBottom="3px solid #ffffff">
+              <HStack
+                w="100%"
+                justify="flex-start"
+                borderBottom="3px solid #ffffff"
+                paddingLeft="20px"
+              >
                 <TabButton active={isJob === 'univ'} onClick={() => setIsJob('univ')}>
                   대학생
                 </TabButton>
@@ -124,9 +129,9 @@ const TabButton = styled(Button)<{ active: boolean }>`
   padding: 16px;
   font-size: 16px;
   font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
-  border-bottom: 2px solid ${(props) => (props.active ? '#4299e1' : 'transparent')};
+  border-bottom: 3px solid ${(props) => (props.active ? '#4299e1' : 'transparent')};
   cursor: pointer;
   &:hover {
-    border-bottom: 2px solid #4299e1;
+    border-bottom: 3px solid #4299e1;
   }
 `;
