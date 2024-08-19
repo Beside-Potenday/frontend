@@ -22,7 +22,15 @@ export const Contents = () => {
       >
         <TestersBox />
       </GridItem>
-      <GridItem id="section3" rowSpan={1} backgroundColor={'transparent'}>
+      <GridItem
+        id="section3"
+        rowSpan={1}
+        backgroundColor={'transparent'}
+        display="flex"
+        justifyContent={'center'}
+        gap={10}
+        marginTop={20}
+      >
         <ContentsInfo />
       </GridItem>
     </Grid>
