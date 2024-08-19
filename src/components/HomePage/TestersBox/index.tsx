@@ -12,6 +12,7 @@ import { mockDataUniv } from '@/types/mock/mockUniv';
 import { mockDataBusiness } from '@/types/mock/mockBusiness';
 import { MailInput } from '@/types';
 import { useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 export const TestersBox = () => {
   const [randomInput, setRandomInput] = useState<MailInput>({
@@ -23,6 +24,7 @@ export const TestersBox = () => {
     receiver: '안지선',
   });
   const { isActive, onIsActive } = useMail();
+  const isMobile = useMediaQuery({ query: `(max-width : ${breakpoints.md})` });
 
   const handleListUniv = () => {
     const randomIndex = Math.floor(Math.random() * mockDataUniv.length);
@@ -45,7 +47,11 @@ export const TestersBox = () => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Img src="/images/testerslogo.svg" style={{ marginBottom: '-50px' }} />
+        {isMobile ? (
+          <Img src="/images/mobileTestersLogo.svg" style={{ marginBottom: '-50px' }} />
+        ) : (
+          <Img src="/images/testerslogo.svg" style={{ marginBottom: '-50px' }} />
+        )}
         <ContentWrapper>
           <Grid
             w="100%"

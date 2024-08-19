@@ -1,11 +1,15 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import { Header, HEADER_HEIGHT } from './Header/HeaderWithout';
+import { useMediaQuery } from 'react-responsive';
+import { breakpoints } from '@/styles/variants';
+import { HeaderMobile } from './Header/Mobile/HeaderMobile';
 
 export const NoFooterLayout = () => {
+  const isMobile = useMediaQuery({ query: `(max-width : ${breakpoints.md})` });
   return (
     <Wrapper>
-      <Header />
+      {isMobile ? <HeaderMobile isMain={false} /> : <Header />}
       <InnerWrapper>
         <Outlet />
       </InnerWrapper>
