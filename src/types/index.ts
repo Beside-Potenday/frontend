@@ -73,3 +73,8 @@ export interface MailGoData {
   subject: string;
   body: string;
 }
+
+export interface OpenHamburgerContextType {
+  isReady: boolean;
+  handleIsReady: (state: boolean) => void;
+}
