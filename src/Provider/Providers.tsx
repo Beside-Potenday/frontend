@@ -1,5 +1,6 @@
 import { AuthProvider } from '@/Provider/Auth';
 import { MailProvider } from '@/Provider/MailContext';
+import { OpenHamburgerProvider } from './OpenHamburger';
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -7,9 +8,11 @@ type ProvidersProps = {
 
 const Providers = ({ children }: ProvidersProps) => {
   return (
-    <MailProvider>
-      <AuthProvider>{children}</AuthProvider>
-    </MailProvider>
+    <OpenHamburgerProvider>
+      <MailProvider>
+        <AuthProvider>{children}</AuthProvider>
+      </MailProvider>
+    </OpenHamburgerProvider>
   );
 };
 
