@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import { ContentsInfo } from '@/components/HomePage/ContentsInfo';
-import { TestersBox } from './TestersBox';
+import { ContentsInfo } from '@/components/HomePage/LookAround/ContentsInfo';
+import { TestersBox } from '../TestersBox';
 
 export const Contents = () => {
   return (
