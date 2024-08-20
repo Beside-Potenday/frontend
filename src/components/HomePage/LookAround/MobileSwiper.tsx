@@ -19,17 +19,17 @@ export const MobileSwiper = () => {
       >
         <SwiperSlide>
           <SlideContent>
-            <img src="/images/composition1.svg" alt="살펴보기 이미지 1" />
+            <StyledImage src="/images/composition1.svg" alt="살펴보기 이미지 1" />
           </SlideContent>
         </SwiperSlide>
         <SwiperSlide>
           <SlideContent>
-            <img src="/images/composition2.svg" alt="살펴보기 이미지 2" />
+            <StyledImage src="/images/composition2.svg" alt="살펴보기 이미지 2" />
           </SlideContent>
         </SwiperSlide>
         <SwiperSlide>
           <SlideContent>
-            <img src="/images/composition3.svg" alt="살펴보기 이미지 3" />
+            <StyledImage src="/images/composition3.svg" alt="살펴보기 이미지 3" />
           </SlideContent>
         </SwiperSlide>
       </SwiperWrapper>
@@ -43,11 +43,17 @@ const SwiperWrapper = styled(Swiper)`
 `;
 
 const SlideContent = styled.div`
-  text-align: center;
-  font-size: 18px;
-
-  /* Center slide text vertically */
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledImage = styled.img`
+  width: auto;
+  height: auto;
+  max-width: 80%; /* 이미지의 최대 너비를 슬라이드 너비의 80%로 설정 */
+  max-height: 80%; /* 이미지의 최대 높이를 슬라이드 높이의 80%로 설정 */
+  object-fit: contain;
 `;
