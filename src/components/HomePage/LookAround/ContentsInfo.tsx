@@ -2,6 +2,7 @@ import { Grid, GridItem, Img } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useMediaQuery } from 'react-responsive';
 import { breakpoints } from '@/styles/variants';
+import { MobileSwiper } from './MobileSwiper';
 
 export const ContentsInfo = () => {
   const isMobile = useMediaQuery({ query: `(max-width : ${breakpoints.md})` });
@@ -15,11 +16,17 @@ export const ContentsInfo = () => {
           <Img src="/images/contentsInfoLogo.svg" alt="Logo" mb={5} />
         )}
         <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6}>
-          {cardContents.map((content, index) => (
-            <StyledGridItem key={index}>
-              <StyledImg src={content.imageSrc} alt={`gif파일${index + 1}`} />
-            </StyledGridItem>
-          ))}
+          {isMobile ? (
+            <MobileSwiper />
+          ) : (
+            <>
+              {cardContents.map((content, index) => (
+                <StyledGridItem key={index}>
+                  <StyledImg src={content.imageSrc} alt={`gif파일${index + 1}`} />
+                </StyledGridItem>
+              ))}
+            </>
+          )}
         </Grid>
       </LogoWrapper>
     </Wrapper>
@@ -62,7 +69,7 @@ const StyledImg = styled(Img)`
   object-fit: cover; // 이미지가 컨테이너에 맞게 조정되도록 설정
 `;
 
-const cardContents = [
+export const cardContents = [
   {
     imageSrc: '/images/composition1.svg',
   },

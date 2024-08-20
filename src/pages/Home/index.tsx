@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { Contents } from '@/components/HomePage/Contents';
+import { Contents } from '@/components/HomePage/LookAround/Contents';
 import styled from '@emotion/styled';
-
 
 export const HomePage = () => {
   useEffect(() => {
