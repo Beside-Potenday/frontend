@@ -43,7 +43,7 @@ export const AskList = ({ randomInput }: AskListProps) => {
 };
 
 const AskListWrapper = styled.div`
-  width: 768px;
+  width: 90%;
   height: 750px;
   flex-shrink: 0;
   border-radius: 10px;
@@ -57,7 +57,7 @@ const AskListWrapper = styled.div`
   gap: 10px;
 
   @media (max-width: ${breakpoints.md}) {
-    width: 400px;
+    width: 90%;
   }
 `;
 
