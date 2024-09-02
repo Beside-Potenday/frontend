@@ -77,6 +77,7 @@ const AskListWrapper = styled.div`
   padding-top: 46px;
   padding-bottom: 86px;
   gap: 10px;
+  flex-wrap: wrap;
 
   @media (max-width: ${breakpoints.md}) {
     width: 100%;

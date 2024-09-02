@@ -54,14 +54,14 @@ const SlideContent = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0;
-  max-width: 100vw; /* 이미지의 최대 너비를 슬라이드 너비의 80%로 설정 */
+  max-width: 100vw;
   max-height: 100vw;
 `;
 
 const StyledImage = styled.img`
   width: auto;
   height: auto;
-  max-width: 80%; /* 이미지의 최대 너비를 슬라이드 너비의 80%로 설정 */
-  max-height: 80%; /* 이미지의 최대 높이를 슬라이드 높이의 80%로 설정 */
+  max-width: 80%;
+  max-height: 80%;
   object-fit: contain;
 `;
