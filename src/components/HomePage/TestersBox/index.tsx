@@ -120,7 +120,9 @@ const Wrapper = styled.div`
     width: 500px;
     margin: 0px;
     padding: 0px;
+    font-size: 8px;
   }
+  max-width: 90vw;
 `;
 
 const LogoWrapper = styled.div`
