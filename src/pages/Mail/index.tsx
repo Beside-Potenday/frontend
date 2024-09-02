@@ -19,12 +19,15 @@ import { useMail } from '@/Provider/MailContext';
 import { MailModal } from '@/components/Mail/MailModal';
 import { breakpoints } from '@/styles/variants';
 import { useLocation } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { MobileSwiper } from '@/components/Mail/MobileSwiper';
 
 export const MailPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isAlertOpen, setAlertOpen] = useState(true);
   const mailContext = useMail();
   const { isActive } = useMail();
+  const isMobile = useMediaQuery({ query: `(max-width : ${breakpoints.md})` });
 
   const location = useLocation();
 
@@ -90,21 +93,17 @@ export const MailPage = () => {
                 maxWidth="1200px"
                 margin="0 auto"
               >
-                <GridItem
-                  colSpan={{ base: 1, md: 2 }}
-                  width="100%"
-                  display="flex"
-                  justifyContent="center"
-                >
+                <GridItem colSpan={{ base: 1, md: 2 }} display="flex" justifyContent="center">
                   <AskList randomInput={mailInput}></AskList>
                 </GridItem>
                 <GridItem
-                  colSpan={{ base: 1, md: 1 }}
+                  colSpan={1}
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
+                  minWidth={{ base: 'auto', md: '400px' }} // md일 때만 400px로 설정
                 >
-                  <ImageWrapper src="/images/exampleImage.svg" />
+                  {isMobile ? <MobileSwiper /> : <ImageWrapper src="/images/exampleImage.svg" />}
                 </GridItem>
               </Grid>
             </GridItem>
@@ -186,4 +185,13 @@ const MedeaItems = styled(Grid)`
   }
 `;
 
-const ImageWrapper = styled.img``;
+const ImageWrapper = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  @media (max-width: ${breakpoints.md}) {
+    width: 90%;
+  }
+`;
