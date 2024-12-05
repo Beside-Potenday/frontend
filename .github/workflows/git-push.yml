@@ -23,6 +23,11 @@ jobs:
         run: |
           git config --global user.email "${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}"
           git config --global user.name "${{ github.actor }}"
+      - name: Fetch and merge remote changes
+        run: |
+          git remote add destination https://github.com/seung365/alphamail-frontend.git
+          git fetch destination
+          git merge destination/main --allow-unrelated-histories
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
@@ -35,4 +40,3 @@ jobs:
           user-name: ${{ github.actor }}
           commit-message: 'Syncing main branch'
           target-branch: main
-          force: true # 이 옵션 추가
