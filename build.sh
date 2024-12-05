@@ -1,5 +1,5 @@
 #!/bin/sh
 cd ../
 mkdir output
-cp -R ./alphamail-frontend/* ./output
-cp -R ./output ./alphamail-frontend/
+cp -R ./frontend/* ./output
+cp -R ./output ./frontend/
