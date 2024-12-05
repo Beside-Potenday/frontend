@@ -1,9 +1,7 @@
 name: git push into another repo to deploy to vercel
-
 on:
   push:
     branches: [main]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +18,7 @@ jobs:
         run: |
           mkdir -p output
           cp -r build/* output/
+          cp vercel.json output/  # vercel.json 파일도 복사
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
