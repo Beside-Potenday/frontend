@@ -14,20 +14,14 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm install
-      - name: Build
-        run: npm run build
-      - name: Prepare output directory
-        run: |
-          mkdir -p output
-          cp -r build/* output/
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_KEY }}
         with:
-          source-directory: 'output'
+          source-directory: '.'
           destination-github-username: 'seung365'
           destination-repository-name: 'alphamail-frontend'
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL}}
-          commit-message: ${{ github.event.commits[0].message }}
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          commit-message: 'Syncing main branch'
           target-branch: main
