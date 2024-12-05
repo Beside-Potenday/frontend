@@ -7,8 +7,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # 이 권한 추가가 중요합니다
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # 이 옵션 추가
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
@@ -23,5 +28,6 @@ jobs:
           destination-github-username: 'seung365'
           destination-repository-name: 'alphamail-frontend'
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          user-name: ${{ github.actor }} # GitHub 사용자 이름 추가
           commit-message: 'Syncing main branch'
           target-branch: main
