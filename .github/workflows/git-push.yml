@@ -15,7 +15,7 @@ jobs:
         run: apk add ruby && gem install mustache
 
       - name: creates output
-        run: sh ./build.sh
+        run: sh ./build.sh # output 폴더를 생성하고 빌드 작업 수행
 
       - name: Debug output directory
         run: |
@@ -35,7 +35,7 @@ jobs:
           source-directory: 'output' # build 또는 output에 맞게 변경
           destination-github-username: 'seung365'
           destination-repository-name: 'alphamail-frontend'
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL}}
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
 
