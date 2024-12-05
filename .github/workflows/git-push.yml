@@ -14,13 +14,17 @@ jobs:
         run: apk add ruby && gem install mustache
       - name: creates output
         run: sh ./build.sh
+      - name: Debug output directory
+        run: |
+          ls -al
+          ls -al output
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_KEY }}
         with:
-          source-directory: 'output'
+          source-directory: 'output' # 빌드 결과물이 생성된 경로로 수정 필요
           destination-github-username: 'seung365'
           destination-repository-name: 'alphamail-frontend'
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL}}
