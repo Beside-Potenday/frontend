@@ -7,40 +7,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    container: pandoc/latex
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: Install dependencies
-        run: npm install
-      - name: Clean destination repository first
+      - name: Install mustache (to update the date)
+        run: apk add ruby && gem install mustache
+      - name: creates output
+        run: sh ./build.sh
+      - name: Pushes to another repository
+        id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_KEY }}
         with:
-          source-directory: '.'
+          source-directory: 'output'
           destination-github-username: 'seung365'
           destination-repository-name: 'alphamail-frontend'
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-          user-name: ${{ github.actor }}
-          commit-message: 'Clean repository before sync'
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL}}
+          commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
-          force: true
-      - name: Push updated content
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.AUTO_KEY }}
-        with:
-          source-directory: '.'
-          destination-github-username: 'seung365'
-          destination-repository-name: 'alphamail-frontend'
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-          user-name: ${{ github.actor }}
-          commit-message: 'Syncing main branch with updates'
-          target-branch: main
+      - name: Test get variable exported by push-to-another-repository
+        run: echo $DESTINATION_CLONED_DIRECTORY
